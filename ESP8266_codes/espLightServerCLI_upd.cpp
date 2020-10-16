@@ -57,6 +57,10 @@ void handleLEDoff() {
  server.send(200, "text/html", "LED is OFF");
 }
 
+void handlePong() {
+ server.send(200, "text/html", device_command);
+}
+
 void setup(void){
   pinMode(LED, OUTPUT);
   pinMode(SW, INPUT);
@@ -86,6 +90,7 @@ void setup(void){
   server.on("/", handleRoot);
   server.on("/control/1", handleLEDon);
   server.on("/control/0", handleLEDoff);
+  server.on("/ping/", handlePong);
  
   server.begin();
   Serial.println("HTTP server started");

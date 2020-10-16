@@ -10,6 +10,8 @@ from flask import (
 	make_response)
 import time,serial,requests
 
+from netScanner import map_network
+
 app = Flask (__name__)
 
 
@@ -104,6 +106,29 @@ def setEspState():
 				return make_response("err",200)
 
 
+# scanner function
+@app.route("/update_devices_ip/")
+def update_devices_ip():
+		ip_addresses = map_network()
+		print(ip_addresses)
+		for ip in ip_addresses:
+				try:
+					r = requests.get("{}/ping/".format(ip))
+					device_command = r.text
+					for device in esp_devices_data:
+						if device["command"] == device_command:
+							try:
+								device["ip"] = ip
+							except Exception as ex:
+								print(ex)
+
+				except Exception as es:
+					print("couldn't get data from an Ip {}".format(ip))
+
+# make scanning on reboot
+update_devices_ip()
+
+
 # test function
 @app.route("/control/<state>")
 def control_state(state):
@@ -126,6 +151,7 @@ def refresh_esp_states():
 			print(ex)
 	return "done"
 # refresh_esp_states()
+
 
 
 if __name__ == "__main__":
