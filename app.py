@@ -18,7 +18,7 @@ arduinoSerialPort = '/dev/ttyACM0'
 esp_devices_data = [
 	{
 		"name": "Lights Hall",
-		"ip": "192.168.137.145",
+		"ip": "192.168.1.145",
 		"state": 0,
 		"command": "lights_hall",
 		"description": "Turns on/off hall lights"
@@ -84,9 +84,24 @@ def esp():
 					return make_response("error, couldn't make a request (no device found)",200)
 		return make_response("error, couldn't make a request (no device found)",200)
 
-@app.route("/checkState")
+@app.route("/esp/checkState/")
 def check_state():
 	return make_response(jsonify(esp_devices_data),200)
+
+
+@app.route("/esp/setState/")
+def setEspState():
+	command = request.args.get('command')
+	state = request.args.get('state')
+
+	for device in esp_devices_data:
+		if device["command"] == command:
+			try:
+				device["state"] = state
+				print(device)
+				return make_response("ok",200)
+			except Exception as ex:
+				return make_response("err",200)
 
 
 # test function
