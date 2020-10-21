@@ -20,6 +20,7 @@ ESP8266WebServer server(80);
 const int stepsPerRevolution = 200;
 
 void stepForward() {
+  digitalWrite(sw, HIGH);
   digitalWrite(Dir, HIGH); //Rotate stepper motor in clock wise direction
   for(int x = 0; x < stepsPerRevolution; x++){
     digitalWrite(Step, HIGH);
@@ -27,10 +28,12 @@ void stepForward() {
     digitalWrite(Step, LOW);
     delay(5);
   }
+  digitalWrite(sw, LOW);
   server.send(200, "text/html", "Forward");
 }
  
 void stepBackward() {
+  digitalWrite(sw, HIGH);
   digitalWrite(Dir, LOW); //Rotate stepper motor in clock wise direction
   for(int x = 0; x < stepsPerRevolution; x++){
     digitalWrite(Step, HIGH);
@@ -38,7 +41,8 @@ void stepBackward() {
     digitalWrite(Step, LOW);
     delay(5);
   }
- server.send(200, "text/html", "Backward");
+  digitalWrite(sw, LOW);
+  server.send(200, "text/html", "Backward");
 }
 void ocur(){
   digitalWrite(sw, LOW);

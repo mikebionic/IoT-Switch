@@ -29,10 +29,10 @@ const char* password = "oguzhan85";
 const char* deviceName = "EspLights1";
 String serverUrl = "192.168.1.252";
 String payload;
-String device_command = "lights_hall";
+String device_key = "dfj7sdf40dg";
 
-#define LED 0
-#define SW 2
+#define LED 2
+#define SW 0
 
 boolean ledState=false;
 boolean buttonState=1;
@@ -58,7 +58,7 @@ void handleLEDoff() {
 }
 
 void handlePong() {
- server.send(200, "text/html", device_command);
+ server.send(200, "text/html", device_key);
 }
 
 void setup(void){
@@ -115,7 +115,7 @@ void buttonStateChange() {
   buttonState = debounce(lastButtonState);
   if (lastButtonState==1 && buttonState==0){
     ledState =! ledState;
-    String argument_data = "?command="+device_command+"&state="+String(ledState);
+    String argument_data = "?device_key="+device_key+"&state="+String(ledState);
     digitalWrite(LED, ledState);
     sendRequest("http://"+serverUrl+"/esp/setState/",argument_data);
   }
