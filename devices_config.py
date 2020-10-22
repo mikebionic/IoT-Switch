@@ -1,5 +1,6 @@
 devices = [
 	{
+		"id": 1,
 		"name": "Lights Hall",
 		"ip": "192.168.1.145",
 		"state": 0,
@@ -9,6 +10,7 @@ devices = [
 		"description": "Turns on/off hall lights"
 	},
 	{
+		"id": 2,
 		"name": "Lights Kitchen",
 		"ip": "192.168.1.101",
 		"state": 0,
@@ -18,6 +20,7 @@ devices = [
 		"description": "Turns on/off kitchen lights"
 	},
 	{
+		"id": 3,
 		"name": "Lights Main Room",
 		"ip": "192.168.1.102",
 		"state": 0,
@@ -27,6 +30,7 @@ devices = [
 		"description": "Turns on/off Main Room lights"
 	},
 	{
+		"id": 4,
 		"name": "Lights Bedroom",
 		"ip": "192.168.1.211",
 		"state": 0,
@@ -36,6 +40,7 @@ devices = [
 		"description": "Turns on/off bedroom lights"
 	},
 	{
+		"id": 5,
 		"name": "Lights Bedroom2",
 		"ip": "192.168.1.212",
 		"state": 0,
@@ -45,6 +50,7 @@ devices = [
 		"description": "Turns on/off bedroom2 lights"
 	},
 	{
+		"id": 6,
 		"name": "Lights Bedroom3",
 		"ip": "192.168.1.213",
 		"state": 0,
@@ -54,24 +60,17 @@ devices = [
 		"description": "Turns on/off bedroom3 lights"
 	},
 	{
+		"id": 7,
 		"name": "Lights Bedroom4",
-		"ip": "192.168.1.214",
+		"ip": "192.168.1.215",
 		"state": 0,
-		"device_key": "fvh6a23rbef28732r",
+		"device_key": "mdc03knb8873i3m",
 		"typeId": 1,
 		"command": "lights_bedroom4",
 		"description": "Turns on/off bedroom4 lights"
 	},
 	{
-		"name": "Lights Add",
-		"ip": "192.168.1.215",
-		"state": 0,
-		"device_key": "mdc03knb8873i3m",
-		"typeId": 1,
-		"command": "lights_add",
-		"description": "Turns on/off Added lights"
-	},
-	{
+		"id": 8,
 		"name": "Curtain",
 		"ip": "192.168.1.123",
 		"state": 0,
@@ -81,6 +80,7 @@ devices = [
 		"description": "Moves up and down the curtain"
 	},
 	{
+		"id": 9,
 		"name": "Smart conditioner",
 		"ip": "192.168.1.243",
 		"state": 0,
@@ -90,13 +90,76 @@ devices = [
 		"description": "Controls conditioner"
 	},
 	{
-		"name": "Local test",
+		"id": 10,
+		"name": "ESP-01 Smart Socket",
+		"ip": "192.168.1.144",
+		"state": 0,
+		"device_key": "knb78G^n03foi",
+		"typeId": 2,
+		"command": "socket",
+		"description": "Controls Smart socket"
+	},
+	{
+		"name": "Local binary test",
 		"ip": "127.0.0.1:5000",
 		"state": 0,
 		"device_key": "23abcK238873244",
 		"typeId": 1,
 		"command": "test_local",
 		"description": "Turns on/off Local test"
+	},
+	{
+		"id": 999,
+		"name": "Local Json to Args test",
+		"ip": "127.0.0.1:5000",
+		"state": 0,
+		"device_key": "ase44f3f23f3",
+		"typeId": 2,
+		"command": "test_local_json",
+		"description": "Json to args of local test func"
+	}
+]
+
+pins = [
+	{
+		"id": 1,
+		"name": "Socket1",
+		"command": "socket1",
+		"description": "Pin 2 of smart socket",
+		"action": "0",
+		"deviceId": 10,
+	},
+	{
+		"id": 2,
+		"name": "Socket2",
+		"command": "socket2",
+		"description": "Pin 2 of smart socket",
+		"action": "0",
+		"deviceId": 10,
+	},
+	{
+		"id": 3,
+		"name": "Socket3",
+		"command": "socket3",
+		"description": "Pin3 of smart socket",
+		"action": "0",
+		"deviceId": 10,
+	},
+	{
+		"id": 998,
+		"name": "Mirror switch",
+		"command": "switch_mirror",
+		"description": "Mirror actuator pin",
+		"action": "0",
+		"deviceId": 999,
+	},
+	{
+		"id": 999,
+		"name": "AI pin",
+		"command": "switch_AI",
+		"description": "Activates AI function",
+		"action": "0",
+		"deviceId": 999,
 	}
 ]
 
@@ -108,12 +171,12 @@ device_types = [
 	},
 	{
 		"id": 2,
-		"name": "ESP-01-command",
-		"description": "ESP8266 with argument provided in 'control'"
+		"name": "ESP-JSON-to-Arguments",
+		"description": "ESP8266 with several arguments provided from data in JSON"
 	},
 	{
 		"id": 3,
-		"name": "NodeMCU-command",
-		"description": "ESP8266 with argument provided in 'control'"
+		"name": "Esp8266-command-argument",
+		"description": "ESP8266 with argument provided in 'control' from data in 'action' of JSON"
 	}
 ]
