@@ -100,6 +100,56 @@ devices = [
 		"description": "Controls Smart socket"
 	},
 	{
+		"id": 11,
+		"name": "Smart Conditioner",
+		"ip": "192.168.1.244",
+		"state": 0,
+		"device_key": "conD9mdc73om93d41H",
+		"typeId": 2,
+		"command": "conditioner_kitchen",
+		"description": "Controls conditioner"
+	},
+	{
+		"id": 12,
+		"name": "Smartconditioner2",
+		"ip": "192.168.1.245",
+		"state": 0,
+		"device_key": "conD9mheqdc73om934",
+		"typeId": 3,
+		"command": "conditioner2",
+		"description": "Controls conditioner"
+	},
+	{
+		"id": 13,
+		"name": "Smart conditioner3",
+		"ip": "192.168.1.246",
+		"state": 0,
+		"device_key": "C6conD9mheqdc73om934q",
+		"typeId": 3,
+		"command": "conditioner3",
+		"description": "Controls conditioner"
+	},
+{
+		"id": 14,
+		"name": "Smart conditioner4",
+		"ip": "192.168.1.248",
+		"state": 0,
+		"device_key": "C$@onD9mheqdc73om934q!",
+		"typeId": 3,
+		"command": "conditioner4",
+		"description": "Controls conditioner"
+	},
+{
+		"id": 15,
+		"name": "Smart conditioner5",
+		"ip": "192.168.1.249",
+		"state": 0,
+		"device_key": "C$@onD9mheqdc73om%&934q!",
+		"typeId": 3,
+		"command": "conditioner5",
+		"description": "Controls conditioner"
+	},
+	{
 		"name": "Local binary test",
 		"ip": "127.0.0.1:5000",
 		"state": 0,
@@ -184,6 +234,46 @@ pins = [
 		"description": "Controls room temperature according to command (ex.: 'heater:25:' or 'cooler:16:')",
 		"action": "cooler:20:",
 		"deviceId": 9,
+	},
+	{
+		"id": 9,
+		"name": "Conditioner Mode HIGH",
+		"command": "mode_high",
+		"description": "Changes the conditioner operation power",
+		"action": "0",
+		"deviceId": 11,
+	},
+	{
+		"id": 10,
+		"name": "Conditioner Mode MED",
+		"command": "mode_med",
+		"description": "Changes the conditioner operation power",
+		"action": "0",
+		"deviceId": 11,
+	},
+	{
+		"id": 11,
+		"name": "Conditioner Mode LOW",
+		"command": "mode_low",
+		"description": "Changes the conditioner operation power",
+		"action": "0",
+		"deviceId": 11,
+	},
+	{
+		"id": 12,
+		"name": "Conditioner Auto/Manual switch",
+		"command": "auto_manual_switch",
+		"description": "Changes the use of manual or auto mode (Tel mode)",
+		"action": "auto",
+		"deviceId": 11,
+	},
+	{
+		"id": 13,
+		"name": "Temperature control",
+		"command": "temperature",
+		"description": "Controls room temperature according to command (ex.: 'heater:25:' or 'cooler:16:')",
+		"action": "cooler:20:",
+		"deviceId": 11,
 	},
 	{
 		"id": 998,

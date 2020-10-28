@@ -59,6 +59,7 @@ void handleConditioner() {
 
   if (mode_high == "1"){
     digitalWrite(high,1);
+    digitalWrite(tel,0);
     digitalWrite(low,0);
     digitalWrite(med,0);
     Serial.println("high");
@@ -69,6 +70,7 @@ void handleConditioner() {
 
   if (mode_med == "1"){
     digitalWrite(med,1);
+    digitalWrite(tel,0);
     digitalWrite(low,0);
     digitalWrite(high,0);
     Serial.println("MED");
@@ -79,6 +81,7 @@ void handleConditioner() {
 
   if (mode_low == "1"){
     digitalWrite(low,1);
+    digitalWrite(tel,0);
     digitalWrite(med,0);
     digitalWrite(high,0);
     Serial.println("low");

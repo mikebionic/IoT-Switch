@@ -204,6 +204,7 @@ def setEspState():
 @app.route("/scanNetwork/")
 def scanNetwork():
 	try:
+		print("requested scanning")
 		ip_addresses = map_network()
 		print("scanning network, found data: {}".format(ip_addresses))
 		for ip in ip_addresses:
@@ -223,7 +224,7 @@ def scanNetwork():
 					print("couldn't get data from an Ip {}".format(ip))
 	except Exception as ex:
 		print(ex)
-	return "scanning done"
+	return make_response("scanning done",200)
 
 # # make scanning on reboot
 # update_devices_ip()
