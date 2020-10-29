@@ -212,6 +212,16 @@ devices = [
 		"description": "Controls cooker"
 	},
 	{
+		"id": 22,
+		"name": "IoT TV Remote",
+		"ip": "192.168.1.176",
+		"state": 0,
+		"device_key": "asdgdsf4567)N$3zx4a2",
+		"typeId": 2,
+		"command": "tv_remote",
+		"description": "Controls Remote of smart tv that sends IR datas"
+	},
+	{
 		"name": "Local binary test",
 		"ip": "127.0.0.1:5000",
 		"state": 0,
@@ -584,6 +594,14 @@ pins = [
 		"description": "Controls room temperature according to command (ex.: 'heater:25:' or 'cooler:16:')",
 		"action": "cooler:20:",
 		"deviceId": 16,
+	},
+	{
+		"id": 87,
+		"name": "IR Remote command",
+		"command": "command",
+		"description": "sends the command to arduino to manage TV",
+		"action": "tvpower",
+		"deviceId": 22,
 	},
 	{
 		"id": 998,

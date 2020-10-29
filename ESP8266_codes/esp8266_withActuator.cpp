@@ -8,8 +8,8 @@ IPAddress gateway(192, 168, 1, 1);   //IP Address of your WiFi Router (Gateway)
 IPAddress subnet(255, 255, 255, 0);  //Subnet mask
 IPAddress dns(8, 8, 8, 8);  //DNS
  
-const char* ssid = "azat";
-const char* password = "oguzhan85";
+const char* ssid = "ssid";
+const char* password = "password";
 
 int Step = 3; //GPIO0---D3 of Nodemcu--Step of stepper motor driver
 int Dir  = 1; //GPIO2---D4 of Nodemcu--Direction of stepper motor driver

@@ -9,8 +9,8 @@ IPAddress gateway(192, 168, 1, 1);   //IP Address of your WiFi Router (Gateway)
 IPAddress subnet(255, 255, 255, 0);  //Subnet mask
 IPAddress dns(8, 8, 8, 8);  //DNS
  
-const char* ssid = "azat";
-const char* password = "oguzhan85";
+const char* ssid = "ssid";
+const char* password = "password";
 String serverUrl = "192.168.1.252";
 String payload;
 String device_key = "sqs20n7nI9mdio2mew";
@@ -70,15 +70,6 @@ void setup() {
   digitalWrite(Dir, LOW);
   digitalWrite(sw, LOW);
     
-ocur);
-  server.on("/control/3", yak);
-  server.begin();
-}
- 
-void loop() {
-  server.handleClient();
-}
-
   WiFi.begin(ssid, password);
   Serial.println("");
   WiFi.disconnect();
@@ -104,4 +95,3 @@ void loop() {
 void loop() {
   server.handleClient();
 }
-  
