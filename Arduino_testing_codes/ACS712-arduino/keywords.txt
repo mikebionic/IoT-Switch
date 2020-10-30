@@ -1,0 +1,28 @@
+#######################################
+# Syntax Coloring Map For ACS712
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+ACS712	KEYWORD1
+ACS712_type	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+calibrate	KEYWORD2
+setZeroPoint	KEYWORD2
+setSensitivity	KEYWORD2
+getCurrentDC	KEYWORD2
+getCurrentAC	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+ACS712_05B	LITERAL1
+ACS712_20A	LITERAL1
+ACS712_30A	LITERAL1

@@ -163,7 +163,6 @@ void handleDevice() {
   power.trim();
   auto_manual_selector.trim();
 
-  // delay(2000);
   if (cooker1.length() > 0){
     set_timing1(cooker1);
   }
@@ -178,17 +177,26 @@ void handleDevice() {
   }
 
   if(power == "1"){
-      digitalWrite(powerPin,1);
+    digitalWrite(powerPin,1);
+    delay(2000);
+    digitalWrite(auto_manual_selector_pin,0);
   }
   else if(power == "0"){
       digitalWrite(powerPin,0);
   }
 
   if(auto_manual_selector == "auto"){
-      digitalWrite(auto_manual_selector_pin,1);
+    digitalWrite(auto_manual_selector_pin,0);
+    delay(2000);
+    digitalWrite(powerPin,0);
   }
   else if(auto_manual_selector == "manual"){
-      digitalWrite(auto_manual_selector_pin,0);
+    digitalWrite(auto_manual_selector_pin,1);
+    for (int i=0; i<numCookerPins; i++){
+      digitalWrite(cookerPins[i],1);
+    }
+    delay(2000);
+    digitalWrite(powerPin,1);
   }
 
   server.send(200, "text/html", "OK");
@@ -206,7 +214,7 @@ void setup(){
   pinMode(powerPin,OUTPUT);
   pinMode(auto_manual_selector_pin,OUTPUT);
   digitalWrite(powerPin,0);
-  digitalWrite(auto_manual_selector_pin,0);
+  digitalWrite(auto_manual_selector_pin,1);
 
   ////  Esp setup
   Serial.begin(115200);

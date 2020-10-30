@@ -2,7 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 from datetime import date,datetime,time
-from devices_config import devices, device_types, pins
+from devices_config import devices, device_types, pins, sensors
 
 app = Flask (__name__)
 app.config['SECRET_KEY'] = "bdbgbn08Vtc4UV$bon(*0pnibuoyvtcr4R"
@@ -22,6 +22,7 @@ class Devices(db.Model):
 	typeId = db.Column(db.Integer,db.ForeignKey("device_types.id"))
 	date_added = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
 	pins = db.relationship('Pins',backref='devices',lazy='joined')
+	sensors = db.relationship('Sensors',backref='devices',lazy='joined')
 
 
 class Pins(db.Model):
@@ -30,6 +31,15 @@ class Pins(db.Model):
 	command = db.Column(db.String(100),nullable=False)
 	description = db.Column(db.String(500))
 	action = db.Column(db.String(500),default="")
+	deviceId = db.Column(db.Integer,db.ForeignKey("devices.id"))
+
+
+class Sensors(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	name = db.Column(db.String(100),nullable=False)
+	command = db.Column(db.String(100),nullable=False)
+	description = db.Column(db.String(500))
+	value = db.Column(db.Float,default=0.0)
 	deviceId = db.Column(db.Integer,db.ForeignKey("devices.id"))
 
 
@@ -49,6 +59,10 @@ for device in devices:
 for pin in pins:
 	db_pin = Pins(**pin)
 	db.session.add(db_pin)
+
+for sensor in sensors:
+	db_sensor = Sensors(**sensor)
+	db.session.add(db_sensor)
 
 for device_type in device_types:
 	db_device_type = Device_types(**device_type)

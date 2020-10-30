@@ -203,13 +203,13 @@ devices = [
 	},
 	{
 		"id": 21,
-		"name": "Smart Cooker",
+		"name": "Smart stove",
 		"ip": "192.168.1.154",
 		"state": 0,
 		"device_key": "knb78G^n0sdf3foi",
 		"typeId": 2,
-		"command": "smart_cooker",
-		"description": "Controls cooker"
+		"command": "smart_stove",
+		"description": "Controls stove"
 	},
 	{
 		"id": 22,
@@ -220,6 +220,26 @@ devices = [
 		"typeId": 2,
 		"command": "tv_remote",
 		"description": "Controls Remote of smart tv that sends IR datas"
+	},
+	{
+		"id": 23,
+		"name": "Watt measurer of kitchen",
+		"ip": "192.168.1.222",
+		"state": 0,
+		"device_key": "jbhbnefb63bno2u1",
+		"typeId": 2,
+		"command": "watt_measurer1",
+		"description": "Measures the flow of current"
+	},
+	{
+		"id": 24,
+		"name": "Water measurer of kitchen",
+		"ip": "192.168.1.223",
+		"state": 0,
+		"device_key": "jbhbnefb63bno2u1",
+		"typeId": 2,
+		"command": "water_measurer1",
+		"description": "Measures the flow of water"
 	},
 	{
 		"name": "Local binary test",
@@ -636,5 +656,25 @@ device_types = [
 		"id": 3,
 		"name": "Esp8266-command-argument",
 		"description": "ESP8266 with argument provided in 'control' from data in 'action' of JSON"
+	}
+]
+
+
+sensors = [
+	{
+		"id": 1,
+		"name": "Watt measurer sensor",
+		"command": "watt_measurer",
+		"description": "Measured amount of current",
+		"value": "0.0",
+		"deviceId": 23,
+	},
+	{
+		"id": 2,
+		"name": "Water measurer sensor",
+		"command": "water_measurer",
+		"description": "Measured amount of water",
+		"value": "0.0",
+		"deviceId": 24,
 	}
 ]

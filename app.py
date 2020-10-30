@@ -33,6 +33,7 @@ class Devices(db.Model):
 	typeId = db.Column(db.Integer,db.ForeignKey("device_types.id"))
 	date_added = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
 	pins = db.relationship('Pins',backref='devices',lazy='joined')
+	sensors = db.relationship('Sensors',backref='devices',lazy='joined')
 
 	def json(self):
 		device = {
@@ -58,7 +59,7 @@ class Pins(db.Model):
 	deviceId = db.Column(db.Integer,db.ForeignKey("devices.id"))
 	
 	def json(self):
-		device = {
+		pin = {
 			"id": self.id,
 			"name": self.name,
 			"command": self.command,
@@ -66,7 +67,28 @@ class Pins(db.Model):
 			"action": self.action,
 			"deviceId": self.deviceId,
 		}
-		return device
+		return pin
+
+
+class Sensors(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	name = db.Column(db.String(100),nullable=False)
+	command = db.Column(db.String(100),nullable=False)
+	description = db.Column(db.String(500))
+	value = db.Column(db.Float,default=0.0)
+	deviceId = db.Column(db.Integer,db.ForeignKey("devices.id"))
+	
+	def json(self):
+		sensor = {
+			"id": self.id,
+			"name": self.name,
+			"command": self.command,
+			"description": self.description,
+			"value": self.value,
+			"deviceId": self.deviceId,
+		}
+		return sensor
+
 
 class Device_types(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
@@ -131,6 +153,28 @@ def esp():
 					return make_response("error, couldn't make a request (connection issue)")
 			return make_response("error, couldn't make a request (no device found)",200)
 
+						
+@app.route("/esp/ArgToDB/",methods=['GET'])
+def esp_arg_to_db():
+	device_key = request.args.get('device_key')
+	command = request.args.get('command')
+	value = request.args.get('value')
+
+	device = Devices.query.filter_by(device_key = device_key).first()
+	if device:
+		try:
+			sensor = Sensors.query\
+			.filter_by(deviceId = device.id, command = command)\
+			.first()
+			if sensor:
+				sensor.value += float(value)
+				db.session.commit()
+				print(device.name)
+				return make_response("ok",200)
+			return make_response("not Found",200)
+		except Exception as ex:
+			return make_response("err",200)
+
 
 @app.route("/esp/JsonToArg/",methods=['GET','POST'])
 def esp_json_to_arg():
@@ -144,7 +188,9 @@ def esp_json_to_arg():
 				for pin in pins_json:
 					pin_command = pin["command"]
 					pin_action = pin["action"]
-					pin = Pins.query.filter_by(deviceId = device.id, command = pin_command).first()
+					pin = Pins.query\
+					.filter_by(deviceId = device.id, command = pin_command)\
+					.first()
 					if pin:
 						pin.action = pin_action
 				db.session.commit()
@@ -180,6 +226,8 @@ def check_state():
 		info = device.json()
 		pins = [pin.json() for pin in device.pins]
 		info['pins'] = pins
+		sensors = [sensor.json() for sensor in device.sensors]
+		info['sensors'] = sensors
 		devices_data.append(info)
 	return make_response(jsonify(devices_data),200)
 

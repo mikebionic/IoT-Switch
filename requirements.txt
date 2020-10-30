@@ -1,0 +1,6 @@
+flask
+flask-sqlalchemy
+sqlalchemy
+pyserial
+requests
+gunicorn
