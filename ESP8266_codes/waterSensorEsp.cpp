@@ -18,7 +18,7 @@ const char MAIN_page[] PROGMEM = R"=====(
 )=====";
 
 //Static IP address configuration
-IPAddress staticIP(192, 168, 1, 145); //ESP static ip
+IPAddress staticIP(192, 168, 1, 130); //ESP static ip
 IPAddress gateway(192, 168, 1, 1);   //IP Address of your WiFi Router (Gateway)
 IPAddress subnet(255, 255, 255, 0);  //Subnet mask
 IPAddress dns(8, 8, 8, 8);  //DNS
@@ -29,7 +29,7 @@ const char* password = "password";
 const char* deviceName = "EspLights1";
 String serverUrl = "192.168.1.252";
 String payload;
-String device_key = "dfj7sdf40dg";
+String device_key = "dfj7sdsegf40dg";
 
 #define LED 2
 #define SW 0
@@ -122,7 +122,7 @@ void buttonStateChange() {
     ledState =! ledState;
     String argument_data = "?device_key="+device_key+"&state="+String(ledState);
     digitalWrite(LED, ledState);
-    sendRequest("http://"+serverUrl+"/esp/setState/",argument_data);
+    sendRequest("http://"+serverUrl+"/esp/detectWater/",argument_data);
   }
   lastButtonState = buttonState;
   digitalWrite(LED, ledState);

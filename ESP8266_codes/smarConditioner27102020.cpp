@@ -103,7 +103,7 @@ void handleConditioner() {
     Serial.println("manualMode");
   }
 
- if (temperature.length()>0){
+ if (temperature.length() > 0){
     action = getStringPartByNr(temperature,':',0);
     val = getStringPartByNr(temperature,':',1);
     settedTemp = val.toInt();

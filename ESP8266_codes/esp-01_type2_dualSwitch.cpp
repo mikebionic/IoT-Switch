@@ -5,7 +5,7 @@
 
 
 //Static IP address configuration
-IPAddress staticIP(192, 168, 1, 130); //ESP static ip
+IPAddress staticIP(192, 168, 1, 167); //ESP static ip
 IPAddress gateway(192, 168, 1, 1);   //IP Address of your WiFi Router (Gateway)
 IPAddress subnet(255, 255, 255, 0);  //Subnet mask
 IPAddress dns(8, 8, 8, 8);  //DNS
@@ -15,7 +15,8 @@ const char* password = "password";
 const char* deviceName = "Double_light_switch";
 String serverUrl = "192.168.1.252";
 String payload;
-String device_key = "dfj7sdsegf40dg";
+String device_key = "asdfeWoMoD3";
+String command = "two_mode_switch";
 
 #define LED1 0
 #define LED2 1
@@ -24,25 +25,21 @@ String device_key = "dfj7sdsegf40dg";
 boolean ledState=false;
 boolean buttonState=1;
 boolean lastButtonState=1;
+int counter = 0;
 
 ESP8266WebServer server(80);
 
-void handleRoot() {
- String s = MAIN_page;
- server.send(200, "text/html", s);
+
+void handleDevice() {
+  String two_mode_switch = server.arg("two_mode_switch");
+
+  two_mode_switch.trim();
+  if (two_mode_switch.length() > 0){
+    counter = two_mode_switch.toInt();
+  }
+  server.send(200, "text/html", "OK");
 }
- 
-void handleLEDon() {
-  ledState = 1;
- digitalWrite(LED,ledState);
- server.send(200, "text/html", "LED is ON");
-}
- 
-void handleLEDoff() {
-  ledState = 0;
- digitalWrite(LED,ledState);
- server.send(200, "text/html", "LED is OFF");
-}
+
 
 void handlePong() {
  server.send(200, "text/html", device_key);
@@ -74,10 +71,8 @@ void setup(void){
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
  
-  server.on("/", handleRoot);
-  server.on("/control/1", handleLEDon);
-  server.on("/control/0", handleLEDoff);
   server.on("/ping/", handlePong);
+  server.on("/control/", handleDevice);
  
   server.begin();
   Serial.println("HTTP server started");
@@ -99,20 +94,26 @@ void buttonStateChange() {
   lastButtonState = buttonState;
   if (counter > 0) {
     digitalWrite(LED1, 1);
+
+    String argument_data = "?device_key="+device_key+"&command="+command+"&action="+String(counter);
+    sendRequest("http://"+serverUrl+"/esp/ArgToDB/",argument_data);
   }
   if (counter >= 2 ) {
     digitalWrite(LED2, 1);
+
+    String argument_data = "?device_key="+device_key+"&command="+command+"&action="+String(counter);
+    sendRequest("http://"+serverUrl+"/esp/ArgToDB/",argument_data);
   }
   if (counter >= 3){
     counter = 0;
+
+    String argument_data = "?device_key="+device_key+"&command="+command+"&action="+String(counter);
+    sendRequest("http://"+serverUrl+"/esp/ArgToDB/",argument_data);
   }
   else if (counter == 0){
     digitalWrite(LED2, 0);
     digitalWrite(LED1, 0);
   }
-  String argument_data = "?device_key="+device_key+"&state="+String(ledState);
-  sendRequest("http://"+serverUrl+"/esp/ArgToDB/",argument_data);
-
 }
 
 void sendRequest(String path, String sendingData){

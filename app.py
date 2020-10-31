@@ -157,23 +157,47 @@ def esp():
 @app.route("/esp/ArgToDB/",methods=['GET'])
 def esp_arg_to_db():
 	device_key = request.args.get('device_key')
-	command = request.args.get('command')
-	value = request.args.get('value')
+	pin_sensor_command = request.args.get('command')
+	try:
+		value = request.args.get('value')
+	except:
+		value = None
+
+	try:
+		action = request.args.get('action')
+	except:
+		action = None
 
 	device = Devices.query.filter_by(device_key = device_key).first()
 	if device:
-		try:
-			sensor = Sensors.query\
-			.filter_by(deviceId = device.id, command = command)\
-			.first()
-			if sensor:
-				sensor.value += float(value)
-				db.session.commit()
-				print(device.name)
-				return make_response("ok",200)
-			return make_response("not Found",200)
-		except Exception as ex:
-			return make_response("err",200)
+		if action:
+			try:
+				pin = Pins.query\
+				.filter_by(deviceId = device.id, command = pin_sensor_command)\
+				.first()
+
+				if pin:
+					pin.action = action
+					db.session.commit()
+					# print(device.name)
+					return make_response("ok",200)
+				return make_response("not Found",200)
+			except Exception as ex:
+				return make_response("err",200)
+
+		if value:
+			try:
+				sensor = Sensors.query\
+				.filter_by(deviceId = device.id, command = pin_sensor_command)\
+				.first()
+				if sensor:
+					sensor.value += float(value)
+					db.session.commit()
+					# print(device.name)
+					return make_response("ok",200)
+				return make_response("not Found",200)
+			except Exception as ex:
+				return make_response("err",200)
 
 
 @app.route("/esp/JsonToArg/",methods=['GET','POST'])
@@ -242,6 +266,34 @@ def setEspState():
 		try:
 			device.state = state
 			db.session.commit()
+			print(device.name)
+			return make_response("ok",200)
+		except Exception as ex:
+			return make_response("err",200)
+
+
+@app.route("/esp/detectWater/")
+def detectWater():
+	device_key = request.args.get('device_key')
+	state = request.args.get('state')
+	
+	pump_device_command = "water_pump"
+
+	device = Devices.query.filter_by(device_key = device_key).first()
+	if device:
+		try:
+			device.state = 1
+			db.session.commit()
+
+			try:
+				pump_device = Devices.query.filter_by(device_key = pump_device_command).first()
+				pump_state = 1
+				pump_device.state = pump_state
+				db.session.commit()
+				r = requests.get('http://{}/control/{}'.format(pump_device.ip, pump_state))
+			except Exception as ex:
+				print("error, couldn't make a request (connection issue)",200)
+
 			print(device.name)
 			return make_response("ok",200)
 		except Exception as ex:

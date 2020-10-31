@@ -173,32 +173,32 @@ devices = [
 	},
 	{
 		"id": 18,
-		"name": "Suwsensor",
+		"name": "water_sensor Kitchen",
 		"ip": "192.168.1.130",
 		"state": 0,
-		"device_key": "dfj7sdsegf40dg",
+		"device_key": "Qsd2dfj7sdsegf40dg",
 		"typeId": 1,
-		"command": "suwsensor",
+		"command": "water_sensor_kitchen",
 		"description": "Turns on/off hall lights"
 	},
 	{
 		"id": 19,
-		"name": "Suwsensor1",
+		"name": "water_sensor Toilet",
 		"ip": "192.168.1.131",
 		"state": 0,
-		"device_key": "Qsd2dfj7sdsegf40dg",
+		"device_key": "dfj7sdsegf40dg",
 		"typeId": 1,
-		"command": "suwsensorBanya",
+		"command": "water_sensor_toilet",
 		"description": "Turns on/off hall lights"
 	},
 	{
 		"id": 20,
-		"name": "Suwsensor1",
+		"name": "water_sensor van",
 		"ip": "192.168.1.132",
 		"state": 0,
 		"device_key": "Qsd2dgwqzdsegf40dg",
 		"typeId": 1,
-		"command": "suwsensorBanya",
+		"command": "water_sensor_van",
 		"description": "Turns on/off hall lights"
 	},
 	{
@@ -240,6 +240,26 @@ devices = [
 		"typeId": 2,
 		"command": "water_measurer1",
 		"description": "Measures the flow of water"
+	},
+	{
+		"id": 25,
+		"name": "Two mode switch",
+		"ip": "192.168.1.167",
+		"state": 0,
+		"device_key": "asdfeWoMoD3",
+		"typeId": 2,
+		"command": "two_mode_switch",
+		"description": "Controls Two mode switch"
+	},
+	{
+		"id": 26,
+		"name": "Water pump control",
+		"ip": "192.168.1.168",
+		"state": 0,
+		"device_key": "f30k20k0fk0k0f3",
+		"typeId": 1,
+		"command": "water_pump",
+		"description": "Controls water flow from pump"
 	},
 	{
 		"name": "Local binary test",
@@ -622,6 +642,14 @@ pins = [
 		"description": "sends the command to arduino to manage TV",
 		"action": "tvpower",
 		"deviceId": 22,
+	},
+	{
+		"id": 88,
+		"name": "Two mode switch state",
+		"command": "two_mode_switch",
+		"description": "Controls the light modes of two mode switch ESP (Use action=1 or action=2)",
+		"action": "0",
+		"deviceId": 25,
 	},
 	{
 		"id": 998,

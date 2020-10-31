@@ -51,9 +51,12 @@ void handleDevice() {
     }
   server.send(200, "text/html", "OK");
 }
+
+
 void handlePong() {
  server.send(200, "text/html", device_key);
 }
+
 
 void setup() {
   Serial.begin(115200);

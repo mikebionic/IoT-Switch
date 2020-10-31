@@ -1,3 +1,4 @@
+dfj7sdsegf40dg
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
@@ -18,7 +19,7 @@ const char MAIN_page[] PROGMEM = R"=====(
 )=====";
 
 //Static IP address configuration
-IPAddress staticIP(192, 168, 1, 145); //ESP static ip
+IPAddress staticIP(192, 168, 1, 168); //ESP static ip
 IPAddress gateway(192, 168, 1, 1);   //IP Address of your WiFi Router (Gateway)
 IPAddress subnet(255, 255, 255, 0);  //Subnet mask
 IPAddress dns(8, 8, 8, 8);  //DNS
@@ -26,10 +27,10 @@ IPAddress dns(8, 8, 8, 8);  //DNS
  
 const char* ssid = "ssid";
 const char* password = "password";
-const char* deviceName = "EspLights1";
+const char* deviceName = "water_pump";
 String serverUrl = "192.168.1.252";
 String payload;
-String device_key = "dfj7sdf40dg";
+String device_key = "f30k20k0fk0k0f3";
 
 #define LED 2
 #define SW 0
