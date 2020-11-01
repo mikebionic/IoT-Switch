@@ -1,4 +1,3 @@
-dfj7sdsegf40dg
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
@@ -30,7 +29,7 @@ const char* password = "password";
 const char* deviceName = "water_pump";
 String serverUrl = "192.168.1.252";
 String payload;
-String device_key = "f30k20k0fk0k0f3";
+String device_key = "dfj7sdsegf40dg";
 
 #define LED 2
 #define SW 0

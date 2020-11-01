@@ -46,9 +46,11 @@ void handlePong() {
 }
 
 void setup(void){
-  pinMode(LED, OUTPUT);
+  pinMode(LED1, OUTPUT);
+  pinMode(LED2, OUTPUT);
   pinMode(SW, INPUT);
-  digitalWrite(LED, LOW);
+  digitalWrite(LED1, LOW);
+  digitalWrite(LED2, LOW);
   
   Serial.begin(115200);
   WiFi.begin(ssid, password);
@@ -84,7 +86,7 @@ void loop(void){
 
 
 void buttonStateChange() {
-  buttonState = digitalRead(buttonPin);
+  buttonState = digitalRead(SW);
   if (buttonState != lastButtonState) {
     if (buttonState == 0) {
       counter++;

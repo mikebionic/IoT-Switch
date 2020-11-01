@@ -188,15 +188,15 @@ void handleDevice() {
   if(auto_manual_selector == "auto"){
     digitalWrite(auto_manual_selector_pin,0);
     delay(2000);
-    digitalWrite(powerPin,0);
+    digitalWrite(powerPin,1);
   }
   else if(auto_manual_selector == "manual"){
-    digitalWrite(auto_manual_selector_pin,1);
+    digitalWrite(powerPin,0);
     for (int i=0; i<numCookerPins; i++){
       digitalWrite(cookerPins[i],1);
     }
     delay(2000);
-    digitalWrite(powerPin,1);
+    digitalWrite(auto_manual_selector_pin,1);
   }
 
   server.send(200, "text/html", "OK");
