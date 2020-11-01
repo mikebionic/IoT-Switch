@@ -312,7 +312,7 @@ def scanNetwork():
 					r = requests.get("http://{}/ping/".format(ip))
 					print(r.text)
 					device_command = r.text
-					device = Devices.query.filter_by(command = command).first()
+					device = Devices.query.filter_by(device_key = device_command).first()
 					if device:
 						try:
 							device.ip = ip
@@ -320,8 +320,8 @@ def scanNetwork():
 						except Exception as ex:
 							print(ex)
 
-				except Exception as es:
-					print("couldn't get data from an Ip {}".format(ip))
+				except Exception as ex:
+					print("couldn't get data from an Ip {}, {}".format(ip, ex))
 	except Exception as ex:
 		print(ex)
 	return make_response("scanning done",200)
