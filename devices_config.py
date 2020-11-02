@@ -138,7 +138,7 @@ devices = [
 		"state": 0,
 		"device_key": "C$@onD9mheqdc73om934q!",
 		"typeId": 2,
-		"command": "conditioner_bed3",
+		"command": "conditioner_bed2",
 		"description": "Controls conditioner"
 	},
 	{
@@ -228,7 +228,7 @@ devices = [
 		"state": 0,
 		"device_key": "jbhbnefb63bno2u1",
 		"typeId": 2,
-		"command": "watt_measurer1",
+		"command": "watt_measurer_kitchen",
 		"description": "Measures the flow of current"
 	},
 	{
@@ -238,7 +238,7 @@ devices = [
 		"state": 0,
 		"device_key": "jHvsbhbnefb63bQno2u1",
 		"typeId": 2,
-		"command": "water_measurer1",
+		"command": "water_measurer_kitchen",
 		"description": "Measures the flow of water"
 	},
 	{
@@ -692,7 +692,7 @@ sensors = [
 	{
 		"id": 1,
 		"name": "Watt measurer sensor",
-		"command": "watt_measurer",
+		"command": "watt_measurer_sensor",
 		"description": "Measured amount of current",
 		"value": "0.0",
 		"deviceId": 23,

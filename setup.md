@@ -6,7 +6,7 @@ sudo apt update && sudo apt install apache2 supervisor -y
 ```conf
 [program:smart_home]
 directory=/home/pi/Desktop/py_smart_home       
-command=/home/pi/Desktop/py_smart_home/venv/bin/gunicorn -w 9 app:app
+command=/home/pi/Desktop/py_smart_home/venv/bin/gunicorn -w 9 app:app --timeout 18000
 user=pi
 autostart=true
 autorestart=true
