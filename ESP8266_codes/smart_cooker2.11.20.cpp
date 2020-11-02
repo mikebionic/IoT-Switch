@@ -11,8 +11,8 @@ IPAddress subnet(255, 255, 255, 0);  //Subnet mask
 IPAddress dns(8, 8, 8, 8);  //DNS
  
 
-const char* ssid = "Akylly_Oy25";
-const char* password = "abadanhaly@!25";
+const char* ssid = "ssid";
+const char* password = "password";
 const char* deviceName = "Siemens cooker";
 String serverUrl = "192.168.1.252";
 String payload;
@@ -191,6 +191,7 @@ void handleDevice() {
     digitalWrite(auto_manual_selector_pin,0);
     delay(2000);
     digitalWrite(powerPin,1);
+    old_state_manual == false;
   }
   else if(auto_manual_selector == "manual"){
     if (old_state_manual == false){
