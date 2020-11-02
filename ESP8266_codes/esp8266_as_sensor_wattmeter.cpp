@@ -25,7 +25,7 @@ const char* deviceName = "Esp wattmeter";
 String serverUrl = "192.168.1.252";
 String payload;
 String device_key = "jbhbnefb63bno2u1";
-String command = "watt_measurer";
+String command = "watt_measurer_sensor";
 
 ESP8266WebServer server(80);
 
