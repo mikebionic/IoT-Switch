@@ -236,7 +236,7 @@ devices = [
 		"name": "Water measurer of kitchen",
 		"ip": "192.168.1.223",
 		"state": 0,
-		"device_key": "jHvsbhbnefb63bQno2u1",
+		"device_key": "suwolceyar1sen",
 		"typeId": 2,
 		"command": "water_measurer_kitchen",
 		"description": "Measures the flow of water"
@@ -256,10 +256,30 @@ devices = [
 		"name": "Water pump control",
 		"ip": "192.168.1.168",
 		"state": 0,
-		"device_key": "f30k20k0fk0k0f3",
+		"device_key": "pumped_me2",
 		"typeId": 1,
 		"command": "water_pump",
 		"description": "Controls water flow from pump"
+	},
+	{
+		"id": 27,
+		"name": "IoT TV Remote",
+		"ip": "192.168.1.177",
+		"state": 0,
+		"device_key": "alondatv2",
+		"typeId": 2,
+		"command": "tv_remote2",
+		"description": "Controls Remote of smart tv that sends IR datas"
+	},
+	{
+		"id": 28,
+		"name": "Water measurer of kitchen2",
+		"ip": "192.168.1.224",
+		"state": 0,
+		"device_key": "suwolceya1",
+		"typeId": 2,
+		"command": "water_measurer_kitchen2",
+		"description": "Measures the flow of water"
 	},
 	{
 		"name": "Local binary test",
@@ -652,6 +672,14 @@ pins = [
 		"deviceId": 25,
 	},
 	{
+		"id": 89,
+		"name": "IR Remote command",
+		"command": "command",
+		"description": "sends the command to arduino to manage TV",
+		"action": "tvpower",
+		"deviceId": 27,
+	},
+	{
 		"id": 998,
 		"name": "Mirror switch",
 		"command": "switch_mirror",
@@ -692,7 +720,7 @@ sensors = [
 	{
 		"id": 1,
 		"name": "Watt measurer sensor",
-		"command": "watt_measurer_sensor",
+		"command": "watt_measurer",
 		"description": "Measured amount of current",
 		"value": "0.0",
 		"deviceId": 23,
@@ -704,5 +732,13 @@ sensors = [
 		"description": "Measured amount of water",
 		"value": "0.0",
 		"deviceId": 24,
+	},
+	{
+		"id": 3,
+		"name": "Water measurer sensor2",
+		"command": "water_measurer_sensor",
+		"description": "Measured amount of water",
+		"value": "0.0",
+		"deviceId": 28,
 	}
 ]
