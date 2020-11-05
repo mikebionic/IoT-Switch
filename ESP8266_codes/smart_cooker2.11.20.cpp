@@ -178,14 +178,14 @@ void handleDevice() {
     set_timing4(cooker4);
   }
 
-  if(power == "1"){
-    digitalWrite(powerPin,1);
-    delay(2000);
-    digitalWrite(auto_manual_selector_pin,0);
-  }
-  else if(power == "0"){
-      digitalWrite(powerPin,0);
-  }
+ //if(power == "1"){
+ //   digitalWrite(powerPin,1);
+ //   delay(2000);
+ //   digitalWrite(auto_manual_selector_pin,0);
+ // }
+ // else if(power == "0"){
+ //     digitalWrite(powerPin,0);
+ // }
 
   if(auto_manual_selector == "auto"){
     digitalWrite(auto_manual_selector_pin,0);
