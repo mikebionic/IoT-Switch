@@ -15,7 +15,7 @@ const char* password = "password";
 const char* deviceName = "Esp water meter";
 String serverUrl = "192.168.1.252";
 String payload;
-String device_key = "jbhbnefb63bno2u1";
+String device_key = "suwolceyar1sen";
 String command = "water_measurer_sensor";
 
 ESP8266WebServer server(80);
@@ -86,11 +86,11 @@ void loop(){
 
 void measureAndSend() {
   currentTime = millis();
-  if(currentTime >= (cloopTime + 5000))
+  if(currentTime >= (cloopTime + 60000))
   {
     cloopTime = currentTime; // Updates cloopTime
     // Pulse frequency (Hz) = 7.5Q, Q is flow rate in L/min.
-    l_hour = (flow_frequency * 60 / 7.5); // (Pulse frequency x 60 min) / 7.5Q = flowrate in L/hour
+    l_hour = (flow_frequency / 4.5); // (Pulse frequency x 60 min) / 7.5Q = flowrate in L/hour
     flow_frequency = 0; // Reset Counter
     // Serial.print(l_hour, DEC); // Print litres/hour
     // Serial.println(" L/hour");

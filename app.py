@@ -154,6 +154,16 @@ def esp():
 			return make_response("error, couldn't make a request (no device found)",200)
 
 						
+@app.route("/reset_sensors/",methods=['GET'])
+def reset_sensors():
+	sensors = Sensors.query.all()
+	for sensor in sensors:
+		sensor.value == 0.0
+	db.session.commit()
+	return make_response("ok",200)
+
+
+						
 @app.route("/esp/ArgToDB/",methods=['GET'])
 def esp_arg_to_db():
 	device_key = request.args.get('device_key')
