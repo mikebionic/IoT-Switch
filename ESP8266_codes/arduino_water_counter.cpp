@@ -21,11 +21,11 @@ void loop ()
 {
    currentTime = millis();
    // Every second, calculate and print litres/hour
-   if(currentTime >= (cloopTime + 5000))
+   if(currentTime >= (cloopTime + 60000))
    {
       cloopTime = currentTime; // Updates cloopTime
       // Pulse frequency (Hz) = 7.5Q, Q is flow rate in L/min.
-      l_hour = (flow_frequency * 60 / 7.5); // (Pulse frequency x 60 min) / 7.5Q = flowrate in L/hour
+      l_hour = (flow_frequency / 4.5); // (Pulse frequency x 60 min) / 7.5Q = flowrate in L/hour
       flow_frequency = 0; // Reset Counter
       Serial.println(l_hour, DEC); // Print litres/hour
       // Serial.println(" L/hour");
