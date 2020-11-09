@@ -697,24 +697,6 @@ pins = [
 	}
 ]
 
-device_types = [
-	{
-		"id": 1,
-		"name": "ESP-01-binary",
-		"description": "ESP8266 Binary data like '/control/1' or '/control/0'"
-	},
-	{
-		"id": 2,
-		"name": "ESP-JSON-to-Arguments",
-		"description": "ESP8266 with several arguments provided from data in JSON"
-	},
-	{
-		"id": 3,
-		"name": "Esp8266-command-argument",
-		"description": "ESP8266 with argument provided in 'control' from data in 'action' of JSON"
-	}
-]
-
 
 sensors = [
 	{
@@ -723,6 +705,7 @@ sensors = [
 		"command": "watt_measurer",
 		"description": "Measured amount of current",
 		"value": "0.0",
+		"typeId": 2,
 		"deviceId": 23,
 	},
 	{
@@ -731,6 +714,7 @@ sensors = [
 		"command": "water_measurer_sensor",
 		"description": "Measured amount of water",
 		"value": "0.0",
+		"typeId": 1,
 		"deviceId": 24,
 	},
 	{
@@ -739,6 +723,7 @@ sensors = [
 		"command": "water_measurer_sensor",
 		"description": "Measured amount of water",
 		"value": "0.0",
+		"typeId": 1,
 		"deviceId": 28,
 	}
 ]

@@ -1,8 +1,9 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-
 from datetime import date,datetime,time
-from devices_config import devices, device_types, pins, sensors
+
+from devices_config import devices, pins, sensors
+from default_devices_config import device_types, sensor_types
 
 app = Flask (__name__)
 app.config['SECRET_KEY'] = "bdbgbn08Vtc4UV$bon(*0pnibuoyvtcr4R"
@@ -40,6 +41,7 @@ class Sensors(db.Model):
 	command = db.Column(db.String(100),nullable=False)
 	description = db.Column(db.String(500))
 	value = db.Column(db.Float,default=0.0)
+	typeId = db.Column(db.Integer,db.ForeignKey("sensor_types.id"))
 	deviceId = db.Column(db.Integer,db.ForeignKey("devices.id"))
 
 
@@ -48,6 +50,14 @@ class Device_types(db.Model):
 	name = db.Column(db.String(100),nullable=False)
 	description = db.Column(db.String(500))
 	devices = db.relationship('Devices',backref='device_types',lazy=True)
+
+
+class Sensor_types(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	name = db.Column(db.String(100),nullable=False)
+	description = db.Column(db.String(500))
+	sensors = db.relationship('Sensors',backref='sensor_types',lazy=True)
+
 
 db.drop_all()
 db.create_all()
@@ -67,5 +77,9 @@ for sensor in sensors:
 for device_type in device_types:
 	db_device_type = Device_types(**device_type)
 	db.session.add(db_device_type)
+
+for sensor_type in sensor_types:
+	db_sensor_type = Sensor_types(**sensor_type)
+	db.session.add(db_sensor_type)
 
 db.session.commit()

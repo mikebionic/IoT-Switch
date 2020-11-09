@@ -76,6 +76,7 @@ class Sensors(db.Model):
 	command = db.Column(db.String(100),nullable=False)
 	description = db.Column(db.String(500))
 	value = db.Column(db.Float,default=0.0)
+	typeId = db.Column(db.Integer,db.ForeignKey("sensor_types.id"))
 	deviceId = db.Column(db.Integer,db.ForeignKey("devices.id"))
 	
 	def json(self):
@@ -95,6 +96,13 @@ class Device_types(db.Model):
 	name = db.Column(db.String(100),nullable=False)
 	description = db.Column(db.String(500))
 	devices = db.relationship('Devices',backref='device_types',lazy=True)
+
+
+class Sensor_types(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	name = db.Column(db.String(100),nullable=False)
+	description = db.Column(db.String(500))
+	sensors = db.relationship('Sensors',backref='sensor_types',lazy=True)
 
 
 @app.route("/<deviceName>/<action>")
@@ -163,7 +171,7 @@ def reset_sensors():
 	return make_response("ok",200)
 
 
-						
+# esp's sensor recording feature (record values)
 @app.route("/esp/ArgToDB/",methods=['GET'])
 def esp_arg_to_db():
 	device_key = request.args.get('device_key')
@@ -201,13 +209,34 @@ def esp_arg_to_db():
 				.filter_by(deviceId = device.id, command = pin_sensor_command)\
 				.first()
 				if sensor:
-					sensor.value += float(value)
+					if sensor.typeId == 1:
+						sensor.value += float(value)
+					elif sensor.typeId == 2:
+						sensor.value = float(value)
 					db.session.commit()
 					# print(device.name)
 					return make_response("ok",200)
 				return make_response("not Found",200)
 			except Exception as ex:
 				return make_response("err",200)
+
+
+# record esp's ip address to db
+@app.route("/esp/ping/")
+def esp_ping():
+	device_key = request.args.get('device_key')
+	ip_address = request.args.get('ip_address')
+	# command = request.args.get('command')
+	device = Devices.query.filter_by(device_key = device_key).first()
+	if device:
+		try:
+			device.ip = ip_address
+			db.session.commit()
+		except Exception as ex:
+			print(ex)
+			return make_response("err", 200)
+		return make_response("ok", 200)
+	return make_response("No such device", 200)
 
 
 @app.route("/esp/JsonToArg/",methods=['GET','POST'])
