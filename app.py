@@ -199,6 +199,20 @@ def send_device_reset():
 	return make_response("No such device")
 
 
+# reconnect esp device to Wifi AP
+@app.route("/send_device_reconnect/",methods=['GET'])
+def send_device_reconnect():
+	device_command = request.args.get('device_command')
+	device = Devices.query.filter_by(command = device_command).first()
+	if device:
+		try:
+			r = requests.get("http://{}/reconnect".format(device.ip))
+		except Exception as ex:
+			return make_response("Couldnt make a request {}".format(ex))
+		return make_response("OK")
+	return make_response("No such device")
+
+
 # esp's sensor recording feature (record values)
 @app.route("/esp/ArgToDB/",methods=['GET'])
 def esp_arg_to_db():
