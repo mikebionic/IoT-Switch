@@ -151,7 +151,7 @@ def esp():
 					print (r.text)
 					return make_response(jsonify(device.json()),200)
 				except Exception as ex:
-					return make_response("error, couldn't make a request (connection issue)",200)
+					return make_response("error, couldn't make a request (connection issue) {}".format(ex),200)
 			
 			elif device.typeId == 3:
 				try:
@@ -164,11 +164,39 @@ def esp():
 						
 @app.route("/reset_sensors/",methods=['GET'])
 def reset_sensors():
-	sensors = Sensors.query.all()
-	for sensor in sensors:
+	try:
+		sensorId = request.args.get('sensorId')
+	except:
+		sensorId = None
+	try:
+		sensorCommand = request.args.get('sensorCommand')
+	except:
+		sensorCommand = None
+
+	if sensorCommand:
+		sensor = Sensors.query.filter_by(command = sensorCommand).first()
 		sensor.value == 0.0
+
+	else:
+		sensors = Sensors.query.all()
+		for sensor in sensors:
+			sensor.value == 0.0
 	db.session.commit()
 	return make_response("ok",200)
+
+
+# restarting esp device
+@app.route("/send_device_reset/",methods=['GET'])
+def send_device_reset():
+	device_command = request.args.get('device_command')
+	device = Devices.query.filter_by(command = device_command).first()
+	if device:
+		try:
+			r = requests.get("http://{}/reset".format(device.ip))
+		except Exception as ex:
+			return make_response("Couldnt make a request {}".format(ex))
+		return make_response("OK")
+	return make_response("No such device")
 
 
 # esp's sensor recording feature (record values)
