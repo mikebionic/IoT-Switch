@@ -31,6 +31,7 @@ class Devices(db.Model):
 	state = db.Column(db.Integer,nullable=False,default=0)
 	description = db.Column(db.String(500))
 	typeId = db.Column(db.Integer,db.ForeignKey("device_types.id"))
+	roomId = db.Column(db.Integer,db.ForeignKey("rooms.id"))
 	date_added = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
 	pins = db.relationship('Pins',backref='devices',lazy='joined')
 	sensors = db.relationship('Sensors',backref='devices',lazy='joined')
@@ -103,6 +104,21 @@ class Sensor_types(db.Model):
 	name = db.Column(db.String(100),nullable=False)
 	description = db.Column(db.String(500))
 	sensors = db.relationship('Sensors',backref='sensor_types',lazy=True)
+
+
+class Rooms(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	name = db.Column(db.String(100),nullable=False)
+	description = db.Column(db.String(500))
+	devices = db.relationship('Devices',backref='rooms',lazy=True)
+	
+	def json(self):
+		room = {
+			"id": self.id,
+			"name": self.name,
+			"description": self.description
+		}
+		return room
 
 
 @app.route("/<deviceName>/<action>")
