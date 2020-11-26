@@ -22,6 +22,142 @@ db = SQLAlchemy(app)
 arduinoSerialPort = '/dev/ttyACM0'
 
 
+class City(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	name = db.Column(db.String(100),nullable=False)
+	secret_key = db.Column(db.String(500),nullable=False)
+	description = db.Column(db.String(500))
+	typeId = db.Column(db.Integer,db.ForeignKey("city_types.id"))
+	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
+	regions = db.relationship('Regions',backref='city',lazy=True)
+
+	def json(self):
+		city = {
+			"id": self.id,
+			"name": self.name,
+			"secret_key": self.secret_key,
+			"description": self.description,
+			"typeId": self.typeId,
+			"dateAdded": self.dateAdded
+		}
+		return city
+
+
+class Regions(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	name = db.Column(db.String(100),nullable=False)
+	secret_key = db.Column(db.String(500),nullable=False)
+	description = db.Column(db.String(500))
+	typeId = db.Column(db.Integer,db.ForeignKey("city_types.id"))
+	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
+	houses = db.relationship('Houses',backref='regions',lazy=True)
+
+	def json(self):
+		regions = {
+			"id": self.id,
+			"name": self.name,
+			"secret_key": self.secret_key,
+			"description": self.description,
+			"typeId": self.typeId,
+			"dateAdded": self.dateAdded
+		}
+		return regions
+
+
+class Houses(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	name = db.Column(db.String(100),nullable=False)
+	secret_key = db.Column(db.String(500),nullable=False)
+	description = db.Column(db.String(500))
+	typeId = db.Column(db.Integer,db.ForeignKey("house_types.id"))
+	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
+	flats = db.relationship('Flats',backref='houses',lazy=True)
+
+	def json(self):
+		houses = {
+			"id": self.id,
+			"name": self.name,
+			"secret_key": self.secret_key,
+			"description": self.description,
+			"typeId": self.typeId,
+			"dateAdded": self.dateAdded
+		}
+		return houses
+
+
+class Flats(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	name = db.Column(db.String(100),nullable=False)
+	secret_key = db.Column(db.String(500),nullable=False)
+	description = db.Column(db.String(500))
+	typeId = db.Column(db.Integer,db.ForeignKey("flat_types.id"))
+	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
+	residents = db.relationship('Residents',backref='flats',lazy=True)
+	devices = db.relationship('Devices',backref='flats',lazy=True)
+	rooms = db.relationship('Rooms',backref='flats',lazy=True)
+
+	def json(self):
+		flats = {
+			"id": self.id,
+			"name": self.name,
+			"secret_key": self.secret_key,
+			"description": self.description,
+			"typeId": self.typeId,
+			"dateAdded": self.dateAdded
+		}
+		return flats
+
+
+class Residents(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	username = db.Column(db.String(100),nullable=False)
+	name = db.Column(db.String(100),nullable=False)
+	surname = db.Column(db.String(100),nullable=False)
+	birthDate = db.Column(db.DateTime,default=None)
+	email = db.Column(db.String(100),nullable=False)
+	password = db.Column(db.String(100),nullable=False)
+	phoneNumber = db.Column(db.String(100),nullable=False)
+	passportCode = db.Column(db.String(100),nullable=False)
+	secret_key = db.Column(db.String(500),nullable=False)
+	description = db.Column(db.String(500))
+	typeId = db.Column(db.Integer,db.ForeignKey("resident_types.id"))
+	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
+	rfidTags = db.relationship('RfidTags',backref='residents',lazy=True)
+
+	def json(self):
+		residents = {
+			"id": self.id,
+			"username": self.username,
+			"name": self.name,
+			"surname": self.surname,
+			"birthDate": self.birthDate,
+			"email": self.email,
+			"password": self.password,
+			"phoneNumber": self.phoneNumber,
+			"passportCode": self.passportCode,
+			"secret_key": self.secret_key,
+			"description": self.description,
+			"typeId": self.typeId,
+			"dateAdded": self.dateAdded
+		}
+		return residents
+
+
+class Rooms(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	name = db.Column(db.String(100),nullable=False)
+	description = db.Column(db.String(500))
+	devices = db.relationship('Devices',backref='rooms',lazy=True)
+
+	def json(self):
+		room = {
+			"id": self.id,
+			"name": self.name,
+			"description": self.description
+		}
+		return room
+
+
 class Devices(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
 	name = db.Column(db.String(100),nullable=False)
@@ -31,8 +167,9 @@ class Devices(db.Model):
 	state = db.Column(db.Integer,nullable=False,default=0)
 	description = db.Column(db.String(500))
 	typeId = db.Column(db.Integer,db.ForeignKey("device_types.id"))
+	flatId = db.Column(db.Integer,db.ForeignKey("flats.id"))
 	roomId = db.Column(db.Integer,db.ForeignKey("rooms.id"))
-	date_added = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
+	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
 	pins = db.relationship('Pins',backref='devices',lazy='joined')
 	sensors = db.relationship('Sensors',backref='devices',lazy='joined')
 
@@ -46,7 +183,7 @@ class Devices(db.Model):
 			"state": self.state,
 			"description": self.description,
 			"typeId": self.typeId,
-			"date_added": self.date_added
+			"dateAdded": self.dateAdded
 		}
 		return device
 
@@ -106,19 +243,39 @@ class Sensor_types(db.Model):
 	sensors = db.relationship('Sensors',backref='sensor_types',lazy=True)
 
 
-class Rooms(db.Model):
+class City_types(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
 	name = db.Column(db.String(100),nullable=False)
 	description = db.Column(db.String(500))
-	devices = db.relationship('Devices',backref='rooms',lazy=True)
-	
-	def json(self):
-		room = {
-			"id": self.id,
-			"name": self.name,
-			"description": self.description
-		}
-		return room
+	city = db.relationship('City',backref='city_types',lazy=True)
+
+
+class Region_types(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	name = db.Column(db.String(100),nullable=False)
+	description = db.Column(db.String(500))
+	regions = db.relationship('Regions',backref='region_types',lazy=True)
+
+
+class House_types(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	name = db.Column(db.String(100),nullable=False)
+	description = db.Column(db.String(500))
+	houses = db.relationship('Houses',backref='house_types',lazy=True)
+
+
+class Flat_types(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	name = db.Column(db.String(100),nullable=False)
+	description = db.Column(db.String(500))
+	flats = db.relationship('Flats',backref='flat_types',lazy=True)
+
+
+class Resident_types(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	name = db.Column(db.String(100),nullable=False)
+	description = db.Column(db.String(500))
+	residents = db.relationship('Residents',backref='resident_types',lazy=True)
 
 
 @app.route("/<deviceName>/<action>")
