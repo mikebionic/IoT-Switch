@@ -12,6 +12,84 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///SmartSwitches.db'
 db = SQLAlchemy(app)
 
 
+class City(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	name = db.Column(db.String(100),nullable=False)
+	secret_key = db.Column(db.String(500),nullable=False)
+	description = db.Column(db.String(500))
+	typeId = db.Column(db.Integer,db.ForeignKey("city_types.id"))
+	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
+	regions = db.relationship('Regions',backref='city',lazy=True)
+
+
+class Regions(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	name = db.Column(db.String(100),nullable=False)
+	secret_key = db.Column(db.String(500),nullable=False)
+	description = db.Column(db.String(500))
+	cityId = db.Column(db.Integer,db.ForeignKey("city.id"))
+	typeId = db.Column(db.Integer,db.ForeignKey("region_types.id"))
+	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
+	houses = db.relationship('Houses',backref='regions',lazy=True)
+
+
+class Houses(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	name = db.Column(db.String(100),nullable=False)
+	secret_key = db.Column(db.String(500),nullable=False)
+	description = db.Column(db.String(500))
+	regionId = db.Column(db.Integer,db.ForeignKey("regions.id"))
+	typeId = db.Column(db.Integer,db.ForeignKey("house_types.id"))
+	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
+	flats = db.relationship('Flats',backref='houses',lazy=True)
+
+
+class Flats(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	name = db.Column(db.String(100),nullable=False)
+	secret_key = db.Column(db.String(500),nullable=False)
+	description = db.Column(db.String(500))
+	houseId = db.Column(db.Integer,db.ForeignKey("houses.id"))
+	typeId = db.Column(db.Integer,db.ForeignKey("flat_types.id"))
+	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
+	residents = db.relationship('Residents',backref='flats',lazy=True)
+	devices = db.relationship('Devices',backref='flats',lazy=True)
+	rooms = db.relationship('Rooms',backref='flats',lazy=True)
+
+
+class Residents(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	username = db.Column(db.String(100),nullable=False)
+	name = db.Column(db.String(100),nullable=False)
+	surname = db.Column(db.String(100),nullable=False)
+	birthDate = db.Column(db.DateTime,default=None)
+	email = db.Column(db.String(100),nullable=False)
+	password = db.Column(db.String(100),nullable=False)
+	phoneNumber = db.Column(db.String(100),nullable=False)
+	passportCode = db.Column(db.String(100),nullable=False)
+	secret_key = db.Column(db.String(500),nullable=False)
+	description = db.Column(db.String(500))
+	flatId = db.Column(db.Integer,db.ForeignKey("flats.id"))
+	typeId = db.Column(db.Integer,db.ForeignKey("resident_types.id"))
+	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
+	rfidTags = db.relationship('RfidTags',backref='residents',lazy=True)
+
+
+class RfidTags(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	name = db.Column(db.String(100),nullable=False)
+	residentId = db.Column(db.Integer,db.ForeignKey("residents.id"))
+	description = db.Column(db.String(500))
+
+
+class Rooms(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	name = db.Column(db.String(100),nullable=False)
+	flatId = db.Column(db.Integer,db.ForeignKey("flats.id"))
+	description = db.Column(db.String(500))
+	devices = db.relationship('Devices',backref='rooms',lazy=True)
+
+
 class Devices(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
 	name = db.Column(db.String(100),nullable=False)
@@ -21,8 +99,9 @@ class Devices(db.Model):
 	state = db.Column(db.Integer,nullable=False,default=0)
 	description = db.Column(db.String(500))
 	typeId = db.Column(db.Integer,db.ForeignKey("device_types.id"))
+	flatId = db.Column(db.Integer,db.ForeignKey("flats.id"))
 	roomId = db.Column(db.Integer,db.ForeignKey("rooms.id"))
-	date_added = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
+	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
 	pins = db.relationship('Pins',backref='devices',lazy='joined')
 	sensors = db.relationship('Sensors',backref='devices',lazy='joined')
 
@@ -32,7 +111,7 @@ class Pins(db.Model):
 	name = db.Column(db.String(100),nullable=False)
 	command = db.Column(db.String(100),nullable=False)
 	description = db.Column(db.String(500))
-	action = db.Column(db.String(500),default="")
+	action = db.Column(db.String(500))
 	deviceId = db.Column(db.Integer,db.ForeignKey("devices.id"))
 
 
@@ -44,6 +123,16 @@ class Sensors(db.Model):
 	value = db.Column(db.Float,default=0.0)
 	typeId = db.Column(db.Integer,db.ForeignKey("sensor_types.id"))
 	deviceId = db.Column(db.Integer,db.ForeignKey("devices.id"))
+
+
+class Sensor_records(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	name = db.Column(db.String(100),nullable=False)
+	description = db.Column(db.String(500))
+	value = db.Column(db.Float,default=0.0)
+	date = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
+	deviceId = db.Column(db.Integer,db.ForeignKey("devices.id"))
+	sensorId = db.Column(db.Integer,db.ForeignKey("sensors.id"))
 
 
 class Device_types(db.Model):
@@ -59,11 +148,55 @@ class Sensor_types(db.Model):
 	description = db.Column(db.String(500))
 	sensors = db.relationship('Sensors',backref='sensor_types',lazy=True)
 
-class Rooms(db.Model):
+
+class City_types(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
 	name = db.Column(db.String(100),nullable=False)
 	description = db.Column(db.String(500))
-	devices = db.relationship('Devices',backref='rooms',lazy=True)
+	city = db.relationship('City',backref='city_types',lazy=True)
+
+
+class Region_types(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	name = db.Column(db.String(100),nullable=False)
+	description = db.Column(db.String(500))
+	regions = db.relationship('Regions',backref='region_types',lazy=True)
+
+
+class House_types(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	name = db.Column(db.String(100),nullable=False)
+	description = db.Column(db.String(500))
+	houses = db.relationship('Houses',backref='house_types',lazy=True)
+
+
+class Flat_types(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	name = db.Column(db.String(100),nullable=False)
+	description = db.Column(db.String(500))
+	flats = db.relationship('Flats',backref='flat_types',lazy=True)
+
+
+class Resident_types(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	name = db.Column(db.String(100),nullable=False)
+	description = db.Column(db.String(500))
+	residents = db.relationship('Residents',backref='resident_types',lazy=True)
+
+
+@app.route("/<deviceName>/<action>")
+def action(deviceName, action):
+	# example /room1sw/ON
+	task=(deviceName+action)
+	task_encode=task.encode()
+	print(task)
+	ser = serial.Serial(arduinoSerialPort)
+	ser.baudrate = 9600
+	ser.write(task_encode)
+	print(task_encode)
+	time.sleep(1)
+	ser.close()
+
 
 
 db.drop_all()

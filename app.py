@@ -48,7 +48,8 @@ class Regions(db.Model):
 	name = db.Column(db.String(100),nullable=False)
 	secret_key = db.Column(db.String(500),nullable=False)
 	description = db.Column(db.String(500))
-	typeId = db.Column(db.Integer,db.ForeignKey("city_types.id"))
+	cityId = db.Column(db.Integer,db.ForeignKey("city.id"))
+	typeId = db.Column(db.Integer,db.ForeignKey("region_types.id"))
 	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
 	houses = db.relationship('Houses',backref='regions',lazy=True)
 
@@ -58,6 +59,7 @@ class Regions(db.Model):
 			"name": self.name,
 			"secret_key": self.secret_key,
 			"description": self.description,
+			"cityId": self.cityId,
 			"typeId": self.typeId,
 			"dateAdded": self.dateAdded
 		}
@@ -69,6 +71,7 @@ class Houses(db.Model):
 	name = db.Column(db.String(100),nullable=False)
 	secret_key = db.Column(db.String(500),nullable=False)
 	description = db.Column(db.String(500))
+	regionId = db.Column(db.Integer,db.ForeignKey("regions.id"))
 	typeId = db.Column(db.Integer,db.ForeignKey("house_types.id"))
 	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
 	flats = db.relationship('Flats',backref='houses',lazy=True)
@@ -79,6 +82,7 @@ class Houses(db.Model):
 			"name": self.name,
 			"secret_key": self.secret_key,
 			"description": self.description,
+			"regionId": self.regionId,
 			"typeId": self.typeId,
 			"dateAdded": self.dateAdded
 		}
@@ -90,6 +94,7 @@ class Flats(db.Model):
 	name = db.Column(db.String(100),nullable=False)
 	secret_key = db.Column(db.String(500),nullable=False)
 	description = db.Column(db.String(500))
+	houseId = db.Column(db.Integer,db.ForeignKey("houses.id"))
 	typeId = db.Column(db.Integer,db.ForeignKey("flat_types.id"))
 	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
 	residents = db.relationship('Residents',backref='flats',lazy=True)
@@ -102,6 +107,7 @@ class Flats(db.Model):
 			"name": self.name,
 			"secret_key": self.secret_key,
 			"description": self.description,
+			"houseId": self.houseId,
 			"typeId": self.typeId,
 			"dateAdded": self.dateAdded
 		}
@@ -120,6 +126,7 @@ class Residents(db.Model):
 	passportCode = db.Column(db.String(100),nullable=False)
 	secret_key = db.Column(db.String(500),nullable=False)
 	description = db.Column(db.String(500))
+	flatId = db.Column(db.Integer,db.ForeignKey("flats.id"))
 	typeId = db.Column(db.Integer,db.ForeignKey("resident_types.id"))
 	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
 	rfidTags = db.relationship('RfidTags',backref='residents',lazy=True)
@@ -137,15 +144,33 @@ class Residents(db.Model):
 			"passportCode": self.passportCode,
 			"secret_key": self.secret_key,
 			"description": self.description,
+			"flatId": self.flatId,
 			"typeId": self.typeId,
 			"dateAdded": self.dateAdded
 		}
 		return residents
 
 
+class RfidTags(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	name = db.Column(db.String(100),nullable=False)
+	residentId = db.Column(db.Integer,db.ForeignKey("residents.id"))
+	description = db.Column(db.String(500))
+
+	def json(self):
+		rfidTags = {
+			"id": self.id,
+			"name": self.name,
+			"residentId": self.residentId,
+			"description": self.description
+		}
+		return rfidTags
+
+
 class Rooms(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
 	name = db.Column(db.String(100),nullable=False)
+	flatId = db.Column(db.Integer,db.ForeignKey("flats.id"))
 	description = db.Column(db.String(500))
 	devices = db.relationship('Devices',backref='rooms',lazy=True)
 
@@ -153,6 +178,7 @@ class Rooms(db.Model):
 		room = {
 			"id": self.id,
 			"name": self.name,
+			"flatId": self.flatId,
 			"description": self.description
 		}
 		return room
@@ -172,6 +198,7 @@ class Devices(db.Model):
 	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
 	pins = db.relationship('Pins',backref='devices',lazy='joined')
 	sensors = db.relationship('Sensors',backref='devices',lazy='joined')
+	sensor_records = db.relationship('Sensor_records',backref='devices',lazy=True)
 
 	def json(self):
 		device = {
@@ -183,6 +210,8 @@ class Devices(db.Model):
 			"state": self.state,
 			"description": self.description,
 			"typeId": self.typeId,
+			"flatId": self.flatId,
+			"roomId": self.roomId,
 			"dateAdded": self.dateAdded
 		}
 		return device
@@ -195,7 +224,7 @@ class Pins(db.Model):
 	description = db.Column(db.String(500))
 	action = db.Column(db.String(500))
 	deviceId = db.Column(db.Integer,db.ForeignKey("devices.id"))
-	
+
 	def json(self):
 		pin = {
 			"id": self.id,
@@ -216,7 +245,8 @@ class Sensors(db.Model):
 	value = db.Column(db.Float,default=0.0)
 	typeId = db.Column(db.Integer,db.ForeignKey("sensor_types.id"))
 	deviceId = db.Column(db.Integer,db.ForeignKey("devices.id"))
-	
+	sensor_records = db.relationship('Sensor_records',backref='sensors',lazy=True)
+
 	def json(self):
 		sensor = {
 			"id": self.id,
@@ -224,9 +254,32 @@ class Sensors(db.Model):
 			"command": self.command,
 			"description": self.description,
 			"value": self.value,
+			"typeId": self.typeId,
 			"deviceId": self.deviceId,
 		}
 		return sensor
+
+
+class Sensor_records(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	name = db.Column(db.String(100),nullable=False)
+	description = db.Column(db.String(500))
+	value = db.Column(db.Float,default=0.0)
+	date = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
+	deviceId = db.Column(db.Integer,db.ForeignKey("devices.id"))
+	sensorId = db.Column(db.Integer,db.ForeignKey("sensors.id"))
+
+	def json(self):
+		sensor_records = {
+			"id": self.id,
+			"name": self.name,
+			"description": self.description,
+			"value": self.value,
+			"date": self.date,
+			"deviceId": self.deviceId,
+			"sensorId": self.sensorId,
+		}
+		return sensor_records
 
 
 class Device_types(db.Model):
@@ -235,12 +288,28 @@ class Device_types(db.Model):
 	description = db.Column(db.String(500))
 	devices = db.relationship('Devices',backref='device_types',lazy=True)
 
+	def json(self):
+		db_type = {
+			"id": self.id,
+			"name": self.name,
+			"description": self.description
+		}
+		return db_type
+
 
 class Sensor_types(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
 	name = db.Column(db.String(100),nullable=False)
 	description = db.Column(db.String(500))
 	sensors = db.relationship('Sensors',backref='sensor_types',lazy=True)
+
+	def json(self):
+		db_type = {
+			"id": self.id,
+			"name": self.name,
+			"description": self.description
+		}
+		return db_type
 
 
 class City_types(db.Model):
@@ -249,12 +318,28 @@ class City_types(db.Model):
 	description = db.Column(db.String(500))
 	city = db.relationship('City',backref='city_types',lazy=True)
 
+	def json(self):
+		db_type = {
+			"id": self.id,
+			"name": self.name,
+			"description": self.description
+		}
+		return db_type
+
 
 class Region_types(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
 	name = db.Column(db.String(100),nullable=False)
 	description = db.Column(db.String(500))
 	regions = db.relationship('Regions',backref='region_types',lazy=True)
+
+	def json(self):
+		db_type = {
+			"id": self.id,
+			"name": self.name,
+			"description": self.description
+		}
+		return db_type
 
 
 class House_types(db.Model):
@@ -263,6 +348,14 @@ class House_types(db.Model):
 	description = db.Column(db.String(500))
 	houses = db.relationship('Houses',backref='house_types',lazy=True)
 
+	def json(self):
+		db_type = {
+			"id": self.id,
+			"name": self.name,
+			"description": self.description
+		}
+		return db_type
+
 
 class Flat_types(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
@@ -270,12 +363,28 @@ class Flat_types(db.Model):
 	description = db.Column(db.String(500))
 	flats = db.relationship('Flats',backref='flat_types',lazy=True)
 
+	def json(self):
+		db_type = {
+			"id": self.id,
+			"name": self.name,
+			"description": self.description
+		}
+		return db_type
+
 
 class Resident_types(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
 	name = db.Column(db.String(100),nullable=False)
 	description = db.Column(db.String(500))
 	residents = db.relationship('Residents',backref='resident_types',lazy=True)
+
+	def json(self):
+		db_type = {
+			"id": self.id,
+			"name": self.name,
+			"description": self.description
+		}
+		return db_type
 
 
 @app.route("/<deviceName>/<action>")
