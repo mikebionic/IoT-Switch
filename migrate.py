@@ -38,6 +38,8 @@ class Houses(db.Model):
 	name = db.Column(db.String(100),nullable=False)
 	secret_key = db.Column(db.String(500),nullable=False)
 	description = db.Column(db.String(500))
+	longit = db.Column(db.String(100))
+	latit = db.Column(db.String(100))
 	regionId = db.Column(db.Integer,db.ForeignKey("regions.id"))
 	typeId = db.Column(db.Integer,db.ForeignKey("house_types.id"))
 	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
