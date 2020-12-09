@@ -11,6 +11,7 @@ from flask import (
 import time,serial,requests
 from datetime import date,datetime,time
 from flask_sqlalchemy import SQLAlchemy
+from flask_socketio import SocketIO, emit
 
 from netScanner import map_network
 app = Flask (__name__)

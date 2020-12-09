@@ -4,3 +4,4 @@ sqlalchemy
 pyserial
 requests
 gunicorn
+flask-socketio
