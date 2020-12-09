@@ -34,3 +34,25 @@ Send JSON command to a linux server and let him execute the rest thing.
 
 **A4988 Stepper driver** pinout
 ![A4988](datasheet/A4988.jpg)
+
+----------------
+
+**Testing commands**
+
+> teting /control/<state>
+
+```bash
+curl --header "Content-Type: application/json" \
+	--request POST \
+	--data '{"command":"test_local","state":1,"action":""}' \
+	http://127.0.0.1:5000/esp/
+```
+
+> testing /control/?args
+
+```bash
+curl --header "Content-Type: application/json" \
+	--request POST \
+	--data '{"command":"test_local_json","pins":[{"command":"switch_mirror","action":"1"},{"command":"switch_AI","action":"activate"}]}' \
+	http://127.0.0.1:5000/esp/JsonToArg/
+```
