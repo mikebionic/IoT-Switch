@@ -10,6 +10,24 @@ Used components:
 + Power adapter and stabilizator for esp microcontroller
 + Patience
 
+## Devices and Systems of the project:
+
++ [x] Lights and light bulbs control
++ [x] Heater control
++ [x] Cooler control
++ [x] Stove control (SIEMENS stove Reverse Engineered :p )
++ [x] Curtain control
++ [x] TV remote control
++ [x] Smart sockets
++ [ ] Window control
++ [x] Water pump control (Water sensor used)
++ [x] Current measurement
++ [x] Water flow measurement
++ [x] CCTV security
++ [x] Fingerprint sensor access control (door builtin)
++ [x] Fingerprint sensor access control (wireless)
++ [x] RFID NFC card access control (Door builtin)
+
 ---------------
 
 ESP-01 devices have two active pins - Led output (GPIO 2) and Switch (GPIO 0)
@@ -28,6 +46,7 @@ Send JSON command to a linux server and let him execute the rest thing.
 **Esp8266-01** pinout
 ![ESP8266-01](datasheet/esp8266-01.png)
 
+
 **NodeMCU-Esp8266** pinout
 ![NodeMCU](datasheet/NodeMCUesp8266.png)
 
@@ -35,9 +54,13 @@ Send JSON command to a linux server and let him execute the rest thing.
 **A4988 Stepper driver** pinout
 ![A4988](datasheet/A4988.jpg)
 
+
+**Adafruit Fingerprint Sensor** pinout
+![Adafruit fingerprint sensor](datasheet/fingerprint-sensor-pinout.jpg)
+
 ----------------
 
-**Testing commands**
+**API Testing commands**
 
 > teting /control/<state>
 
