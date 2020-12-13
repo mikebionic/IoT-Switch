@@ -27,6 +27,8 @@ Used components:
 + [x] Fingerprint sensor access control (door builtin)
 + [x] Fingerprint sensor access control (wireless)
 + [x] RFID NFC card access control (Door builtin)
++ [ ] SIM900 SMS message control option
++ [ ] PIR security sensor devices
 
 ---------------
 

@@ -17,3 +17,5 @@
 	+ [ ] Api sending info of sensors separately
 	+ [ ] Api sending UI info depending description
 	+ [x] add routes for force restart on special time
+	+ [ ] SIM900 microprocessor support
+	+ [ ] add security Alert support
