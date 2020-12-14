@@ -19,7 +19,8 @@ from .models import (
 	Devices,
 	Pins,
 	Sensors,
-	Rooms)
+	Rooms,
+	Triggers)
 
 
 @app.route("/<deviceName>/<action>")
@@ -63,7 +64,41 @@ def esp():
 					return make_response("error, couldn't make a request (connection issue)")
 			return make_response("error, couldn't make a request (no device found)",200)
 
-						
+
+@app.route("/triggers/",methods=['GET','POST'])
+def triggers():
+	if request.method == 'POST':
+		req = request.get_json()
+		state = req["state"]
+		command = req["command"]
+		action = req["action"]
+		trigger = Triggers.query.filter_by(command = command).first()
+		if trigger:
+			trigger.state = state
+			db.session.commit()
+			return make_response(jsonify(trigger.json()),200)
+		else:
+			return make_response("No such trigger",200)
+
+
+@app.route("/esp/motionAlert/",methods=['GET','POST'])
+def esp_motionAlert():
+	device_key = request.args.get('device_key')
+	state = request.args.get('state')
+
+	device = Devices.query.filter_by(device_key = device_key).first()
+	if device:
+		triggers.query.filter_by(command = "motion_trigger").first()
+		if trigger:
+			if (trigger.state == 1):
+				try:
+					device.state = state
+					db.session.commit()
+				except Exception as ex:
+					return make_response("err",200)
+		return make_response("ok",200)
+
+
 @app.route("/reset_sensors/",methods=['GET'])
 def reset_sensors():
 	try:

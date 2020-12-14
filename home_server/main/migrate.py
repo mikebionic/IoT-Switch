@@ -2,8 +2,8 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from datetime import date,datetime,time
 
-from devices_config import devices, pins, sensors
-from default_devices_config import device_types, sensor_types
+from devices_config import devices, pins, sensors, rooms
+from default_devices_config import device_types, sensor_types, triggers
 
 app = Flask (__name__)
 app.config['SECRET_KEY'] = "bdbgbn08Vtc4UV$bon(*0pnibuoyvtcr4R"
@@ -117,6 +117,14 @@ class Pins(db.Model):
 	deviceId = db.Column(db.Integer,db.ForeignKey("devices.id"))
 
 
+class Triggers(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	name = db.Column(db.String(100),nullable=False)
+	command = db.Column(db.String(100),nullable=False)
+	description = db.Column(db.String(500))
+	state = db.Column(db.String(500))
+
+
 class Sensors(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
 	name = db.Column(db.String(100),nullable=False)
@@ -204,6 +212,10 @@ def action(deviceName, action):
 db.drop_all()
 db.create_all()
 
+for room in rooms:
+	db_room = Rooms(**room)
+	db.session.add(db_room)
+
 for device in devices:
 	db_device = Devices(**device)
 	db.session.add(db_device)
@@ -223,5 +235,9 @@ for device_type in device_types:
 for sensor_type in sensor_types:
 	db_sensor_type = Sensor_types(**sensor_type)
 	db.session.add(db_sensor_type)
+
+for trigger in triggers:
+	db_trigger = Triggers(**trigger)
+	db.session.add(db_trigger)
 
 db.session.commit()

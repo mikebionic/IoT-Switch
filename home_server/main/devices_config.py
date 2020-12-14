@@ -1,6 +1,6 @@
 # Edited: 13.11.2020
 
-devices = [
+rooms = [
 	{
 		"id": 1,
 		"name": "Hall",
@@ -351,6 +351,17 @@ devices = [
 		"roomId": 3,
 		"command": "water_measurer_kitchen2",
 		"description": "Measures the flow of water"
+	},	
+	{
+		"id": 90,
+		"name": "Motion detector hall",
+		"ip": "192.168.1.128",
+		"state": 0,
+		"device_key": "pirsesorsecret",
+		"typeId": 1,
+		"roomId": 1,
+		"command": "pir_motion_sensor_hall",
+		"description": "detect motion in hall"
 	},
 	{
 		"name": "Local binary test",

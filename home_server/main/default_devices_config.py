@@ -29,3 +29,13 @@ sensor_types = [
 		"description": "Values of sensor objects 'value' will be rewritten"
 	}
 ]
+
+triggers = [
+	{
+		"id": 1,
+		"name": "Colecting",
+		"description": "Values will append the 'value' of a sensor object",
+		"command": "motion_trigger",
+		"state": 0
+	}
+]

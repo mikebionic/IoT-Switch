@@ -221,6 +221,24 @@ class Pins(db.Model):
 		return pin
 
 
+class Triggers(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	name = db.Column(db.String(100),nullable=False)
+	command = db.Column(db.String(100),nullable=False)
+	description = db.Column(db.String(500))
+	state = db.Column(db.String(500))
+
+	def json(self):
+		pin = {
+			"id": self.id,
+			"name": self.name,
+			"command": self.command,
+			"description": self.description,
+			"state": self.state
+		}
+		return pin
+
+
 class Sensors(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
 	name = db.Column(db.String(100),nullable=False)
