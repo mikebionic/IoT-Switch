@@ -10,7 +10,7 @@ from flask import (
 	make_response)
 import time, requests
 from datetime import date, datetime
-from flask_socketio import SocketIO, emit
+# from flask_socketio import SocketIO, emit
 
 from main import app
 from main import db
@@ -21,20 +21,6 @@ from .models import (
 	Sensors,
 	Rooms,
 	Triggers)
-
-
-@app.route("/<deviceName>/<action>")
-def action(deviceName, action):
-	# example /room1sw/ON
-	task=(deviceName+action)
-	task_encode=task.encode()
-	print(task)
-	ser = serial.Serial(arduinoSerialPort)
-	ser.baudrate = 9600
-	ser.write(task_encode)
-	print(task_encode)
-	time.sleep(1)
-	ser.close()
 
 
 @app.route("/esp/",methods=['GET','POST'])
@@ -272,6 +258,27 @@ def check_state():
 		info['sensors'] = sensors
 		devices_data.append(info)
 	return make_response(jsonify(devices_data),200)
+
+
+@app.route("/esp/getDevice/")
+def getDevice():
+	filtering = {}
+	barcode = request.args.get("barcode","",type=str)
+	name = request.args.get("name","",type=str)
+	command = request.args.get("command","",type=str)
+	ip = request.args.get("barcode","",type=str)
+	if barcode:
+		filtering["barcode"] = barcode
+	if name:
+		filtering["name"] = name
+	if command:
+		filtering["command"] = command
+	if ip:
+		filtering["ip"] = ip
+	device = Devices.query.filter_by(**filtering).first()
+	if device:
+		return make_response(jsonify(device.json()), 200)
+	return make_response(jsonify({"error":"Not found"}), 404)
 
 
 @app.route("/fetch_rooms/")

@@ -172,6 +172,7 @@ class Devices(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
 	name = db.Column(db.String(100),nullable=False)
 	ip = db.Column(db.String(100))
+	barcode = db.Column(db.String(100))
 	device_key = db.Column(db.String(500),nullable=False)
 	command = db.Column(db.String(100),nullable=False)
 	state = db.Column(db.Integer,nullable=False,default=0)
@@ -189,6 +190,7 @@ class Devices(db.Model):
 			"id": self.id,
 			"name": self.name,
 			"ip": self.ip,
+			"barcode": self.barcode,
 			"device_key": self.device_key,
 			"command": self.command,
 			"state": self.state,

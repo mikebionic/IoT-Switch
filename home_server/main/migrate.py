@@ -96,6 +96,7 @@ class Devices(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
 	name = db.Column(db.String(100),nullable=False)
 	ip = db.Column(db.String(100))
+	barcode = db.Column(db.String(100))
 	device_key = db.Column(db.String(500),nullable=False)
 	command = db.Column(db.String(100),nullable=False)
 	state = db.Column(db.Integer,nullable=False,default=0)
@@ -192,21 +193,6 @@ class Resident_types(db.Model):
 	name = db.Column(db.String(100),nullable=False)
 	description = db.Column(db.String(500))
 	residents = db.relationship('Residents',backref='resident_types',lazy=True)
-
-
-@app.route("/<deviceName>/<action>")
-def action(deviceName, action):
-	# example /room1sw/ON
-	task=(deviceName+action)
-	task_encode=task.encode()
-	print(task)
-	ser = serial.Serial(arduinoSerialPort)
-	ser.baudrate = 9600
-	ser.write(task_encode)
-	print(task_encode)
-	time.sleep(1)
-	ser.close()
-
 
 
 db.drop_all()
