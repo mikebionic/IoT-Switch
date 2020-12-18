@@ -266,7 +266,7 @@ def getDevice():
 	barcode = request.args.get("barcode","",type=str)
 	name = request.args.get("name","",type=str)
 	command = request.args.get("command","",type=str)
-	ip = request.args.get("barcode","",type=str)
+	ip = request.args.get("ip","",type=str)
 	if barcode:
 		filtering["barcode"] = barcode
 	if name:
