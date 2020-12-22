@@ -281,18 +281,6 @@ def getDevice():
 	return make_response(jsonify({"error":"Not found"}), 404)
 
 
-@app.route("/fetch_rooms/")
-def fetch_rooms():
-	rooms = Rooms.query.all()
-	rooms_data = []
-	for room in rooms:
-		info = room.json()
-		devices = [device.json() for device in room.devices]
-		info['devices'] = devices
-		rooms_data.append(info)
-	return make_response(jsonify(rooms_data),200)
-
-
 @app.route("/esp/setState/")
 def setEspState():
 	device_key = request.args.get('device_key')

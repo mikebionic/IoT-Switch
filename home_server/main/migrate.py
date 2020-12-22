@@ -2,8 +2,9 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from datetime import date,datetime,time
 
-from devices_config import devices, pins, sensors, rooms
-from default_devices_config import device_types, sensor_types, triggers
+from db_migration_data.devices_config import devices, pins, sensors, rooms
+from db_migration_data.default_devices_config import device_types, sensor_types, triggers
+from db_migration_data.locale_config import cities, regions
 
 app = Flask (__name__)
 app.config['SECRET_KEY'] = "bdbgbn08Vtc4UV$bon(*0pnibuoyvtcr4R"
@@ -225,5 +226,14 @@ for sensor_type in sensor_types:
 for trigger in triggers:
 	db_trigger = Triggers(**trigger)
 	db.session.add(db_trigger)
+
+
+for city in cities:
+	db_city = City(**city)
+	db.session.add(db_city)
+
+for region in regions:
+	db_region = Regions(**region)
+	db.session.add(db_region)
 
 db.session.commit()

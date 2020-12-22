@@ -20,6 +20,7 @@ String stateMessage;
 long x=millis();
 
 void setup() {
+  Serial.begin(9600);
   pinMode(lamp1, OUTPUT);
   pinMode(lamp2, OUTPUT);
   pinMode(lamp3, OUTPUT);
@@ -30,7 +31,7 @@ void setup() {
 
 }
 void loop(){
-  temp_status();
+  //temp_status();
   
   if(SIM900.available()>0){
     inMessage = SIM900.readString();
@@ -105,7 +106,7 @@ void state(){
    String lamp_3 = "Cyra3 " + lamp3State;
     Serial.println("Yagdayy sorayar");
     //stateMessage=lamp_1+lamp_2+lamp_3; //??? MAYBE
-    sendSMS(stateMessage);
+    //sendSMS(stateMessage);
     inMessage = "";
 }
 
