@@ -4,10 +4,12 @@ The project is based on communication and data collection between devices and se
 Basic schematic is an interconnected network with an access of IoT device and database server.
 
 Programming languages used:
+
 	- C++
 	- Python
 
 The aim of the server side app:
+
 	- Creation a bridge between devices
 	- Saving the data and states
 	- Securing the actions and communication
