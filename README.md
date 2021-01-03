@@ -30,6 +30,17 @@ Used components:
 + [ ] SIM900 SMS message control option
 + [ ] PIR security sensor devices
 
+--------------
+
+## Documentations:
+
+[Server Side (enUS)](/documentation/server-side_enUS.md)
+[Server Side (ruRU)](/documentation/server-side_ruRU.md)
+[Server Side (tkTM)](/documentation/server-side_tkTM.md)
+[Smart Home (enUS)](/documentation/smart-home_enUS.md)
+[Smart Home (ruRU)](/documentation/smart-home_ruRU.md)
+[Smart Home (tkTM)](/documentation/smart-home_tkTM.md)
+
 ---------------
 
 ESP-01 devices have two active pins - Led output (GPIO 2) and Switch (GPIO 0)
