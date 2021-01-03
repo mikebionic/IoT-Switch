@@ -4,10 +4,12 @@ Taslama enjamlar we serwer arasynda aragatnaşyk we maglumat ýygnamaga esaslan�
 Esasy shematik, IoT enjamyna we maglumat bazasynyň serwerine girýän özara baglanyşykly tor.
 
 Ulanylýan programmirleme dilleri:
+
 	- C ++
 	- Python
 
 Serwer tarapy programmasynyň maksady:
+
 	- Enjamlaryň arasynda köpri döretmek
 	- Maglumatlary we ýagdaýlary tygşytlamak
 	- Hereketleri we aragatnaşygy üpjün etmek

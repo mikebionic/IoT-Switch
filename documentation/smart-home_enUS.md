@@ -7,6 +7,7 @@ It is possible to monitor the condition of the house, the amount of water used i
 In emergencies, for example, the Smart House not only warns us about water and gas leaks, but also interrupts the flow of electricity, gas or water to the home.
 
 The main features of the Smart Home system are:
+
     - Turn on / off lights with the help of a motion sensor;
     - Show homeowners "as if" at home (periodically / accidentally turn on / off lights in different rooms);
     - Various design and remote control of interior lighting;

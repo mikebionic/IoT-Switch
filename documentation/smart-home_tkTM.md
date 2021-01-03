@@ -6,6 +6,7 @@ Akylly öý – bu binanyň içinde bolup geçýän ähli hadysalary  optimalla�
 Adatdan daşary ýagdaýlarda bolsa meselem, suw, gaz syzdyrmalarynda “Akylly öý” diňe bir bize duýdurman, eýsem elektrik togunyň, gazyň ýa-da suwuň öýe gelmesini kesýär.
 
 “Akylly öý” ulgamynyň esasy aýratynlyklary şulardan ybaratdyr:
+
     - Hereket datçiginiň kömegi bilen çyralary ýakmak/öçürmek;
     - Öý eýeleri öýde “bar ýaly” görkezmek(dürli otaglarda çyralary periodiki/tötänleýin ýakmak/öçürmek);
     - Interýeriň ýagtylandyrylyşyny dürli görnüşde taslamak we aralykdan dolandyrmak;
