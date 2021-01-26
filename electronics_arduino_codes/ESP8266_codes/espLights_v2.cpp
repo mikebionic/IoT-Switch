@@ -9,8 +9,8 @@
 int buttonPin = 2;
 
 int qtyOfPins = 3;
-int pinsList = {0, 1, 3};
-int pinStatesList = {0, 0, 0};
+int pinsList[] = {0, 1, 3};
+int pinStatesList[] = {0, 0, 0};
 
 boolean ledState = false;
 boolean buttonState = 1;
@@ -40,22 +40,22 @@ void handleDevice() {
   pin3.trim();
 
   if(pin1 == "1"){
-    ledStatesList[0] = 1;
+    pinStatesList[0] = 1;
   }
   else if(pin1 == "0"){
-    ledStatesList[0] = 0;
+    pinStatesList[0] = 0;
   }
   if(pin2 == "1"){
-    ledStatesList[1] = 1;
+    pinStatesList[1] = 1;
   }
   else if(pin2 == "0"){
-    ledStatesList[1] = 0;
+    pinStatesList[1] = 0;
   }
   if(pin3 == "1"){
-    ledStatesList[2] = 1;
+    pinStatesList[2] = 1;
   }
   else if(pin3 == "0"){
-    ledStatesList[2] = 0;
+    pinStatesList[2] = 0;
   }
 
   updatePinStates();
@@ -122,7 +122,7 @@ void buttonStateChange() {
     String argument_data = "?device_key="+device_key+"&state="+String(ledState);
 
     for (int i = 0; i < qtyOfPins; i++){
-      pinMode(pinStatesList[i], ledState);
+      pinStatesList[i] = ledState;
     }
 
     updatePinStates();
@@ -133,3 +133,35 @@ void buttonStateChange() {
   lastButtonState = buttonState;
   updatePinStates();
 }
+
+
+void sendRequest(String path, String sendingData){
+  if(WiFi.status()== WL_CONNECTED){
+    String serverPath = path+sendingData;
+    Serial.println(serverPath);
+    payload = httpGETRequest(serverPath.c_str());
+    Serial.println(payload);
+  }
+  else {
+    Serial.println("WiFi Disconnected");
+  }
+}
+
+String httpGETRequest(const char* serverName) {
+  HTTPClient http;
+  http.begin(serverName);
+  int httpResponseCode = http.GET();  
+  String payload = "{}"; 
+  if (httpResponseCode>0) {
+    Serial.print("HTTP Response code: ");
+    Serial.println(httpResponseCode);
+    payload = http.getString();
+  }
+  else {
+    Serial.print("Error code: ");
+    Serial.println(httpResponseCode);
+  }
+  http.end();
+  return payload;
+}
+
