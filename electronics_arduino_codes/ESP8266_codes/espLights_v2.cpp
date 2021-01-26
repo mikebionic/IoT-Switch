@@ -3,11 +3,14 @@
 #include <ESP8266WebServer.h>
 #include <ESP8266HTTPClient.h>
 
+// int light1pin = 0; // D0
+// int light2pin = 1; // D1
+// int light3pin = 3; // D2
+int buttonPin = 2;
 
-int light1pin = 0; // D0
-int light2pin = 1; // D1
-int light3pin = 2; // D2
-int buttonPin = 3;
+int qtyOfPins = 3;
+int pinsList = {0, 1, 3};
+int pinStatesList = {0, 0, 0};
 
 boolean ledState = false;
 boolean buttonState = 1;
@@ -37,27 +40,34 @@ void handleDevice() {
   pin3.trim();
 
   if(pin1 == "1"){
-      digitalWrite(light1pin, 1);
+    ledStatesList[0] = 1;
   }
   else if(pin1 == "0"){
-      digitalWrite(light1pin, 0);
+    ledStatesList[0] = 0;
   }
   if(pin2 == "1"){
-      digitalWrite(light2pin, 1);
+    ledStatesList[1] = 1;
   }
   else if(pin2 == "0"){
-      digitalWrite(light2pin, 0);
+    ledStatesList[1] = 0;
   }
   if(pin3 == "1"){
-      digitalWrite(light3pin, 1);
+    ledStatesList[2] = 1;
   }
   else if(pin3 == "0"){
-      digitalWrite(light3pin, 0);
+    ledStatesList[2] = 0;
   }
+
+  updatePinStates();
 
   server.send(200, "text/html", "OK");
 }
 
+void updatePinStates(){
+  for (int i = 0; i < qtyOfPins; i++){
+    digitalWrite(pinsList[i], pinStatesList[i]);
+  }
+}
 
 void handlePong() {
  server.send(200, "text/html", device_key);
@@ -68,9 +78,10 @@ void setup() {
   Serial.begin(115200);
   delay(10);
 
-  pinMode(light1pin, OUTPUT);
-  pinMode(light2pin, OUTPUT);
-  pinMode(light3pin, OUTPUT);
+  for (int i = 0; i < qtyOfPins; i++){
+    pinMode(pinsList[i], OUTPUT);
+    digitalWrite(pinsList[i], 0);
+  }
 
   WiFi.begin(ssid, password);
   Serial.println("");
@@ -107,15 +118,18 @@ boolean debounce(boolean lastState){
 void buttonStateChange() {
   buttonState = debounce(lastButtonState);
   if (lastButtonState == 1 && buttonState == 0){
-    ledState =! ledState;
+    ledState = !ledState;
     String argument_data = "?device_key="+device_key+"&state="+String(ledState);
-    digitalWrite(light1pin, ledState);
-    digitalWrite(light2pin, ledState);
-    digitalWrite(light3pin, ledState);
+
+    for (int i = 0; i < qtyOfPins; i++){
+      pinMode(pinStatesList[i], ledState);
+    }
+
+    updatePinStates();
+
     sendRequest("http://"+serverUrl+"/esp/setState/",argument_data);
   }
+
   lastButtonState = buttonState;
-  digitalWrite(light1pin, ledState);
-  digitalWrite(light2pin, ledState);
-  digitalWrite(light3pin, ledState);
+  updatePinStates();
 }
