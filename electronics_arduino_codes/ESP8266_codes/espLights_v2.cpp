@@ -1,0 +1,121 @@
+#include <ESP8266WiFi.h>
+#include <WiFiClient.h>
+#include <ESP8266WebServer.h>
+#include <ESP8266HTTPClient.h>
+
+
+int light1pin = 0; // D0
+int light2pin = 1; // D1
+int light3pin = 2; // D2
+int buttonPin = 3;
+
+boolean ledState = false;
+boolean buttonState = 1;
+boolean lastButtonState = 1;
+
+IPAddress staticIP(192, 168, 1, 209); //ESP static ip
+IPAddress gateway(192, 168, 1, 1);   //IP Address of your WiFi Router (Gateway) 
+IPAddress subnet(255, 255, 255, 0);  //Subnet mask
+IPAddress dns(8, 8, 8, 8);  //DNS
+ 
+const char* ssid = "ssid";
+const char* password = "password";
+const char* deviceName = "Smart lights v2";
+String serverUrl = "192.168.1.252";
+String payload;
+String device_key = "lights_hash";
+
+ESP8266WebServer server(80);
+
+void handleDevice() {
+  String pin1 = server.arg("pin1");
+  String pin2 = server.arg("pin2");
+  String pin3 = server.arg("pin3");
+
+  pin1.trim();
+  pin2.trim();
+  pin3.trim();
+
+  if(pin1 == "1"){
+      digitalWrite(light1pin, 1);
+  }
+  else if(pin1 == "0"){
+      digitalWrite(light1pin, 0);
+  }
+  if(pin2 == "1"){
+      digitalWrite(light2pin, 1);
+  }
+  else if(pin2 == "0"){
+      digitalWrite(light2pin, 0);
+  }
+  if(pin3 == "1"){
+      digitalWrite(light3pin, 1);
+  }
+  else if(pin3 == "0"){
+      digitalWrite(light3pin, 0);
+  }
+
+  server.send(200, "text/html", "OK");
+}
+
+
+void handlePong() {
+ server.send(200, "text/html", device_key);
+}
+
+
+void setup() {
+  Serial.begin(115200);
+  delay(10);
+
+  pinMode(light1pin, OUTPUT);
+  pinMode(light2pin, OUTPUT);
+  pinMode(light3pin, OUTPUT);
+
+  WiFi.begin(ssid, password);
+  Serial.println("");
+  WiFi.disconnect();
+  WiFi.config(staticIP, subnet, gateway, dns);
+  WiFi.begin(ssid, password);
+  WiFi.mode(WIFI_STA);
+  
+  delay(500);
+  Serial.println("");
+  Serial.println("WiFi connected");
+
+  Serial.print(WiFi.localIP());
+  server.on("/ping/", handlePong);
+  server.on("/control/", handleDevice);
+  server.begin();
+}
+ 
+void loop() {
+  server.handleClient();
+  buttonStateChange();
+}
+
+
+boolean debounce(boolean lastState){
+  boolean currentState = digitalRead(buttonPin);
+  if (lastState != currentState){
+    delay(5);
+    currentState = digitalRead(buttonPin);
+  }
+  return currentState;
+}
+
+void buttonStateChange() {
+  buttonState = debounce(lastButtonState);
+  if (lastButtonState == 1 && buttonState == 0){
+    ledState =! ledState;
+    String argument_data = "?device_key="+device_key+"&state="+String(ledState);
+    digitalWrite(light1pin, ledState);
+    digitalWrite(light2pin, ledState);
+    digitalWrite(light3pin, ledState);
+    sendRequest("http://"+serverUrl+"/esp/setState/",argument_data);
+  }
+  lastButtonState = buttonState;
+  digitalWrite(light1pin, ledState);
+  digitalWrite(light2pin, ledState);
+  digitalWrite(light3pin, ledState);
+}

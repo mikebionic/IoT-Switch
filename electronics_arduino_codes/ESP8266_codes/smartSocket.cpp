@@ -15,10 +15,10 @@ IPAddress dns(8, 8, 8, 8);  //DNS
  
 const char* ssid = "ssid";
 const char* password = "password";
-const char* deviceName = "Smartconditioner";
+const char* deviceName = "Smart socket";
 String serverUrl = "192.168.1.252";
 String payload;
-String device_key = "knb78G^n03foi";
+String device_key = "socket_hash";
 
 ESP8266WebServer server(80);
 
