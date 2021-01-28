@@ -164,4 +164,3 @@ String httpGETRequest(const char* serverName) {
   http.end();
   return payload;
 }
-
