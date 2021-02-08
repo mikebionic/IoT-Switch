@@ -6,7 +6,8 @@ face_cascade = cv2.CascadeClassifier('cascades/haarcascade_frontalface_default.x
 cap = cv2.VideoCapture(0)
 
 id = input('enter user id')
-sampleN = 0;
+sampleN = 0
+samples_count = 40
 
 while 1:
 	ret, img = cap.read()
@@ -22,7 +23,7 @@ while 1:
 
 	cv2.imshow('img',img)
 	cv2.waitKey(1)
-	if sampleN > 20:
+	if sampleN > samples_count:
 		break
 
 cap.release()
