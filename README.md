@@ -29,6 +29,7 @@ Used components:
 + [x] RFID NFC card access control (Door builtin)
 + [x] SIM900 SMS message control option
 + [x] PIR security sensor devices
++ [x] Face recognition service
 
 --------------
 

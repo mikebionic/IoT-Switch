@@ -42,7 +42,7 @@ void handleUp() {
   }
 
   else {
-    server.send(200, "text/html", "up error (treshold)");  
+    server.send(200, "text/html", "up error (treshold)");
   }
 
   digitalWrite(pin1, 0);
@@ -67,7 +67,7 @@ void handleDown() {
   }
 
   else {
-    server.send(200, "text/html", "down error (treshold)");  
+    server.send(200, "text/html", "down error (treshold)");
   }
 
   digitalWrite(pin1, 0);
