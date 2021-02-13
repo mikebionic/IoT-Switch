@@ -3,20 +3,6 @@
 #include <ESP8266WebServer.h>
 #include <ESP8266HTTPClient.h>
 
-const char MAIN_page[] PROGMEM = R"=====(
-  <!DOCTYPE html>
-  <html>
-  <body>
-  <center>
-  <h1>WiFi LED on off demo: 1</h1><br>
-  Ciclk to turn <a href="/control/1">LED ON</a><br>
-  Ciclk to turn <a href="/control/0">LED OFF</a><br>
-  <hr>
-  </center>
-  </body>
-  </html>
-)=====";
-
 //Static IP address configuration
 IPAddress staticIP(192, 168, 1, 130); //ESP static ip
 IPAddress gateway(192, 168, 1, 1);   //IP Address of your WiFi Router (Gateway)
@@ -39,14 +25,8 @@ boolean buttonState=1;
 boolean lastButtonState=1;
 
 ESP8266WebServer server(80);
-
-
-void handleRoot() {
- String s = MAIN_page;
- server.send(200, "text/html", s);
-}
-
  
+
 void handleLEDon() {
   ledState = 1;
   digitalWrite(LED,ledState);
@@ -69,7 +49,7 @@ void handlePong() {
 void setup(void){
   pinMode(LED, OUTPUT);
   pinMode(SW, INPUT);
-  digitalWrite(LED, LOW);
+  digitalWrite(LED, 0);
   
   Serial.begin(115200);
   WiFi.begin(ssid, password);
@@ -92,7 +72,6 @@ void setup(void){
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
  
-  server.on("/", handleRoot);
   server.on("/control/1", handleLEDon);
   server.on("/control/0", handleLEDoff);
   server.on("/ping/", handlePong);
@@ -100,6 +79,8 @@ void setup(void){
   server.begin();
   Serial.println("HTTP server started");
 }
+
+
 void loop(void){
   server.handleClient();
   buttonStateChange();

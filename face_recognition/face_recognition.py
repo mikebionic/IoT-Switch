@@ -1,12 +1,14 @@
 import numpy as np
 import cv2
 import requests
+from time import sleep
+import json
 
 from trained_users import users
 
 id = 0
 treshold = 45
-door_server_url = "http://192.168.1.1:5000/"
+rpi_url = "http://192.168.1.252/"
 
 face_cascade = cv2.CascadeClassifier('cascades/haarcascade_frontalface_default.xml')
 recognizer = cv2.face.LBPHFaceRecognizer_create()
@@ -31,7 +33,16 @@ def validate_user(id):
 
 
 def send_request():
-	r = requests.get("{}/face_recognized/".format(door_server_url))
+	opening_request = {
+		"command": "unlock_door",
+		"state": "1",
+		"action": ""
+	}
+
+	r = requests.post(
+		"{}/esp/".format(rpi_url),
+		data = json.dumps(opening_request),
+		headers = {'Content-Type': 'application/json'})
 
 
 while 1:
@@ -47,9 +58,13 @@ while 1:
 		print(id, conf)
 
 		if (conf < treshold):
-			validate_user(id)
-
-		print(id)
+			if validate_user(id):
+				print("validated")
+				try:
+					send_request()
+				except Exception as ex:
+					print(ex)
+				sleep(0.5)
 
 		cv2.putText(img,str(id),(x,y+h),font,255,(255, 255, 255))
 
