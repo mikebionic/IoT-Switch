@@ -195,7 +195,7 @@ def esp_ping():
 	device = Devices.query.filter_by(device_key = device_key).first()
 	if device:
 		try:
-			device.ip = ip_address
+			device.ip = ip_addresshttps://www.ubuntupit.com/install-adapta-kde-theme-ubuntu-kde-plasma/
 			db.session.commit()
 		except Exception as ex:
 			print(ex)

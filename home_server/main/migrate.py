@@ -5,6 +5,8 @@ from datetime import date,datetime,time
 from db_migration_data.devices_config import devices, pins, sensors, rooms
 from db_migration_data.default_devices_config import device_types, sensor_types, triggers
 from db_migration_data.locale_config import cities, regions
+from db_migration_data.schedules_config import schedues
+
 
 app = Flask (__name__)
 app.config['SECRET_KEY'] = "bdbgbn08Vtc4UV$bon(*0pnibuoyvtcr4R"
@@ -108,6 +110,7 @@ class Devices(db.Model):
 	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
 	pins = db.relationship('Pins',backref='devices',lazy='joined')
 	sensors = db.relationship('Sensors',backref='devices',lazy='joined')
+	schedules = db.relationship('Schedules',backref='devices',lazy=True)
 
 
 class Pins(db.Model):
@@ -117,6 +120,7 @@ class Pins(db.Model):
 	description = db.Column(db.String(500))
 	action = db.Column(db.String(500))
 	deviceId = db.Column(db.Integer,db.ForeignKey("devices.id"))
+	schedules = db.relationship('Schedules',backref='pins',lazy=True)
 
 
 class Triggers(db.Model):
@@ -196,6 +200,30 @@ class Resident_types(db.Model):
 	residents = db.relationship('Residents',backref='resident_types',lazy=True)
 
 
+class Schedule(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	name = db.Column(db.String(100),nullable=False)
+	deviceId = db.Column(db.Integer,db.ForeignKey("devices.id"))
+	pinId = db.Column(db.Integer,db.ForeignKey("pins.id"))
+	action = db.Column(db.String(100),nullable=False)
+	description = db.Column(db.String(500))
+	url = db.Column(db.String(500),nullable=False,default="/esp/JsonToArg/")
+	method = db.Column(db.String(100),default="POST")
+
+	def json(self):
+		device = {
+			"id": self.id,
+			"name": self.name,
+			"deviceId": self.deviceId,
+			"pinId": self.pinId,
+			"action": self.action,
+			"description": self.description,
+			"url": self.url,
+			"method": self.method
+		}
+		return device
+
+
 db.drop_all()
 db.create_all()
 
@@ -235,5 +263,9 @@ for city in cities:
 for region in regions:
 	db_region = Regions(**region)
 	db.session.add(db_region)
+
+for schedule in schedules:
+	db_schedule = Schedule(**schedule)
+	db.session.add(db_schedule)
 
 db.session.commit()

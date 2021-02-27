@@ -184,6 +184,7 @@ class Devices(db.Model):
 	pins = db.relationship('Pins',backref='devices',lazy='joined')
 	sensors = db.relationship('Sensors',backref='devices',lazy='joined')
 	sensor_records = db.relationship('Sensor_records',backref='devices',lazy=True)
+	schedules = db.relationship('Schedules',backref='devices',lazy=True)
 
 	def json(self):
 		device = {
@@ -210,6 +211,7 @@ class Pins(db.Model):
 	description = db.Column(db.String(500))
 	action = db.Column(db.String(500))
 	deviceId = db.Column(db.Integer,db.ForeignKey("devices.id"))
+	schedules = db.relationship('Schedules',backref='pins',lazy=True)
 
 	def json(self):
 		pin = {
@@ -389,3 +391,27 @@ class Resident_types(db.Model):
 			"description": self.description
 		}
 		return db_type
+
+
+class Schedule(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	name = db.Column(db.String(100),nullable=False)
+	deviceId = db.Column(db.Integer,db.ForeignKey("devices.id"))
+	pinId = db.Column(db.Integer,db.ForeignKey("pins.id"))
+	action = db.Column(db.String(100),nullable=False)
+	description = db.Column(db.String(500))
+	url = db.Column(db.String(500),nullable=False,default="/esp/JsonToArg/")
+	method = db.Column(db.String(100),default="POST")
+
+	def json(self):
+		device = {
+			"id": self.id,
+			"name": self.name,
+			"deviceId": self.deviceId,
+			"pinId": self.pinId,
+			"action": self.action,
+			"description": self.description,
+			"url": self.url,
+			"method": self.method
+		}
+		return device
