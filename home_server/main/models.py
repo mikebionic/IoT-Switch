@@ -396,10 +396,12 @@ class Resident_types(db.Model):
 class Schedule(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
 	name = db.Column(db.String(100),nullable=False)
+	typeId = db.Column(db.Integer,default=1)
 	deviceId = db.Column(db.Integer,db.ForeignKey("devices.id"))
 	pinId = db.Column(db.Integer,db.ForeignKey("pins.id"))
 	action = db.Column(db.String(100),nullable=False)
 	description = db.Column(db.String(500))
+	path = db.Column(db.String(255))
 	url = db.Column(db.String(500),nullable=False,default="/esp/JsonToArg/")
 	method = db.Column(db.String(100),default="POST")
 
@@ -407,10 +409,12 @@ class Schedule(db.Model):
 		device = {
 			"id": self.id,
 			"name": self.name,
+			"typeId": self.typeId
 			"deviceId": self.deviceId,
 			"pinId": self.pinId,
 			"action": self.action,
 			"description": self.description,
+			"path": self.path,
 			"url": self.url,
 			"method": self.method
 		}

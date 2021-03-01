@@ -206,6 +206,7 @@ def esp_ping():
 
 @app.route("/esp/JsonToArg/",methods=['GET','POST'])
 def esp_json_to_arg():
+	isSchedule = request.args.get(isSchedule,0,type=int)
 	if request.method == 'POST':
 		req = request.get_json()
 		command = req["command"]
@@ -239,9 +240,18 @@ def esp_json_to_arg():
 					print(pins)
 					response['pins'] = pins
 					print(response)
+
+					try:
+						if device.Schedule:
+							for schedule in device.Schedule:
+								run_scheduled_task(dbSchedule = schedule)
+					except Exception as ex:
+						print("schedule failed")
+
 					return make_response(jsonify(response),200)
 				except Exception as ex:
 					return make_response("error, couldn't make a request (connection issue)")
+
 		return make_response("error, device is not supported for current action",200)
 	return make_response("error, couldn't make a request (no device found)",200)
 

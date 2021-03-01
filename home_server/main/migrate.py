@@ -5,7 +5,7 @@ from datetime import date,datetime,time
 from db_migration_data.devices_config import devices, pins, sensors, rooms
 from db_migration_data.default_devices_config import device_types, sensor_types, triggers
 from db_migration_data.locale_config import cities, regions
-from db_migration_data.schedules_config import schedues
+from db_migration_data.schedules_config import schedules
 
 
 app = Flask (__name__)
@@ -203,25 +203,14 @@ class Resident_types(db.Model):
 class Schedule(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
 	name = db.Column(db.String(100),nullable=False)
+	typeId = db.Column(db.Integer,default=1)
 	deviceId = db.Column(db.Integer,db.ForeignKey("devices.id"))
 	pinId = db.Column(db.Integer,db.ForeignKey("pins.id"))
 	action = db.Column(db.String(100),nullable=False)
 	description = db.Column(db.String(500))
+	path = db.Column(db.String(255))
 	url = db.Column(db.String(500),nullable=False,default="/esp/JsonToArg/")
 	method = db.Column(db.String(100),default="POST")
-
-	def json(self):
-		device = {
-			"id": self.id,
-			"name": self.name,
-			"deviceId": self.deviceId,
-			"pinId": self.pinId,
-			"action": self.action,
-			"description": self.description,
-			"url": self.url,
-			"method": self.method
-		}
-		return device
 
 
 db.drop_all()
