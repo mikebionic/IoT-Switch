@@ -21,6 +21,7 @@ from .models import (
 	Sensors,
 	Rooms,
 	Triggers)
+from .utils_scheduler import run_scheduled_task
 
 
 @app.route("/esp/",methods=['GET','POST'])
@@ -235,11 +236,8 @@ def esp_json_to_arg():
 				try:
 					r = requests.get('http://{}/control/?{}'.format(device.ip, argumented_url))
 					response = device.json()
-					print(response)
 					pins = [pin.json() for pin in device.pins]
-					print(pins)
 					response['pins'] = pins
-					print(response)
 
 					try:
 						if device.Schedule:

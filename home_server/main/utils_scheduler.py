@@ -1,4 +1,5 @@
 import requests
+from playsound import playsound
 
 def run_scheduled_task(dbSchedule):
 	if dbSchedule.typeId == 1:
@@ -31,3 +32,5 @@ def run_scheduled_task(dbSchedule):
 
 	elif dbSchedule.typeId == 2:
 		playsound('./sounds/{}'.format(dbSchedule.path))
+
+	return True
