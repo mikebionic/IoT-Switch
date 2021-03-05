@@ -1,6 +1,10 @@
 import requests
 from playsound import playsound
 
+from main import app
+
+local_addr = app.config['SERVER_URL']
+
 def run_scheduled_task(dbSchedule):
 	if dbSchedule.typeId == 1:
 		device = dbSchedule.device
@@ -10,11 +14,11 @@ def run_scheduled_task(dbSchedule):
 				print("found pin")
 				current_pin = pin
 
-		current_pin.action = dbSchedule.action
-		db.session.commit
+		current_pin.action = dbSchedule.pin_action
+		db.session.commit()
 
 		payload = {
-			"command": device.command
+			"command": dbSchedule.command,
 			"pins": [
 				{
 					"command": current_pin.command,
@@ -31,6 +35,6 @@ def run_scheduled_task(dbSchedule):
 			headers = {'Content-Type': 'application/json'})
 
 	elif dbSchedule.typeId == 2:
-		playsound('./sounds/{}'.format(dbSchedule.path))
+		playsound('main/sounds/{}'.format(dbSchedule.path))
 
 	return True

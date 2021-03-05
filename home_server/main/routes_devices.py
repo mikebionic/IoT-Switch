@@ -196,7 +196,7 @@ def esp_ping():
 	device = Devices.query.filter_by(device_key = device_key).first()
 	if device:
 		try:
-			device.ip = ip_addresshttps://www.ubuntupit.com/install-adapta-kde-theme-ubuntu-kde-plasma/
+			device.ip = ip_address
 			db.session.commit()
 		except Exception as ex:
 			print(ex)
@@ -207,7 +207,7 @@ def esp_ping():
 
 @app.route("/esp/JsonToArg/",methods=['GET','POST'])
 def esp_json_to_arg():
-	isSchedule = request.args.get(isSchedule,0,type=int)
+	isSchedule = request.args.get('isSchedule',0,type=int)
 	if request.method == 'POST':
 		req = request.get_json()
 		command = req["command"]
@@ -239,12 +239,14 @@ def esp_json_to_arg():
 					pins = [pin.json() for pin in device.pins]
 					response['pins'] = pins
 
-					try:
-						if device.Schedule:
-							for schedule in device.Schedule:
-								run_scheduled_task(dbSchedule = schedule)
-					except Exception as ex:
-						print("schedule failed")
+					if not isSchedule:
+						try:
+							if device.schedules:
+								for schedule in device.schedules:
+									run_scheduled_task(dbSchedule = schedule)
+						except Exception as ex:
+							print(ex)
+							print("schedule failed")
 
 					return make_response(jsonify(response),200)
 				except Exception as ex:

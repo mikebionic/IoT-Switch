@@ -5,3 +5,4 @@ class Config:
 
 	# Database
 	SQLALCHEMY_DATABASE_URI = "sqlite:///SmartSwitches.db"
+	SERVER_URL = "127.0.0.1:5000"

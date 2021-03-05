@@ -393,13 +393,14 @@ class Resident_types(db.Model):
 		return db_type
 
 
-class Schedule(db.Model):
+class Schedules(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
 	name = db.Column(db.String(100),nullable=False)
 	typeId = db.Column(db.Integer,default=1)
 	deviceId = db.Column(db.Integer,db.ForeignKey("devices.id"))
 	pinId = db.Column(db.Integer,db.ForeignKey("pins.id"))
-	action = db.Column(db.String(100),nullable=False)
+	device_command = db.Column(db.String())
+	pin_action = db.Column(db.String(100))
 	description = db.Column(db.String(500))
 	path = db.Column(db.String(255))
 	url = db.Column(db.String(500),nullable=False,default="/esp/JsonToArg/")
@@ -409,10 +410,11 @@ class Schedule(db.Model):
 		device = {
 			"id": self.id,
 			"name": self.name,
-			"typeId": self.typeId
+			"typeId": self.typeId,
 			"deviceId": self.deviceId,
 			"pinId": self.pinId,
-			"action": self.action,
+			"device_command": self.device_command,
+			"pin_action": self.pin_action,
 			"description": self.description,
 			"path": self.path,
 			"url": self.url,
