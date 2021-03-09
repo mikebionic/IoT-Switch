@@ -234,7 +234,7 @@ def esp_json_to_arg():
 					argumented_url += "{}={}&".format(key,value)
 
 				try:
-					r = requests.get('http://{}/control/?{}'.format(device.ip, argumented_url))
+					# r = requests.get('http://{}/control/?{}'.format(device.ip, argumented_url))
 					response = device.json()
 					pins = [pin.json() for pin in device.pins]
 					response['pins'] = pins
@@ -243,6 +243,7 @@ def esp_json_to_arg():
 						try:
 							if device.schedules:
 								for schedule in device.schedules:
+									print("called schedule")
 									run_scheduled_task(dbSchedule = schedule)
 						except Exception as ex:
 							print(ex)
@@ -250,6 +251,7 @@ def esp_json_to_arg():
 
 					return make_response(jsonify(response),200)
 				except Exception as ex:
+					print(ex)
 					return make_response("error, couldn't make a request (connection issue)")
 
 		return make_response("error, device is not supported for current action",200)
