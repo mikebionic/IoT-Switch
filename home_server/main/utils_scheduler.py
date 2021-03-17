@@ -1,5 +1,6 @@
 import requests
-from playsound import playsound
+# from playsound import playsound
+import pyglet
 from flask import json
 
 from main import app, db
@@ -38,6 +39,9 @@ def run_scheduled_task(dbSchedule):
 				headers = {'Content-Type': 'application/json'})
 
 	elif dbSchedule.typeId == 2:
-		playsound('main/sounds/{}'.format(dbSchedule.path))
+		# playsound('main/sounds/{}'.format(dbSchedule.path))
+		audio = pyglet.media.load('main/sounds/{}'.format(dbSchedule.path))
+		audio.play()
+
 
 	return True
