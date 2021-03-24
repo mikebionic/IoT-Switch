@@ -26,6 +26,7 @@ from .utils_scheduler import run_scheduled_task
 
 @app.route("/esp/",methods=['GET','POST'])
 def esp():
+	toMaster = request.args.get('toMaster',0,type=int)
 	if request.method == 'POST':
 		req = request.get_json()
 		state = req["state"]
@@ -33,10 +34,15 @@ def esp():
 		action = req["action"]
 		device = Devices.query.filter_by(command = command).first()
 		if device:
+
+			remoteIp = device.ip
+			if toMaster:
+				remoteIp = app.config['MASTER_ARDUINO_IP']
+
 			if device.typeId == 1:
 				try:
 					device.state = state
-					r = requests.get('http://{}/control/{}'.format(device.ip, device.state))
+					r = requests.get('http://{}/control/{}'.format(remoteIp, device.state))
 					db.session.commit()
 					print (r.text)
 					return make_response(jsonify(device.json()),200)
@@ -49,6 +55,7 @@ def esp():
 					return make_response(jsonify(device.json()),200)
 				except Exception as ex:
 					return make_response("error, couldn't make a request (connection issue)")
+
 			return make_response("error, couldn't make a request (no device found)",200)
 
 
@@ -75,7 +82,7 @@ def esp_motionAlert():
 
 	device = Devices.query.filter_by(device_key = device_key).first()
 	if device:
-		triggers.query.filter_by(command = "motion_trigger").first()
+		trigger = Triggers.query.filter_by(command = "motion_trigger").first()
 		if trigger:
 			if (trigger.state == 1):
 				try:
@@ -208,6 +215,7 @@ def esp_ping():
 @app.route("/esp/JsonToArg/",methods=['GET','POST'])
 def esp_json_to_arg():
 	isSchedule = request.args.get('isSchedule',0,type=int)
+	toMaster = request.args.get('toMaster',0,type=int)
 	if request.method == 'POST':
 		req = request.get_json()
 		command = req["command"]
@@ -234,7 +242,10 @@ def esp_json_to_arg():
 					argumented_url += "{}={}&".format(key,value)
 
 				try:
-					# r = requests.get('http://{}/control/?{}'.format(device.ip, argumented_url))
+					remoteIp = device.ip
+					if toMaster:
+						remoteIp = app.config['MASTER_ARDUINO_IP']
+					r = requests.get('http://{}/control/?{}'.format(remoteIp, argumented_url))
 					response = device.json()
 					pins = [pin.json() for pin in device.pins]
 					response['pins'] = pins
