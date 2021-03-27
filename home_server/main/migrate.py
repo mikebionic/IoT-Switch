@@ -2,7 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from datetime import date,datetime,time
 
-from db_migration_data.devices_config import devices, pins, sensors, rooms
+from db_migration_data.devices_config import devices, pins, sensors
 from db_migration_data.default_devices_config import device_types, sensor_types, triggers
 from db_migration_data.locale_config import cities, regions
 from db_migration_data.schedules_config import schedules
@@ -217,9 +217,9 @@ class Schedules(db.Model):
 db.drop_all()
 db.create_all()
 
-for room in rooms:
-	db_room = Rooms(**room)
-	db.session.add(db_room)
+# for room in rooms:
+# 	db_room = Rooms(**room)
+# 	db.session.add(db_room)
 
 for device in devices:
 	db_device = Devices(**device)

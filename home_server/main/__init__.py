@@ -8,5 +8,5 @@ db = SQLAlchemy(app)
 from . import models
 from . import routes_devices
 from . import routes_locale
+from . import routes_netscan
 # from . import routes_serial
-# from . import routes_netscan
