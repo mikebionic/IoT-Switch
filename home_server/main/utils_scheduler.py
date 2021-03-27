@@ -1,6 +1,7 @@
 import requests
 import os, sys
 from flask import json
+from time import sleep
 
 from main import app, db
 from main.models import Devices

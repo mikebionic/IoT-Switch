@@ -13,7 +13,7 @@ schedules = [
 		"id": 1,
 		"name": "Welcome sound",
 		"typeId": 2,
-		"deviceId": 22,
+		"deviceId": 10,
 		"path": "you-wanna-come-in.wav",
 		"description": "Says hello when triggered"
 	}
