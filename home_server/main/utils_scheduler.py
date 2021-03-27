@@ -1,11 +1,14 @@
 import requests
-# from playsound import playsound
-import pyglet
+import os, sys
 from flask import json
 
 from main import app, db
 from main.models import Devices
 local_addr = app.config['SERVER_URL']
+
+if app.config['SOUND_PLAYER'] == "playsound":
+	from playsound import playsound
+
 
 def run_scheduled_task(dbSchedule):
 	if dbSchedule.typeId == 1:
@@ -39,9 +42,13 @@ def run_scheduled_task(dbSchedule):
 				headers = {'Content-Type': 'application/json'})
 
 	elif dbSchedule.typeId == 2:
-		# playsound('main/sounds/{}'.format(dbSchedule.path))
-		audio = pyglet.media.load('main/sounds/{}'.format(dbSchedule.path))
-		audio.play()
-
+		if app.config['SOUND_PLAYER'] == "omxplayer":
+			sleep(0.3)
+			os.system('omxplayer -o both main/sounds/{} &'.format(dbSchedule.path))
+			sleep(1)
+			sys.exit()
+		
+		elif app.config['SOUND_PLAYER'] == "playsound":
+			playsound('main/sounds/{}'.format(dbSchedule.path))
 
 	return True

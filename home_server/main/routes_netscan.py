@@ -1,4 +1,5 @@
 from flask import Flask, make_response
+import requests
 
 from main import app, db
 
