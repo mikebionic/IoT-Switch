@@ -160,15 +160,15 @@ devices = [
 		"description": "GERKON OPEN/CLOSE"
 	},
 	{
-                "id": 31,
-                "name": "Gaz sensor",
-                "ip": "192.168.1.145",
-                "state": 0,
-                "device_key": "gas_sensor_secret",
-                "typeId": 1,
-                "command": "gas_sensor",
-                "description": "gas sensor, shows current gas status"
-        },
+		"id": 31,
+		"name": "Gaz sensor",
+		"ip": "192.168.1.145",
+		"state": 0,
+		"device_key": "gas_sensor_secret",
+		"typeId": 1,
+		"command": "gas_sensor",
+		"description": "gas sensor, shows current gas status"
+	},
 	{
 		"name": "Local binary test",
 		"ip": "127.0.0.1:5000",

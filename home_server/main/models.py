@@ -252,6 +252,7 @@ class Sensors(db.Model):
 	typeId = db.Column(db.Integer,db.ForeignKey("sensor_types.id"))
 	deviceId = db.Column(db.Integer,db.ForeignKey("devices.id"))
 	sensor_records = db.relationship('Sensor_records',backref='sensors',lazy=True)
+	schedules = db.relationship('Schedules',backref='sensors',lazy=True)
 
 	def json(self):
 		sensor = {
@@ -399,7 +400,11 @@ class Schedules(db.Model):
 	typeId = db.Column(db.Integer,default=1)
 	deviceId = db.Column(db.Integer,db.ForeignKey("devices.id"))
 	pinId = db.Column(db.Integer,db.ForeignKey("pins.id"))
-	device_command = db.Column(db.String())
+	sensorId = db.Column(db.Integer,db.ForeignKey("sensors.id"))
+	on_action = db.Column(db.String)
+	on_state = db.Column(db.Integer)
+	on_value = db.Column(db.String)
+	device_command = db.Column(db.String)
 	pin_action = db.Column(db.String(100))
 	description = db.Column(db.String(500))
 	path = db.Column(db.String(255))
@@ -413,6 +418,10 @@ class Schedules(db.Model):
 			"typeId": self.typeId,
 			"deviceId": self.deviceId,
 			"pinId": self.pinId,
+			"sensorId": self.sensorId,
+			"on_action": self.on_action,
+			"on_state": self.on_state,
+			"on_value": self.on_value,
 			"device_command": self.device_command,
 			"pin_action": self.pin_action,
 			"description": self.description,

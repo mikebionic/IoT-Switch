@@ -4,7 +4,7 @@ from datetime import date,datetime,time
 
 from db_migration_data.devices_config import devices, pins, sensors
 from db_migration_data.default_devices_config import device_types, sensor_types, triggers
-from db_migration_data.locale_config import cities, regions
+from db_migration_data.locale_config import cities, regions, flats, rooms
 from db_migration_data.schedules_config import schedules
 
 
@@ -139,7 +139,7 @@ class Sensors(db.Model):
 	value = db.Column(db.Float,default=0.0)
 	typeId = db.Column(db.Integer,db.ForeignKey("sensor_types.id"))
 	deviceId = db.Column(db.Integer,db.ForeignKey("devices.id"))
-
+	schedules = db.relationship('Schedules',backref='sensors',lazy=True)
 
 class Sensor_records(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
@@ -206,7 +206,11 @@ class Schedules(db.Model):
 	typeId = db.Column(db.Integer,default=1)
 	deviceId = db.Column(db.Integer,db.ForeignKey("devices.id"))
 	pinId = db.Column(db.Integer,db.ForeignKey("pins.id"))
-	device_command = db.Column(db.String())
+	sensorId = db.Column(db.Integer,db.ForeignKey("sensors.id"))
+	on_action = db.Column(db.String)
+	on_state = db.Column(db.Integer)
+	on_value = db.Column(db.String)
+	device_command = db.Column(db.String)
 	pin_action = db.Column(db.String(100))
 	description = db.Column(db.String(500))
 	path = db.Column(db.String(255))
@@ -216,10 +220,6 @@ class Schedules(db.Model):
 
 db.drop_all()
 db.create_all()
-
-# for room in rooms:
-# 	db_room = Rooms(**room)
-# 	db.session.add(db_room)
 
 for device in devices:
 	db_device = Devices(**device)
@@ -253,6 +253,14 @@ for city in cities:
 for region in regions:
 	db_region = Regions(**region)
 	db.session.add(db_region)
+
+for flat in flats:
+	db_flat = Flats(**flat)
+	db.session.add(db_flat)
+
+for room in rooms:
+	db_room = Rooms(**room)
+	db.session.add(db_room)
 
 for schedule in schedules:
 	db_schedule = Schedules(**schedule)
