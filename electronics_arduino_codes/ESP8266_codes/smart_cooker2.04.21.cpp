@@ -191,7 +191,7 @@ void handleDevice() {
     digitalWrite(auto_manual_selector_pin,0);
     delay(2000);
     digitalWrite(powerPin,1);
-    old_state_manual == false;
+    old_state_manual = false;
   }
   else if(auto_manual_selector == "manual"){
     if (old_state_manual == false){
@@ -210,7 +210,7 @@ void handleDevice() {
       delay(2000);
       digitalWrite(auto_manual_selector_pin,1);
 
-      old_state_manual == true;
+      old_state_manual = true;
     }
   }
 
