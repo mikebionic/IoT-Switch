@@ -2,13 +2,15 @@ import numpy as np
 import cv2
 import requests
 from time import sleep
+from datetime import datetime, timedelta
+from trained_users import users
 import json
 
-from trained_users import users
-
 id = 0
+delay_seconds = 5
+last_time = datetime.now()
 treshold = 45
-rpi_url = "http://192.168.1.252/"
+door_server_url = "http://192.168.1.252"
 
 face_cascade = cv2.CascadeClassifier('cascades/haarcascade_frontalface_default.xml')
 recognizer = cv2.face.LBPHFaceRecognizer_create()
@@ -33,23 +35,16 @@ def validate_user(id):
 
 
 def send_request():
-	opening_request = {
-		"command": "unlock_door",
-		"state": "1",
-		"action": ""
-	}
-
+	payload = {"command": "unlock_door", "state": 1, "action": ""}
 	r = requests.post(
-		"{}/esp/".format(rpi_url),
-		data = json.dumps(opening_request),
+        	"{}{}".format(door_server_url,"/esp/"),
+		data = json.dumps(payload),
 		headers = {'Content-Type': 'application/json'})
-
 
 while 1:
 	ret, img = cap.read()
 	gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 	faces = face_cascade.detectMultiScale(gray, 1.5, 5)
-
 	for (x,y,w,h) in faces:
 		cv2.rectangle(img,(x,y),(x+w,y+h),(255,0,0),2)
 
@@ -58,17 +53,18 @@ while 1:
 		print(id, conf)
 
 		if (conf < treshold):
-			if validate_user(id):
-				print("validated")
-				try:
-					send_request()
-				except Exception as ex:
-					print(ex)
-				sleep(0.5)
+			if datetime.now() > last_time + timedelta(seconds = delay_seconds):
+				if validate_user(id):
+					print("validated")
+					last_time = datetime.now()
+					try:
+						send_request()
+					except Exception as ex:
+						print(ex)
+					#sleep(5)
+			cv2.putText(img,str(id),(x,y+h),font,255,(255, 255, 255))
 
-		cv2.putText(img,str(id),(x,y+h),font,255,(255, 255, 255))
-
-	cv2.imshow('img',img)
+	cv2.imshow('img', img)
 	if cv2.waitKey(1) == ord('q'):
 		break
 
