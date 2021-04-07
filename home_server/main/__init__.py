@@ -9,4 +9,5 @@ from . import models
 from . import routes_devices
 from . import routes_locale
 from . import routes_netscan
+from . import routes_admin
 # from . import routes_serial
