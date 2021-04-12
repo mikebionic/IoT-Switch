@@ -7,4 +7,4 @@ class Config:
 	SQLALCHEMY_DATABASE_URI = "sqlite:///SmartSwitches.db"
 	SERVER_URL = "http://127.0.0.1:5000"
 	MASTER_ARDUINO_IP = "127.0.0.1"
-	SOUND_PLAYER = "omxplayer"
+	SOUND_PLAYER = "playsound"

@@ -20,6 +20,14 @@ regions = [
 	}
 ]
 
+houses = [
+	{
+		"id": 1,
+		"name": "gorjaw jay 1",
+		"regionId": 1
+	}
+]
+
 flats = [
 	{
 		"id": 1,

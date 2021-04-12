@@ -4,8 +4,11 @@ from datetime import date,datetime,time
 
 from db_migration_data.devices_config import devices, pins, sensors
 from db_migration_data.default_devices_config import device_types, sensor_types, triggers
-from db_migration_data.locale_config import cities, regions, flats, rooms
+from db_migration_data.locale_config import cities, regions, houses, flats, rooms
+from db_migration_data.residents_config import residents, qr_codes
 from db_migration_data.schedules_config import schedules
+
+from core_utils.random_gen import random_gen
 
 
 app = Flask (__name__)
@@ -18,45 +21,45 @@ db = SQLAlchemy(app)
 class City(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
 	name = db.Column(db.String(100),nullable=False)
-	secret_key = db.Column(db.String(500),nullable=False)
+	secret_key = db.Column(db.String(1000),nullable=False, default=random_gen())
 	description = db.Column(db.String(500))
 	typeId = db.Column(db.Integer,db.ForeignKey("city_types.id"))
-	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
+	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.now)
 	regions = db.relationship('Regions',backref='city',lazy=True)
 
 
 class Regions(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
 	name = db.Column(db.String(100),nullable=False)
-	secret_key = db.Column(db.String(500),nullable=False)
+	secret_key = db.Column(db.String(1000),nullable=False,default=random_gen())
 	description = db.Column(db.String(500))
 	cityId = db.Column(db.Integer,db.ForeignKey("city.id"))
 	typeId = db.Column(db.Integer,db.ForeignKey("region_types.id"))
-	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
+	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.now)
 	houses = db.relationship('Houses',backref='regions',lazy=True)
 
 
 class Houses(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
 	name = db.Column(db.String(100),nullable=False)
-	secret_key = db.Column(db.String(500),nullable=False)
+	secret_key = db.Column(db.String(1000),nullable=False,default=random_gen())
 	description = db.Column(db.String(500))
 	longit = db.Column(db.String(100))
 	latit = db.Column(db.String(100))
 	regionId = db.Column(db.Integer,db.ForeignKey("regions.id"))
 	typeId = db.Column(db.Integer,db.ForeignKey("house_types.id"))
-	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
+	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.now)
 	flats = db.relationship('Flats',backref='houses',lazy=True)
 
 
 class Flats(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
 	name = db.Column(db.String(100),nullable=False)
-	secret_key = db.Column(db.String(500),nullable=False)
+	secret_key = db.Column(db.String(1000),nullable=False,default=random_gen())
 	description = db.Column(db.String(500))
 	houseId = db.Column(db.Integer,db.ForeignKey("houses.id"))
 	typeId = db.Column(db.Integer,db.ForeignKey("flat_types.id"))
-	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
+	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.now)
 	residents = db.relationship('Residents',backref='flats',lazy=True)
 	devices = db.relationship('Devices',backref='flats',lazy=True)
 	rooms = db.relationship('Rooms',backref='flats',lazy=True)
@@ -64,21 +67,27 @@ class Flats(db.Model):
 
 class Residents(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
-	username = db.Column(db.String(100),nullable=False)
 	name = db.Column(db.String(100),nullable=False)
-	surname = db.Column(db.String(100),nullable=False)
-	birthDate = db.Column(db.DateTime,default=None)
-	email = db.Column(db.String(100),nullable=False)
-	password = db.Column(db.String(100),nullable=False)
-	phoneNumber = db.Column(db.String(100),nullable=False)
-	passportCode = db.Column(db.String(100),nullable=False)
-	secret_key = db.Column(db.String(500),nullable=False)
+	surname = db.Column(db.String(100))
+	birthDate = db.Column(db.DateTime)
+	email = db.Column(db.String(100))
+	username = db.Column(db.String(100))
+	password = db.Column(db.String(100))
+	phoneNumber = db.Column(db.String(100))
+	passportCode = db.Column(db.String(100))
+	secret_key = db.Column(db.String(1000),nullable=False,default=random_gen())
 	description = db.Column(db.String(500))
 	flatId = db.Column(db.Integer,db.ForeignKey("flats.id"))
 	typeId = db.Column(db.Integer,db.ForeignKey("resident_types.id"))
-	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
+	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.now)
 	rfidTags = db.relationship('RfidTags',backref='residents',lazy=True)
 
+
+class QR_codes(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	secret_key = db.Column(db.String(1000),nullable=False,default=random_gen())
+	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.now)
+	registered = db.Column(db.Boolean, default=False)
 
 class RfidTags(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
@@ -100,14 +109,14 @@ class Devices(db.Model):
 	name = db.Column(db.String(100),nullable=False)
 	ip = db.Column(db.String(100))
 	barcode = db.Column(db.String(100))
-	device_key = db.Column(db.String(500),nullable=False)
+	device_key = db.Column(db.String(1000),nullable=False,default=random_gen())
 	command = db.Column(db.String(100),nullable=False)
 	state = db.Column(db.Integer,nullable=False,default=0)
 	description = db.Column(db.String(500))
 	typeId = db.Column(db.Integer,db.ForeignKey("device_types.id"))
 	flatId = db.Column(db.Integer,db.ForeignKey("flats.id"))
 	roomId = db.Column(db.Integer,db.ForeignKey("rooms.id"))
-	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
+	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.now)
 	pins = db.relationship('Pins',backref='devices',lazy='joined')
 	sensors = db.relationship('Sensors',backref='devices',lazy='joined')
 	schedules = db.relationship('Schedules',backref='devices',lazy=True)
@@ -146,7 +155,7 @@ class Sensor_records(db.Model):
 	name = db.Column(db.String(100),nullable=False)
 	description = db.Column(db.String(500))
 	value = db.Column(db.Float,default=0.0)
-	date = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
+	date = db.Column(db.DateTime,nullable=False,default=datetime.now)
 	deviceId = db.Column(db.Integer,db.ForeignKey("devices.id"))
 	sensorId = db.Column(db.Integer,db.ForeignKey("sensors.id"))
 
@@ -254,9 +263,21 @@ for region in regions:
 	db_region = Regions(**region)
 	db.session.add(db_region)
 
+for house in houses:
+	db_house = Houses(**house)
+	db.session.add(db_house)
+
 for flat in flats:
 	db_flat = Flats(**flat)
 	db.session.add(db_flat)
+
+for resident in residents:
+	db_resident = Residents(**resident)
+	db.session.add(db_resident)
+
+for qr_code in qr_codes:
+	db_qr_code = QR_codes(**qr_code)
+	db.session.add(db_qr_code)
 
 for room in rooms:
 	db_room = Rooms(**room)
