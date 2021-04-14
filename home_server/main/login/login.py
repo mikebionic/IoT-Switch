@@ -5,6 +5,7 @@ from flask import (
 	jsonify,
 	request
 )
+from random import randint
 from datetime import datetime, timedelta
 
 from main import app, db
@@ -47,7 +48,7 @@ def qr_request_register():
 
 	return make_response(response), status
 
-
+# curl -i -H 'Authorization:Basic c2VjcmV0X2tleTpram4wOThoam5mZDkyaDNmZDJpb2pobmJjNzloMjNqZmMyNHVmMDI0Zmhu' http://127.0.0.1:5000/qr/login/
 @app.route('/device/login/')
 def device_login():
 	auth = request.authorization
@@ -101,12 +102,15 @@ def qr_register():
 			print("registered date or value issue")
 			raise Exception
 		
-		code.registered = True
+		qr_code = None
+		if code.typeId != 1:
+			code.registered = True
+			qr_code = code.secret_key
 
 		status = 200
 		new_user = {
-			"name": "user",
-			"secret_key": code.secret_key
+			"name": f"qr_user_{randint(1,99999)}",
+			"secret_key": qr_code
 		}
 
 		user = Residents(**new_user)

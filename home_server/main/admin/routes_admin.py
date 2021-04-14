@@ -7,8 +7,9 @@ from flask import (
 	request
 )
 from main import app
-from main import db
+from main.admin.utils.get_locale_data import get_locale_data
 
 @app.route("/admin")
 def dashboard():
-	return render_template("admin/dashboard.html")
+	data = get_locale_data()
+	return render_template("admin/dashboard.html", data)

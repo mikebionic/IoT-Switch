@@ -88,6 +88,8 @@ class QR_codes(db.Model):
 	secret_key = db.Column(db.String(1000),nullable=False,default=random_gen())
 	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.now)
 	registered = db.Column(db.Boolean, default=False)
+	typeId = db.Column(db.Integer, default=0)
+
 
 class RfidTags(db.Model):
 	id = db.Column(db.Integer,primary_key=True)

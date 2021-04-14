@@ -142,13 +142,15 @@ class QR_codes(db.Model):
 	secret_key = db.Column(db.String(1000),nullable=False,default=random_gen())
 	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.now)
 	registered = db.Column(db.Boolean, default=False)
+	typeId = db.Column(db.Integer, default=0)
 
 	def json(self):
 		data = {
 			"id": self.id,
 			"secret_key": self.secret_key,
 			"dateAdded": self.dateAdded,
-			"registered": self.registered
+			"registered": self.registered,
+			"typeId": self.typeId,
 		}
 		return data
 

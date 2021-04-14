@@ -16,6 +16,7 @@ qr_codes = [
 	{
 		"id": 1,
 		"secret_key": "kjn098hjnfd92h3fd2iojhnbc79h23jfc24uf024fhn",
-		"dateAdded": datetime(9999, 1, 1)
+		"dateAdded": datetime(9999, 1, 1),
+		"typeId": 1
 	}
 ]
