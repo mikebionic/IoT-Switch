@@ -1,0 +1,83 @@
+{% extends "/admin/layout.html" %}
+
+{% block css %}
+	<link href="/static/admin/plugins/datatable/dataTables.bootstrap4.min.css" rel="stylesheet" />
+	<link href="/static/admin/plugins/datatable/responsivebootstrap4.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+
+	<h4>{{ data.message }}</h4>
+
+	<div class="row">
+		<div class="col-md-12 col-lg-12">
+			<div class="card">
+				<div class="card-header">
+					<div class="card-title">Data Tables</div>
+				</div>
+				<div class="card-body">
+					<div class="table-responsive">
+						<div id="example_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+							<div class="row">
+								<div class="col-sm-12 col-md-6">
+									<div class="dataTables_length" id="example_length">
+										<label>Show
+											<select name="example_length" aria-controls="example" class="custom-select custom-select-sm form-control form-control-sm">
+												<option value="10">10</option>
+												<option value="25">25</option>
+												<option value="50">50</option>
+												<option value="100">100</option>
+											</select> entries
+										</label>
+									</div>
+								</div>
+								<div class="col-sm-12 col-md-6">
+									<div id="example_filter" class="dataTables_filter">
+										<label>Search:
+											<input type="search" class="form-control form-control-sm" placeholder="" aria-controls="example">
+										</label></div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12">
+										<table id="example" class="table table-striped table-bordered text-nowrap w-100 dataTable no-footer" role="grid" aria-describedby="example_info">
+											<thead>
+												<tr role="row"><th class="wd-15p sorting_asc" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-sort="ascending" aria-label="First name: activate to sort column descending" style="width: 121px;">First name</th><th class="wd-15p sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Last name: activate to sort column ascending" style="width: 114px;">Last name</th><th class="wd-20p sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 211px;">Position</th><th class="wd-15p sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 121px;">Start date</th><th class="wd-10p sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 82px;">Salary</th><th class="wd-25p sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="E-mail: activate to sort column ascending" style="width: 220px;">E-mail</th></tr>
+											</thead>
+											<tbody>
+												<tr role="row">
+													<td class="sorting_1">Donna</td>
+													<td>Bond</td>
+													<td>Account Manager</td>
+													<td>2012/02/21</td>
+													<td>$543,654</td>
+													<td>d.bond@datatables.net</td>
+												</tr>
+												<tr role="row">
+													<td class="sorting_1">Evan</td>
+													<td>Terry</td>
+													<td>Sales Manager</td>
+													<td>2013/10/26</td>
+													<td>$66,340</td>
+													<td>d.terry@datatables.net</td>
+												</tr>
+											</tbody>
+										</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+{% endblock %}
+
+{% block js %}
+	<script src="/static/admin/plugins/datatable/jquery.dataTables.min.js"></script>
+	<script src="/static/admin/plugins/datatable/dataTables.bootstrap4.min.js"></script>
+	<script src="/static/admin/plugins/datatable/datatable.js"></script>
+	<script src="/static/admin/plugins/datatable/datatable-2.js"></script>
+	<script src="/static/admin/plugins/datatable/dataTables.responsive.min.js"></script>
+{% endblock %}

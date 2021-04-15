@@ -1,0 +1,25 @@
+{% extends "/admin/layout.html" %}
+
+{% block content %}
+
+	<h4>{{ data.message }}</h4>
+	<div class="row">
+		{% for detail in data[data['type']] %}
+		<div class="col-md-6 col-xl-3">
+			<div class="card text-white bg-secondary">
+				<div class="card-header ">
+					<h3 class="card-title ">{{ detail.name }}</h3>
+					<div class="card-options">
+						<a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up text-white"></i></a>
+						<a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x text-white "></i></a>
+					</div>
+				</div>
+				<div class="card-body">
+					<p class="card-text">{{ detail.description if detail.description else 'no description..' }}</p>
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+
+{% endblock %}

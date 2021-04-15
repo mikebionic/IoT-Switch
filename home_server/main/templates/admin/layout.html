@@ -18,6 +18,7 @@
 		<link href="/static/admin/plugins/iconfonts/plugin.css" rel="stylesheet" />
 		<link href="/static/admin/plugins/iconfonts/icons.css" rel="stylesheet" />
 		<link  href="/static/admin/fonts/fonts/font-awesome.min.css" rel="stylesheet">
+		{% block css %}{% endblock %}
 	</head>
 
 	<body class="app sidebar-mini rtl">
@@ -27,7 +28,6 @@
 
 		<div class="page">
 			<div class="page-main">
-				<!--app-header-->
 				<div class="app-header header hor-topheader d-flex">
 					<div class="container">
 						<div class="d-flex">
@@ -65,14 +65,12 @@
 								<li aria-haspopup="true">
 									<a href="#" class="sub-icon"><i class="typcn typcn-th-large-outline hor-icon"></i> Other <i class="fa fa-angle-down horizontal-icon"></i></a>
 									<ul class="sub-menu">
-										<li aria-haspopup="true"><a href="/admin/clients">Clients</a></li>
+										<li aria-haspopup="true"><a href="/admin/residents_table">Residents</a></li>
 										<li aria-haspopup="true"><a href="/admin/sensors">Sensors</a></li>
 									</ul>
 								</li>
-
 							</ul>
 						</nav>
-						<!--Nav end -->
 					</div>
 				</div>
 
@@ -89,10 +87,8 @@
 							</div>
 						</div>
 					</footer>
-					<!-- End Footer-->
 
 				</div>
-				<!-- End app-content-->
 			</div>
 		</div>
 		<a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
@@ -109,6 +105,7 @@
 		<script src="/static/admin/plugins/accordion1/js/easyResponsiveTabs.js"></script>
 		<script src="/static/admin/plugins/scroll-bar/jquery.mCustomScrollbar.concat.min.js"></script>
 		<script src="/static/admin/plugins/sidebar/sidebar.js"></script>
+		{% block js %}{% endblock %}
 
 	</body>
 </html>

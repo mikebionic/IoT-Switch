@@ -3,79 +3,94 @@
 {% block content %}
 
 <div class="row">
-	<div class="col-xl-3 col-lg-6 col-md-12 col-sm-12">
-		<div class="card card-counter bg-gradient-danger">
+	<a href="/admin/locale_details?tag=regions"
+		class="col-xl-3 col-lg-6 col-md-12 col-sm-12">
+		<div class="card card-counter bg-gradient-primary">
 			<div class="card-body">
 				<div class="row">
 					<div class="col-4">
-						<i class="si si-eye mt-3 mb-0 text-white-transparent"></i>
+						<i class="fa fa-compass mt-3 mb-0 text-white-transparent"></i>
 					</div>
 					<div class="col-8 text-center">
 						<div class="mt-4 mb-0 text-white">
-							<h2 class="mb-0">54,234</h2>
-							<p class="text-white mt-1">Daily Visitors </p>
+							<h2 class="mb-0">{{data.regions_qty}}</h2>
+							<p class="text-white mt-1">Regions</p>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div><!-- col end -->
-	<div class="col-xl-3 col-lg-6 col-md-12 col-sm-12">
+	</a>
+	<a href="/admin/locale_details?tag=houses"
+		class="col-xl-3 col-lg-6 col-md-12 col-sm-12">
 		<div class="card card-counter bg-gradient-secondary ">
 			<div class="card-body">
 				<div class="row">
 					<div class="col-4">
-						<i class="si si-basket mt-3 mb-0 text-white-transparent"></i>
+						<i class="fa fa-building-o mt-3 mb-0 text-white-transparent"></i>
 					</div>
 					<div class="col-8 text-center">
 						<div class="mt-4 mb-0 text-white">
-							<h2 class="mb-0">80,956</h2>
-							<p class="text-white mt-1">Daily Orders </p>
+							<h2 class="mb-0">{{data.houses_qty}}</h2>
+							<p class="text-white mt-1">Houses</p>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div><!-- col end -->
-	<div class="col-xl-3 col-lg-6 col-md-12 col-sm-12">
-		<div class="card card-counter bg-gradient-success">
-			<div class="card-body">
-				<div class="row">
-					<div class="col-4">
-						<i class="si si-people mt-3 mb-0 text-white-transparent"></i>
-					</div>
-					<div class="col-8 text-center">
-						<div class="mt-4 mb-0 text-white">
-							<h2 class="mb-0">34,762</h2>
-							<p class="text-white mt-1">Daily  Customers</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div><!-- col end -->
-	<div class="col-xl-3 col-lg-6 col-md-12 col-sm-12">
+	</a>
+	<a href="/admin/locale_details?tag=flats"
+		class="col-xl-3 col-lg-6 col-md-12 col-sm-12">
 		<div class="card card-counter bg-gradient-pink">
 			<div class="card-body">
 				<div class="row">
 					<div class="col-4">
-						<i class="si si-paper-plane mt-3 mb-0 text-white-transparent"></i>
+						<i class="fa fa-cubes mt-3 mb-0 text-white-transparent"></i>
 					</div>
 					<div class="col-8 text-center">
 						<div class="mt-4 mb-0 text-white">
-							<h2 class="mb-0">25,789</h2>
-							<p class="text-white mt-1 ">Daily Revenue</p>
+							<h2 class="mb-0">{{data.flats_qty}}</h2>
+							<p class="text-white mt-1">Flats</p>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div><!-- col end -->
+	</a>
+	<a href="/admin/locale_details?tag=residents"
+		class="col-xl-3 col-lg-6 col-md-12 col-sm-12">
+		<div class="card card-counter bg-gradient-success">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-4">
+						<i class="fa fa-users mt-3 mb-0 text-white-transparent"></i>
+					</div>
+					<div class="col-8 text-center">
+						<div class="mt-4 mb-0 text-white">
+							<h2 class="mb-0">{{data.residents_qty}}</h2>
+							<p class="text-white mt-1 ">Residents</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</a>
+</div>
+
+<div class="row row-cards">
+	<a href="/admin/residents_table" class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
+		<div class="card">
+			<div class="card-body text-center list-icons">
+				<i class="si si-people text-success"></i>
+				<p class="card-text mt-3 mb-3">Add and manage residents or users</p>
+				<p class="h1 text-center  text-success">Residents table</p>
+			</div>
+		</div>
+	</a>
 </div>
 
 
-
-
+<!-- 
 
 <div class="row">
 	<div class="col-sm-6 col-md-12 col-lg-6 col-xl-6">
@@ -84,7 +99,7 @@
 				<div class="d-flex clearfix">
 					<div class="text-left mt-3">
 						<p class="card-text text-muted mb-1">Regions</p>
-						<h2 class="mb-0 text-dark mainvalue">6,895</h2>
+						<h2 class="mb-0 text-dark mainvalue">12</h2>
 					</div>
 					<div class="ml-auto">
 						<span class="bg-primary-transparent icon-service text-primary ">
@@ -146,6 +161,6 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div> -->
 
 {% endblock %}

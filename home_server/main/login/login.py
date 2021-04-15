@@ -1,6 +1,4 @@
 from flask import (
-	render_template,
-	redirect,
 	make_response,
 	jsonify,
 	request
@@ -11,9 +9,6 @@ from datetime import datetime, timedelta
 from main import app, db
 from main.models import Residents, QR_codes
 
-@app.route('/login')
-def admin_login():
-	return render_template('login/login.html')
 
 # "secret_key: "
 # curl -i -H 'Authorization:Basic c2VjcmV0X2tleTpram4wOThoam5mZDkyaDNmZDJpb2pobmJjNzloMjNqZmMyNHVmMDI0Zmhu' http://127.0.0.1:5000/qr/request_register/
