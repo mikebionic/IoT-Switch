@@ -9,6 +9,8 @@ from flask import (
 from main import app
 from main.db_data_utils.get_locale_data import get_locale_data
 from main.db_data_utils.get_locale_qty import get_locale_qty
+from main.db_data_utils.get_sensor_data import get_sensor_data
+from main.db_data_utils.get_device_data import get_device_data
 
 
 @app.route("/admin")
@@ -44,9 +46,25 @@ def residents_table():
 		data = data
 	)
 
+@app.route("/admin/sensors_table")
+def sensors_table():
+	data = get_sensor_data()
+	return render_template(
+		"admin/sensors_table.html",
+		data = data
+	)
+
 
 @app.route("/widgets")
 def widgets():
 	return render_template(
 		"admin/widgets.html"
 	)
+
+@app.route("/admin/qr_gen")
+def qr_gen():
+	return render_template(
+		"admin/qr_gen.html"
+	)
+
+	

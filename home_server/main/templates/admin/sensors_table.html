@@ -27,42 +27,34 @@
 												<th class="wd-15p sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1">
 													Name
 												</th>
-												<th class="wd-15p sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1">
-													Surname
-												</th>
 												<th class="wd-20p sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1">
-													Username
+													Command
 												</th>
 												<th class="wd-10p sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1">
-													Password
-												</th>
-												<th class="wd-15p sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" >
-													E-mail
+													Value
 												</th>
 												<th class="wd-25p sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1">
-													Phone number
+													Type
+												</th>
+												<th class="wd-15p sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" >
+													Device
 												</th>
 												<th class="wd-15p sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" >
 													Description
-												</th>
-												<th class="wd-15p sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" >
-													Key
 												</th>
 											</tr>
 										</thead>
 										<tbody>
 
-											{% for resident in data['residents'] %}
+											{% for sensor in data['sensors'] %}
 											<tr role="row">
-												<td class="sorting_1">{{resident.id}}</td>
-												<td>{{resident.name}}</td>
-												<td>{{resident.surname}}</td>
-												<td>{{resident.username}}</td>
-												<td>{{resident.password}}</td>
-												<td>{{resident.email}}</td>
-												<td>{{resident.phoneNumber}}</td>
-												<td>{{resident.description}}</td>
-												<td>{{resident.secret_key}}</td>
+												<td class="sorting_1">{{sensor.id}}</td>
+												<td>{{sensor.name}}</td>
+												<td>{{sensor.command}}</td>
+												<td>{{sensor.value}}</td>
+												<td>{{sensor.typeId}}</td>
+												<td>{{sensor.deviceId}}</td>
+												<td>{{sensor.description}}</td>
 											</tr>
 											{% endfor %}
 

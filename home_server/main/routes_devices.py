@@ -22,6 +22,7 @@ from .models import (
 	Rooms,
 	Triggers)
 from .utils_scheduler import run_scheduled_task
+from main.db_data_utils.get_device_data import get_device_data
 
 
 @app.route("/esp/",methods=['GET','POST'])
@@ -214,16 +215,8 @@ def esp_ping():
 
 @app.route("/esp/checkState/")
 def check_state():
-	devices = Devices.query.all()
-	devices_data = []
-	for device in devices:
-		info = device.json()
-		pins = [pin.json() for pin in device.pins]
-		info['pins'] = pins
-		sensors = [sensor.json() for sensor in device.sensors]
-		info['sensors'] = sensors
-		devices_data.append(info)
-	return make_response(jsonify(devices_data),200)
+	data = get_device_data()
+	return make_response(jsonify(data),200)
 
 
 @app.route("/esp/getDevice/")

@@ -39,7 +39,7 @@
 							
 							<ul class="nav header-nav">
 								<li class="nav-item dropdown header-option m-2">
-									<a href="/logout" class="btn btn-outline-primary">Log out</a>
+									<a href="/admin/logout" class="btn btn-outline-primary">Logout</a>
 								</li>
 							</ul>
 							<ul class="nav header-nav">
@@ -60,14 +60,31 @@
 						<nav class="horizontalMenu clearfix">
 							<ul class="horizontalMenu-list">
 								<li aria-haspopup="true">
-									<a href="/admin" class="sub-icon"><i class="typcn typcn-device-desktop hor-icon"></i> Dashboard</a>
+									<a href="/admin/dashboard" class="sub-icon">
+										<i class="fa fa-dashboard hor-icon"></i>
+										Dashboard
+									</a>
 								</li>
+								<li aria-haspopup="true">
+									<a href="/admin/qr_gen" class="sub-icon">
+										<i class="fa fa-qrcode hor-icon"></i>
+										QR generator
+									</a>
+								</li>
+								
 								<li aria-haspopup="true">
 									<a href="#" class="sub-icon"><i class="typcn typcn-th-large-outline hor-icon"></i> Other <i class="fa fa-angle-down horizontal-icon"></i></a>
 									<ul class="sub-menu">
 										<li aria-haspopup="true"><a href="/admin/residents_table">Residents</a></li>
 										<li aria-haspopup="true"><a href="/admin/sensors">Sensors</a></li>
 									</ul>
+								</li>
+
+								<li aria-haspopup="true" style="float:right">
+									<a href="/admin/logout" class="sub-icon">
+										<i class="mdi mdi-logout-variant hor-icon"></i>
+										Logout
+									</a>
 								</li>
 							</ul>
 						</nav>
