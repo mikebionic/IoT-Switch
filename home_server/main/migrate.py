@@ -1,6 +1,8 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from datetime import date,datetime,time
+from flask_login import LoginManager
+from flask_login import UserMixin
 
 from db_migration_data.devices_config import devices, pins, sensors
 from db_migration_data.default_devices_config import device_types, sensor_types, triggers
@@ -10,12 +12,16 @@ from db_migration_data.schedules_config import schedules
 
 from core_utils.random_gen import random_gen
 
-
 app = Flask (__name__)
 app.config['SECRET_KEY'] = "bdbgbn08Vtc4UV$bon(*0pnibuoyvtcr4R"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///SmartSwitches.db'
 
 db = SQLAlchemy(app)
+login_manager = LoginManager(app)
+
+@login_manager.user_loader
+def load_user(id):
+	return Residents.query.get(int(id))
 
 
 class City(db.Model):
@@ -65,7 +71,7 @@ class Flats(db.Model):
 	rooms = db.relationship('Rooms',backref='flats',lazy=True)
 
 
-class Residents(db.Model):
+class Residents(db.Model, UserMixin):
 	id = db.Column(db.Integer,primary_key=True)
 	name = db.Column(db.String(100),nullable=False)
 	surname = db.Column(db.String(100))

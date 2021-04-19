@@ -1,7 +1,13 @@
 from datetime import date,datetime,time
+from flask_login import UserMixin
 
+from main import login_manager
 from main import db
 from main.core_utils.random_gen import random_gen
+
+@login_manager.user_loader
+def load_user(id):
+	return Residents.query.get(int(id))
 
 
 class City(db.Model):
@@ -100,7 +106,7 @@ class Flats(db.Model):
 		return flats
 
 
-class Residents(db.Model):
+class Residents(db.Model, UserMixin):
 	id = db.Column(db.Integer,primary_key=True)
 	name = db.Column(db.String(100),nullable=False)
 	surname = db.Column(db.String(100))

@@ -1,6 +1,7 @@
 flask
 flask-sqlalchemy
 sqlalchemy
+flask-login
 pyserial
 requests
 gunicorn
