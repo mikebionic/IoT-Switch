@@ -78,7 +78,7 @@ def qr_register():
 
 	status = 400
 	response = {
-		"data": "Register failed!"
+		"secret_key": ""
 	}
 
 	try:
@@ -112,7 +112,7 @@ def qr_register():
 		db.session.add(user)
 		db.session.commit()
 		
-		response["data"] = "Register success"
+		response["secret_key"] = qr_code
 	
 	except Exception as ex:
 		print(ex)
