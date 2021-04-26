@@ -227,6 +227,7 @@ class Schedules(db.Model):
 	on_action = db.Column(db.String)
 	on_state = db.Column(db.Integer)
 	on_value = db.Column(db.String)
+	on_time = db.Column(db.DateTime)
 	device_command = db.Column(db.String)
 	pin_action = db.Column(db.String(100))
 	description = db.Column(db.String(500))

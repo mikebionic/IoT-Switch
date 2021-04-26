@@ -400,7 +400,7 @@ class Flat_types(db.Model):
 		db_type = {
 			"id": self.id,
 			"name": self.name,
-			"description": self.description
+			"description": self.descriptionnullable
 		}
 		return db_type
 
@@ -430,6 +430,7 @@ class Schedules(db.Model):
 	on_action = db.Column(db.String)
 	on_state = db.Column(db.Integer)
 	on_value = db.Column(db.String)
+	on_time = db.Column(db.DateTime)
 	device_command = db.Column(db.String)
 	pin_action = db.Column(db.String(100))
 	description = db.Column(db.String(500))
@@ -448,6 +449,7 @@ class Schedules(db.Model):
 			"on_action": self.on_action,
 			"on_state": self.on_state,
 			"on_value": self.on_value,
+			"on_time": self.on_time,
 			"device_command": self.device_command,
 			"pin_action": self.pin_action,
 			"description": self.description,

@@ -108,6 +108,10 @@ def reset_sensors():
 	if sensorCommand:
 		sensor = Sensors.query.filter_by(command = sensorCommand).first()
 		sensor.value == 0.0
+	
+	elif sensorId:
+		sensor = Sensors.query.filter_by(id = sensorId).first()
+		sensor.value == 0.0	
 
 	else:
 		sensors = Sensors.query.all()
@@ -165,8 +169,8 @@ def esp_arg_to_db():
 		if action:
 			try:
 				pin = Pins.query\
-				.filter_by(deviceId = device.id, command = pin_sensor_command)\
-				.first()
+					.filter_by(deviceId = device.id, command = pin_sensor_command)\
+					.first()
 
 				if pin:
 					pin.action = action
@@ -175,6 +179,7 @@ def esp_arg_to_db():
 					return make_response("ok",200)
 				return make_response("not Found",200)
 			except Exception as ex:
+				print(ex)
 				return make_response("err",200)
 
 		if value:
@@ -253,6 +258,7 @@ def setEspState():
 			print(device.name)
 			return make_response("ok",200)
 		except Exception as ex:
+			print(ex)
 			return make_response("err",200)
 
 
@@ -276,7 +282,7 @@ def detectWater():
 				db.session.commit()
 				r = requests.get('http://{}/control/{}'.format(pump_device.ip, pump_state))
 			except Exception as ex:
-				print("error, couldn't make a request (connection issue)",200)
+				print(f"error, couldn't make a request (connection issue) {ex}",200)
 
 			print(device.name)
 			return make_response("ok",200)
@@ -300,6 +306,7 @@ def control_args():
 
 # optionalfunchtion for app init
 def refresh_esp_states():
+	devices = Devices.query.all()
 	for device in devices:
 		try:
 			r = requests.get('http://{}/control/{}'.format(device["ip"],device["state"]))

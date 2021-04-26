@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 schedules = [
 	# {
 	# 	"id": 2,
@@ -16,6 +18,17 @@ schedules = [
 		"deviceId": 10,
 		"path": "you-wanna-come-in.wav",
 		"description": "Says hello when triggered"
+	},
+	{
+		"id": 3,
+		"name": "Scheduled event 1",
+		"typeId": 1,
+		"deviceId": 10,
+		"pinId": 1,
+		"device_command": "tvpower",
+		"pin_action": "power_off",
+		"description": "Turns off tv on specified time",
+		"on_time": datetime.now() + timedelta(minutes = 2)
 	}
 ]
 

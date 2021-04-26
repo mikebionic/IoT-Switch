@@ -7,7 +7,11 @@ from main.models import (
 )
 
 def get_locale_data(tag = ''):
-	data = {}
+	data = {
+		"error": [],
+		"message": "Not found",
+		"type": "error"
+	}
 	if not tag:
 		regions = Regions.query.all()
 		houses = Houses.query.all()
