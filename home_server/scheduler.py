@@ -1,5 +1,6 @@
 import requests
 import json
+from datetime import datetime, timedelta
 
 server_url = "http://127.0.0.1:5000"
 schedules_info_url = "/schedules/"
@@ -61,5 +62,4 @@ def send_schedule_action(
 
 def main():
 	if str(datetime.now()) >= schedules_data[0]['on_time']:
-		# data
 		print('')
