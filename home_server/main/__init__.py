@@ -21,3 +21,5 @@ from .login import login
 
 from .admin import routes_admin
 from .admin import login
+
+from .scheduler import routes_scheduler
