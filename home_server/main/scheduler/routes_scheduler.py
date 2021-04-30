@@ -14,13 +14,13 @@ def get_schedules():
 def schedule_notify():
 	scheduleId = request.args.get("scheduleId", None, int)
 	if not scheduleId:
-		return "error" 400
+		return "error", 400
 	
 	schedule = Schedules.query.filter_by(id = scheduleId).first()
 	if not schedule:
-		return "not found" 404
+		return "not found", 404
 	
 	if schedule:
 		print("running schedule")
 	
-	return "ok" 200
+	return "ok", 200

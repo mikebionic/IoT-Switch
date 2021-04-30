@@ -21,7 +21,7 @@ from .models import (
 	Sensors,
 	Rooms,
 	Triggers)
-from .utils_scheduler import run_scheduled_task
+from main.scheduler.utils_scheduler import run_scheduled_task
 from main.db_data_utils.get_device_data import get_device_data
 
 
@@ -85,6 +85,7 @@ def esp_motionAlert():
 	if device:
 		trigger = Triggers.query.filter_by(command = "motion_trigger").first()
 		if trigger:
+			trigger.state = state
 			if (trigger.state == 1):
 				try:
 					device.state = state

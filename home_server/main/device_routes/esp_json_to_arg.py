@@ -15,7 +15,7 @@ from main.models import (
 	Sensors,
 	Rooms,
 	Triggers)
-from main.utils_scheduler import run_scheduled_task
+from main.scheduler.utils_scheduler import run_scheduled_task
 
 
 @app.route("/esp/JsonToArg/",methods=['GET','POST'])
