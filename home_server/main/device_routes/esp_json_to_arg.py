@@ -16,6 +16,7 @@ from main.models import (
 	Rooms,
 	Triggers)
 from main.scheduler.utils_scheduler import run_scheduled_task
+from main.scheduler.manage_schedules import manage_schedules
 
 
 @app.route("/esp/JsonToArg/",methods=['GET','POST'])
@@ -57,14 +58,17 @@ def esp_json_to_arg():
 					response['pins'] = pins
 
 					if not isSchedule:
-						try:
-							if device.schedules:
-								for schedule in device.schedules:
-									print("called schedule")
-									run_scheduled_task(dbSchedule = schedule)
-						except Exception as ex:
-							print(ex)
-							print("schedule failed")
+						pinModels = [pin for pin in device.pins]
+						manage_schedules(models = pinModels, models_name='pin')
+					# if not isSchedule:
+					# 	try:
+					# 		if device.schedules:
+					# 			for schedule in device.schedules:
+					# 				print("called schedule")
+					# 				run_scheduled_task(dbSchedule = schedule)
+					# 	except Exception as ex:
+					# 		print(ex)
+					# 		print("schedule failed")
 
 					return make_response(jsonify(response),200)
 				except Exception as ex:
