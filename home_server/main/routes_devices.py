@@ -27,6 +27,7 @@ from main.db_data_utils.get_device_data import get_device_data
 
 @app.route("/esp/",methods=['GET','POST'])
 def esp():
+	# !!! deprecated, now uses device typeId=4
 	toMaster = request.args.get('toMaster',0,type=int)
 	if request.method == 'POST':
 		req = request.get_json()
@@ -37,6 +38,7 @@ def esp():
 		if device:
 
 			remoteIp = device.ip
+			# !!! deprecated
 			if toMaster:
 				remoteIp = app.config['MASTER_ARDUINO_IP']
 
@@ -52,7 +54,7 @@ def esp():
 			
 			elif device.typeId == 3:
 				try:
-					r = requests.get('http://{}/control/?command={}'.format(device.ip, action))
+					r = requests.get('http://{}/control/?command={}'.format(remoteIp, action))
 					return make_response(jsonify(device.json()),200)
 				except Exception as ex:
 					return make_response("error, couldn't make a request (connection issue)")
@@ -148,75 +150,6 @@ def send_device_reconnect():
 			return make_response("Couldnt make a request {}".format(ex))
 		return make_response("OK")
 	return make_response("No such device")
-
-
-# esp's sensor recording feature (record values)
-@app.route("/esp/ArgToDB/",methods=['GET'])
-def esp_arg_to_db():
-	device_key = request.args.get('device_key')
-	pin_sensor_command = request.args.get('command')
-	try:
-		value = request.args.get('value')
-	except:
-		value = None
-
-	try:
-		action = request.args.get('action')
-	except:
-		action = None
-
-	device = Devices.query.filter_by(device_key = device_key).first()
-	if device:
-		if action:
-			try:
-				pin = Pins.query\
-					.filter_by(deviceId = device.id, command = pin_sensor_command)\
-					.first()
-
-				if pin:
-					pin.action = action
-					db.session.commit()
-					# print(device.name)
-					return make_response("ok",200)
-				return make_response("not Found",200)
-			except Exception as ex:
-				print(ex)
-				return make_response("err",200)
-
-		if value:
-			try:
-				sensor = Sensors.query\
-				.filter_by(deviceId = device.id, command = pin_sensor_command)\
-				.first()
-				if sensor:
-					if sensor.typeId == 1:
-						sensor.value += float(value)
-					elif sensor.typeId == 2:
-						sensor.value = float(value)
-					db.session.commit()
-					# print(device.name)
-					return make_response("ok",200)
-				return make_response("not Found",200)
-			except Exception as ex:
-				return make_response("err",200)
-
-
-# record esp's ip address to db
-@app.route("/esp/ping/")
-def esp_ping():
-	device_key = request.args.get('device_key')
-	ip_address = request.args.get('ip_address')
-	# command = request.args.get('command')
-	device = Devices.query.filter_by(device_key = device_key).first()
-	if device:
-		try:
-			device.ip = ip_address
-			db.session.commit()
-		except Exception as ex:
-			print(ex)
-			return make_response("err", 200)
-		return make_response("ok", 200)
-	return make_response("No such device", 200)
 
 
 @app.route("/esp/checkState/")

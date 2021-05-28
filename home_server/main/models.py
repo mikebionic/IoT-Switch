@@ -199,14 +199,14 @@ class Devices(db.Model):
 	name = db.Column(db.String(100),nullable=False)
 	ip = db.Column(db.String(100))
 	barcode = db.Column(db.String(100))
-	device_key = db.Column(db.String(1000),nullable=False,default=random_gen())
-	command = db.Column(db.String(100),nullable=False)
-	state = db.Column(db.Integer,nullable=False,default=0)
+	device_key = db.Column(db.String(1000),nullable=False,default=random_gen(10))
+	command = db.Column(db.String(100),default=random_gen(10))
+	state = db.Column(db.Integer,default=0)
 	description = db.Column(db.String(500))
 	typeId = db.Column(db.Integer,db.ForeignKey("device_types.id"))
 	flatId = db.Column(db.Integer,db.ForeignKey("flats.id"))
 	roomId = db.Column(db.Integer,db.ForeignKey("rooms.id"))
-	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.now)
+	dateAdded = db.Column(db.DateTime,default=datetime.now)
 	pins = db.relationship('Pins',backref='devices',lazy='joined')
 	sensors = db.relationship('Sensors',backref='devices',lazy='joined')
 	sensor_records = db.relationship('Sensor_records',backref='devices',lazy=True)
@@ -234,6 +234,7 @@ class Pins(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
 	name = db.Column(db.String(100),nullable=False)
 	command = db.Column(db.String(100),nullable=False)
+	process_key = db.Column(db.String(1000),default=random_gen(10))
 	description = db.Column(db.String(500))
 	action = db.Column(db.String(500))
 	deviceId = db.Column(db.Integer,db.ForeignKey("devices.id"))
@@ -244,6 +245,7 @@ class Pins(db.Model):
 			"id": self.id,
 			"name": self.name,
 			"command": self.command,
+			"process_key": self.process_key,
 			"description": self.description,
 			"action": self.action,
 			"deviceId": self.deviceId,

@@ -179,6 +179,15 @@ devices = [
 		"description": "Turns on/off Local test"
 	},
 	{
+		"id": 99999,
+		"name": "ESP of master arduino",
+		"ip": "192.168.1.253",
+		"device_key": "ESP_ARDU_MASTER",
+		"command": "esp_communicator_secret",
+		"typeId": 4,
+		"description": "Communicates with master arduino via UART"
+	},
+	{
 		"id": 999,
 		"name": "Local Json to Args test",
 		"ip": "127.0.0.1:5000",
@@ -358,25 +367,15 @@ pins = [
 		"description": "Activates AI function",
 		"action": "0",
 		"deviceId": 999,
-	}
-]
-
-device_types = [
-	{
-		"id": 1,
-		"name": "ESP-01-binary",
-		"description": "ESP8266 Binary data like '/control/1' or '/control/0'"
 	},
 	{
-		"id": 2,
-		"name": "ESP-JSON-to-Arguments",
-		"description": "ESP8266 with several arguments provided from data in JSON"
+		"name": "Arduino Conditioner Mode HIGH",
+		"command": "mode_high",
+		"description": "Changes the conditioner operation power",
+		"action": "0",
+		"process_key": "main_arduino_process_secret_key",
+		"deviceId": 99999,
 	},
-	{
-		"id": 3,
-		"name": "Esp8266-command-argument",
-		"description": "ESP8266 with argument provided in 'control' from data in 'action' of JSON"
-	}
 ]
 
 

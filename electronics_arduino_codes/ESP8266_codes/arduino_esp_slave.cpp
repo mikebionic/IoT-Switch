@@ -36,7 +36,6 @@ void setup() {
   WiFi.hostname(deviceName);
   WiFi.config(staticIP, subnet, gateway, dns);
   WiFi.begin(ssid, password);
- 
   WiFi.mode(WIFI_STA);
  
 //  while (WiFi.status() != WL_CONNECTED) {
@@ -65,10 +64,10 @@ void loop() {
 
 void sendDataFromMaster(){
   stream="";
-  if (Serial.available()!=0){
+  if (Serial.available() != 0){
     stream = Serial.readStringUntil('\n');
     stream.trim();
-    if (stream.length()>0){
+    if (stream.length() > 0){
       Serial.println(stream);
       String argument_data = "?device_key="+device_key+"&command="+command+"&value="+String(stream);
       sendRequest("http://"+serverUrl+"/esp/ArgToDB/",argument_data);

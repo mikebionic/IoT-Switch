@@ -13,6 +13,11 @@ device_types = [
 		"id": 3,
 		"name": "Esp8266-command-argument",
 		"description": "ESP8266 with argument provided in 'control' from data in 'action' of JSON"
+	},
+	{
+		"id": 4,
+		"name": "Esp8266-Arduino Master communicator",
+		"description": "ESP8266 with argument provided 'command' 'action' 'process_key' from data, found in PIN with given 'action' of JSON"
 	}
 ]
 
