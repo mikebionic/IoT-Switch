@@ -2,3 +2,5 @@
 **.pyc
 **.db
 .idea/
+devices_config.json
+devices_config.py
