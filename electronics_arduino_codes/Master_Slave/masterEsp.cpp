@@ -23,7 +23,7 @@ ESP8266WebServer server(80);
 
 void sendFromUART(String command, String action, String process_key){
   String payload = command + ":" + action + ":" + process_key + ":";
-  Serial.println(payload)
+  Serial.println(payload);
 }
 
 void handleDevice() {
@@ -31,8 +31,8 @@ void handleDevice() {
   String action = server.arg("action");
   String process_key = server.arg("process_key");
   command.trim();
-	action.trim();
-	process_key.trim();
+  action.trim();
+  process_key.trim();
 
   sendFromUART(command, action, process_key);
 
