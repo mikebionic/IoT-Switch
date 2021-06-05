@@ -16,7 +16,8 @@ class City(db.Model):
 	secret_key = db.Column(db.String(1000),nullable=False,default=random_gen())
 	description = db.Column(db.String(500))
 	typeId = db.Column(db.Integer,db.ForeignKey("city_types.id"))
-	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.now)
+	dateAdded = db.Column(db.DateTime,default=datetime.now())
+	dateUpdated = db.Column(db.DateTime,default=datetime.now(),onupdate=datetime.now())
 	regions = db.relationship('Regions',backref='city',lazy=True)
 
 	def json(self):
@@ -38,7 +39,8 @@ class Regions(db.Model):
 	description = db.Column(db.String(500))
 	cityId = db.Column(db.Integer,db.ForeignKey("city.id"))
 	typeId = db.Column(db.Integer,db.ForeignKey("region_types.id"))
-	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.now)
+	dateAdded = db.Column(db.DateTime,default=datetime.now())
+	dateUpdated = db.Column(db.DateTime,default=datetime.now(),onupdate=datetime.now())
 	houses = db.relationship('Houses',backref='regions',lazy=True)
 
 	def json(self):
@@ -63,7 +65,8 @@ class Houses(db.Model):
 	latit = db.Column(db.String(100))
 	regionId = db.Column(db.Integer,db.ForeignKey("regions.id"))
 	typeId = db.Column(db.Integer,db.ForeignKey("house_types.id"))
-	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.now)
+	dateAdded = db.Column(db.DateTime,default=datetime.now())
+	dateUpdated = db.Column(db.DateTime,default=datetime.now(),onupdate=datetime.now())
 	flats = db.relationship('Flats',backref='houses',lazy=True)
 
 	def json(self):
@@ -88,7 +91,8 @@ class Flats(db.Model):
 	description = db.Column(db.String(500))
 	houseId = db.Column(db.Integer,db.ForeignKey("houses.id"))
 	typeId = db.Column(db.Integer,db.ForeignKey("flat_types.id"))
-	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.now)
+	dateAdded = db.Column(db.DateTime,default=datetime.now())
+	dateUpdated = db.Column(db.DateTime,default=datetime.now(),onupdate=datetime.now())
 	residents = db.relationship('Residents',backref='flats',lazy=True)
 	devices = db.relationship('Devices',backref='flats',lazy=True)
 	rooms = db.relationship('Rooms',backref='flats',lazy=True)
@@ -120,7 +124,8 @@ class Residents(db.Model, UserMixin):
 	description = db.Column(db.String(500))
 	flatId = db.Column(db.Integer,db.ForeignKey("flats.id"))
 	typeId = db.Column(db.Integer,db.ForeignKey("resident_types.id"))
-	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.now)
+	dateAdded = db.Column(db.DateTime,default=datetime.now())
+	dateUpdated = db.Column(db.DateTime,default=datetime.now(),onupdate=datetime.now())
 	rfidTags = db.relationship('RfidTags',backref='residents',lazy=True)
 
 	def json(self):
@@ -146,7 +151,8 @@ class Residents(db.Model, UserMixin):
 class QR_codes(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
 	secret_key = db.Column(db.String(1000),nullable=False,default=random_gen())
-	dateAdded = db.Column(db.DateTime,nullable=False,default=datetime.now)
+	dateAdded = db.Column(db.DateTime,default=datetime.now())
+	dateUpdated = db.Column(db.DateTime,default=datetime.now(),onupdate=datetime.now())
 	registered = db.Column(db.Boolean, default=False)
 	typeId = db.Column(db.Integer, default=0)
 
@@ -200,17 +206,25 @@ class Devices(db.Model):
 	ip = db.Column(db.String(100))
 	barcode = db.Column(db.String(100))
 	device_key = db.Column(db.String(1000),nullable=False,default=random_gen(10))
+	secret_key = db.Column(db.String(1000),nullable=False,default=random_gen(200))
 	command = db.Column(db.String(100),default=random_gen(10))
 	state = db.Column(db.Integer,default=0)
 	description = db.Column(db.String(500))
 	typeId = db.Column(db.Integer,db.ForeignKey("device_types.id"))
 	flatId = db.Column(db.Integer,db.ForeignKey("flats.id"))
 	roomId = db.Column(db.Integer,db.ForeignKey("rooms.id"))
-	dateAdded = db.Column(db.DateTime,default=datetime.now)
+	dateAdded = db.Column(db.DateTime,default=datetime.now())
+	dateUpdated = db.Column(db.DateTime,default=datetime.now(),onupdate=datetime.now())
 	pins = db.relationship('Pins',backref='devices',lazy='joined')
 	sensors = db.relationship('Sensors',backref='devices',lazy='joined')
 	sensor_records = db.relationship('Sensor_records',backref='devices',lazy=True)
 	schedules = db.relationship('Schedules',backref='devices',lazy=True)
+
+	def do_update(self, **kwargs):
+		for key, value in kwargs.items():
+			if value is not None:
+				if hasattr(self, key):
+					setattr(self, key, value)
 
 	def json(self):
 		device = {
@@ -219,13 +233,15 @@ class Devices(db.Model):
 			"ip": self.ip,
 			"barcode": self.barcode,
 			"device_key": self.device_key,
+			"secret_key": self.secret_key,
 			"command": self.command,
 			"state": self.state,
 			"description": self.description,
 			"typeId": self.typeId,
 			"flatId": self.flatId,
 			"roomId": self.roomId,
-			"dateAdded": self.dateAdded
+			"dateAdded": self.dateAdded,
+			"dateUpdated": self.dateUpdated.timestamp(),
 		}
 		return device
 
@@ -235,10 +251,19 @@ class Pins(db.Model):
 	name = db.Column(db.String(100),nullable=False)
 	command = db.Column(db.String(100),nullable=False)
 	process_key = db.Column(db.String(1000),default=random_gen(10))
+	secret_key = db.Column(db.String(1000),nullable=False,default=random_gen(200))
 	description = db.Column(db.String(500))
 	action = db.Column(db.String(500))
 	deviceId = db.Column(db.Integer,db.ForeignKey("devices.id"))
+	dateAdded = db.Column(db.DateTime,default=datetime.now())
+	dateUpdated = db.Column(db.DateTime,default=datetime.now(),onupdate=datetime.now())
 	schedules = db.relationship('Schedules',backref='pins',lazy=True)
+
+	def do_update(self, **kwargs):
+		for key, value in kwargs.items():
+			if value is not None:
+				if hasattr(self, key):
+					setattr(self, key, value)
 
 	def json(self):
 		pin = {
@@ -246,9 +271,12 @@ class Pins(db.Model):
 			"name": self.name,
 			"command": self.command,
 			"process_key": self.process_key,
+			"secret_key": self.secret_key,
 			"description": self.description,
 			"action": self.action,
 			"deviceId": self.deviceId,
+			"dateAdded": self.dateAdded,
+			"dateUpdated": self.dateUpdated.timestamp(),
 		}
 		return pin
 
@@ -277,10 +305,19 @@ class Sensors(db.Model):
 	command = db.Column(db.String(100),nullable=False)
 	description = db.Column(db.String(500))
 	value = db.Column(db.Float,default=0.0)
+	secret_key = db.Column(db.String(1000),nullable=False,default=random_gen(200))
 	typeId = db.Column(db.Integer,db.ForeignKey("sensor_types.id"))
 	deviceId = db.Column(db.Integer,db.ForeignKey("devices.id"))
+	dateAdded = db.Column(db.DateTime,default=datetime.now())
+	dateUpdated = db.Column(db.DateTime,default=datetime.now(),onupdate=datetime.now())
 	sensor_records = db.relationship('Sensor_records',backref='sensors',lazy=True)
 	schedules = db.relationship('Schedules',backref='sensors',lazy=True)
+
+	def do_update(self, **kwargs):
+		for key, value in kwargs.items():
+			if value is not None:
+				if hasattr(self, key):
+					setattr(self, key, value)
 
 	def json(self):
 		sensor = {
@@ -289,8 +326,11 @@ class Sensors(db.Model):
 			"command": self.command,
 			"description": self.description,
 			"value": self.value,
+			"secret_key": self.secret_key,
 			"typeId": self.typeId,
 			"deviceId": self.deviceId,
+			"dateAdded": self.dateAdded,
+			"dateUpdated": self.dateUpdated.timestamp(),
 		}
 		return sensor
 
@@ -300,9 +340,11 @@ class Sensor_records(db.Model):
 	name = db.Column(db.String(100),nullable=False)
 	description = db.Column(db.String(500))
 	value = db.Column(db.Float,default=0.0)
-	date = db.Column(db.DateTime,nullable=False,default=datetime.now)
+	date = db.Column(db.DateTime,nullable=False,default=datetime.now())
 	deviceId = db.Column(db.Integer,db.ForeignKey("devices.id"))
 	sensorId = db.Column(db.Integer,db.ForeignKey("sensors.id"))
+	dateAdded = db.Column(db.DateTime,default=datetime.now())
+	dateUpdated = db.Column(db.DateTime,default=datetime.now(),onupdate=datetime.now())
 
 	def json(self):
 		sensor_records = {
@@ -313,6 +355,8 @@ class Sensor_records(db.Model):
 			"date": self.date,
 			"deviceId": self.deviceId,
 			"sensorId": self.sensorId,
+			"dateAdded": self.dateAdded,
+			"dateUpdated": self.dateUpdated.timestamp(),
 		}
 		return sensor_records
 
