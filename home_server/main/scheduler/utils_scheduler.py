@@ -64,7 +64,7 @@ def do_device_JsonToArg_req(
 
 		print(payload)
 
-		r = requests.post(
-			"{}{}{}".format(local_addr, url,"?isSchedule=1"),
-			data = json.dumps(payload),
-			headers = {'Content-Type': 'application/json'})
+		# r = requests.post(
+		# 	"{}{}{}".format(local_addr, url,"?isSchedule=1"),
+		# 	data = json.dumps(payload),
+		# 	headers = {'Content-Type': 'application/json'})
