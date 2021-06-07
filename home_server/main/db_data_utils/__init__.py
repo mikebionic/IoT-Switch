@@ -1,1 +1,5 @@
+from .merge_and_commit import merge_and_commit
 from .save_device_from_json import save_device_from_json
+from .save_pin_from_json import save_pin_from_json
+from .save_device_to_db import save_device_to_db
+from .save_pin_to_db import save_pin_to_db
