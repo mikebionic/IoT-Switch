@@ -22,6 +22,7 @@ def save_synched_data(data):
 
 		if dev["pins"]:
 			for p in dev["pins"]:
+				# print(p)
 				pin = save_pin_to_db(p, device)
 
 

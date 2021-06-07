@@ -14,19 +14,21 @@ def save_pin_to_db(payload, deviceModel):
 	payload["dateAdded"] = None
 	payload["deviceId"] = deviceModel.id
 
-	pin = Pins.query.filter_by(secret_key = payload["secret_key"]).first()
+	pin = Pins.query.filter_by(command = payload["command"]).first()
 	if pin:
+		print("]]] found pin [[[")
 		if pin.dateUpdated.timestamp() < payload["dateUpdated"]:
 			print('----updating pin-------')
 			pin = merge_and_commit(pin, save_pin_from_json(payload))
 			do_device_JsonToArg_req(
 				deviceModel,
 				"/esp/JsonToArg/",
-				pin.pinId,
-				pin.pin_action,
-				pin.device_command)
+				pin.id,
+				pin.action,
+				deviceModel.command)
 
 	else:
+		print("}!! new pin !!{")
 		payload["dateUpdated"] = datetime.now()
 		print("-------saving new pin ;;;;;;;;;")
 		pin = Pins(**save_pin_from_json(payload))
