@@ -5,6 +5,7 @@ from flask import (
 	flash,
 	redirect,
 	request,
+	abort,
 	Response,
 	jsonify,
 	make_response)
@@ -20,7 +21,8 @@ from .models import (
 	Pins,
 	Sensors,
 	Rooms,
-	Triggers)
+	Triggers,
+	Residents)
 from main.scheduler.utils_scheduler import run_scheduled_task
 from main.db_data_utils.get_device_data import get_device_data
 
@@ -154,6 +156,14 @@ def send_device_reconnect():
 
 @app.route("/esp/checkState/")
 def check_state():
+	print(request.headers)
+	if 'resident-key' not in request.headers:
+		print("notin")
+		abort(401)
+	print(request.headers['resident-key'])
+	secret_key = request.headers['resident-key']
+	resident = Residents.query.filter_by(secret_key = secret_key).first()
+	print(resident.name)
 	data = get_device_data()
 	return make_response(jsonify(data),200)
 
