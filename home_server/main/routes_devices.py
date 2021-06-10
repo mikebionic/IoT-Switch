@@ -156,11 +156,11 @@ def send_device_reconnect():
 
 @app.route("/esp/checkState/")
 def check_state():
-	print(request.headers)
-	if 'resident-key' not in request.headers:
-		print("notin")
-		abort(401)
-	print(request.headers['resident-key'])
+	# print(request.headers)
+	# if 'resident-key' not in request.headers:
+	# 	print("notin")
+	# 	abort(401)
+	# print(request.headers['resident-key'])
 	secret_key = request.headers['resident-key']
 	resident = Residents.query.filter_by(secret_key = secret_key).first()
 	print(resident.name)

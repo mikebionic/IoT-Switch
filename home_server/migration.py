@@ -1,4 +1,4 @@
-from main import app, db
+from main import db
 
 from main.models import (
 	Devices,
