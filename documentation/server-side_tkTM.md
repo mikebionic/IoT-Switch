@@ -20,4 +20,4 @@ Serwer tarapy, baglanyşyk gurlan gurluşly maglumatlar we Python dilinde ýazyl
 
 API, Android, iOS ýaly islendik platforma üçin aňsatlyk bilen müşderi tarap programmalaryny döretmek ýa-da JavaScript-de web-müşderi döretmek üçin döredildi we resminamalaşdyryldy. Şol bir wagtyň özünde, web serwer API mukdaryny giňeltmek we IoT enjamlaryny guramak üçin gurulýar.
 
-Writtenazylan her bir enjamyň öz ygtybarly açary bar we "enjam görnüşi" häsiýeti bu enjamyň ulanylyş görnüşini saýlaýar we bu iş usulydyr.
+Yazylan her bir enjamyň öz ygtybarly açary bar we "enjam görnüşi" häsiýeti bu enjamyň ulanylyş görnüşini saýlaýar we bu iş usulydyr.
