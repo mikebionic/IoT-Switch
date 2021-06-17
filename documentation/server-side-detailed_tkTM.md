@@ -16,11 +16,11 @@ Taslama enjamlar we serwer arasynda aragatnaşyk we maglumat ýygnamaga esaslan�
 
 **Serwer tarapy programmasynyň maksady**:
 
-- Enjamlaryň arasynda köpri döretmek
-- Maglumatlary we ýagdaýlary tygşytlamak
-- Hereketleri we aragatnaşygy üpjün etmek
-- Müşderi programmalary üçin esasy API döretmek
-- Bulut maglumatlary bilen ýerli maglumatlaryň arasynda sinhron
+	- Enjamlaryň arasynda köpri döretmek
+	- Maglumatlary we ýagdaýlary tygşytlamak
+	- Hereketleri we aragatnaşygy üpjün etmek
+	- Müşderi programmalary üçin esasy API döretmek
+	- Bulut maglumatlary bilen ýerli maglumatlaryň arasynda sinhron
 
 Serwer tarapy, baglanyşyk gurlan gurluşly maglumatlar we Python dilinde ýazylan web serweri, ähli maglumatlary dolandyrýar we baglanyşygyň esasy amallarynyň üstünde işleýär, enjamlar bilen müşderiniň arasynda maglumatlary işlemek, maglumatlary tygşytlamak, gönükdirmek, üpjün etmek bilen işleýär.
 
