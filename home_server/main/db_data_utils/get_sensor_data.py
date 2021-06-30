@@ -1,8 +1,8 @@
-from main.models import Sensors
+from main.models import Sensor
 
 
 def get_sensor_data():
-	sensors = Sensors.query.all()
+	sensors = Sensor.query.all()
 	data = {
 		"sensors": [sensor.json() for sensor in sensors],
 		"message": "All sensor datas",

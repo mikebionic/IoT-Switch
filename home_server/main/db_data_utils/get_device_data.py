@@ -1,12 +1,12 @@
-from main.models import Devices
+from main.models import Device
 
 
 def get_device_data(id = None):
 	if id:
-		devices = Devices.query.filter_by(id = id).all()
+		devices = Device.query.filter_by(id = id).all()
 
 	else:
-		devices = Devices.query.all()
+		devices = Device.query.all()
 
 	data = []
 	for device in devices:

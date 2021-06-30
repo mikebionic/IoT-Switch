@@ -8,7 +8,7 @@ from random import randint
 from datetime import datetime, timedelta
 
 from main import app, db
-from main.models import Residents, QR_codes
+from main.models import Resident, QR_code
 
 from flask_login import (
 	login_user,
@@ -28,7 +28,7 @@ def admin_login():
 		username = request.form.get("username")
 		password = request.form.get("password")
 		try:
-			user = Residents.query.filter_by(username = username).first()
+			user = Resident.query.filter_by(username = username).first()
 			if user:
 				if(user and user.password==password):
 					login_user(user)

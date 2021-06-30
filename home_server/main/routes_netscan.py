@@ -3,7 +3,7 @@ import requests
 
 from main import app, db
 
-from .models import Devices
+from .models import Device
 from .netScanner import map_network
 
 
@@ -18,7 +18,7 @@ def scanNetwork():
 					r = requests.get("http://{}/ping/".format(ip))
 					print(r.text)
 					device_command = r.text
-					device = Devices.query.filter_by(device_key = device_command).first()
+					device = Device.query.filter_by(device_key = device_command).first()
 					if device:
 						try:
 							device.ip = ip

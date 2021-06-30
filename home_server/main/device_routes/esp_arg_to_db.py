@@ -7,9 +7,9 @@ from main import app
 from main import db
 
 from main.models import (
-	Devices,
-	Pins,
-	Sensors,
+	Device,
+	Pin,
+	Sensor,
 )
 
 
@@ -28,11 +28,11 @@ def esp_arg_to_db():
 	except:
 		action = None
 
-	device = Devices.query.filter_by(device_key = device_key).first()
+	device = Device.query.filter_by(device_key = device_key).first()
 	if device:
 		if action:
 			try:
-				pin = Pins.query\
+				pin = Pin.query\
 					.filter_by(deviceId = device.id, command = pin_sensor_command)\
 					.first()
 
@@ -48,7 +48,7 @@ def esp_arg_to_db():
 
 		if value:
 			try:
-				sensor = Sensors.query\
+				sensor = Sensor.query\
 				.filter_by(deviceId = device.id, command = pin_sensor_command)\
 				.first()
 				if sensor:

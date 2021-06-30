@@ -4,7 +4,7 @@ from flask import json
 from time import sleep
 
 from main import app, db
-from main.models import Devices
+from main.models import Device
 local_addr = app.config['SERVER_URL']
 
 if app.config['SOUND_PLAYER'] == "playsound":
@@ -13,7 +13,7 @@ if app.config['SOUND_PLAYER'] == "playsound":
 
 def run_scheduled_task(dbSchedule):
 	if dbSchedule.typeId == 1:
-		device = Devices.query.filter_by(command = dbSchedule.device_command).first()
+		device = Device.query.filter_by(command = dbSchedule.device_command).first()
 		do_device_JsonToArg_req(
 			device,
 			dbSchedule.url,

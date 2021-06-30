@@ -2,11 +2,11 @@ from flask import request
 from datetime import datetime
 
 from main import app
-from main.models import Schedules
+from main.models import Schedule
 
 @app.route("/schedules/")
 def get_schedules():
-	schedules = Schedules.query.filter("on_time" > datetime.now()).all()
+	schedules = Schedule.query.filter("on_time" > datetime.now()).all()
 	data = [schedule.json() for schedule in schedules]
 
 	return data
@@ -17,7 +17,7 @@ def schedule_notify():
 	if not scheduleId:
 		return "error", 400
 	
-	schedule = Schedules.query.filter_by(id = scheduleId).first()
+	schedule = Schedule.query.filter_by(id = scheduleId).first()
 	if not schedule:
 		return "not found", 404
 	

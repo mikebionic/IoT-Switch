@@ -9,8 +9,8 @@ from main import app
 from main import db
 
 from main.models import (
-	Devices,
-	Pins,
+	Device,
+	Pin,
 )
 
 from main.scheduler.utils_scheduler import run_scheduled_task
@@ -26,7 +26,7 @@ def esp_json_to_arg():
 		command = req["command"]
 		pins_json = req["pins"]
 
-		device = Devices.query.filter_by(command = command).first()
+		device = Device.query.filter_by(command = command).first()
 		if device:
 			process_pins(device, pins_json)
 
@@ -77,7 +77,7 @@ def process_pins(device, pins_json):
 	for pin in pins_json:
 		pin_command = pin["command"]
 		pin_action = pin["action"]
-		pin = Pins.query\
+		pin = Pin.query\
 		.filter_by(deviceId = device.id, command = pin_command)\
 		.first()
 		if pin:

@@ -1,9 +1,9 @@
 from main.models import (
 	City,
-	Regions,
-	Houses,
-	Flats,
-	Residents,
+	Region,
+	House,
+	Flat,
+	Resident,
 )
 
 def get_locale_data(tag = ''):
@@ -13,10 +13,10 @@ def get_locale_data(tag = ''):
 		"type": "error"
 	}
 	if not tag:
-		regions = Regions.query.all()
-		houses = Houses.query.all()
-		flats = Flats.query.all()
-		residents = Residents.query.all()
+		regions = Region.query.all()
+		houses = House.query.all()
+		flats = Flat.query.all()
+		residents = Resident.query.all()
 
 		data = {
 			"regions": [region.json() for region in regions],
@@ -29,13 +29,13 @@ def get_locale_data(tag = ''):
 
 	elif tag:
 		if tag == 'regions':
-			tag_datas = Regions.query.all()
+			tag_datas = Region.query.all()
 		if tag == 'houses':
-			tag_datas = Houses.query.all()
+			tag_datas = House.query.all()
 		if tag == 'flats':
-			tag_datas = Flats.query.all()
+			tag_datas = Flat.query.all()
 		if tag == 'residents':
-			tag_datas = Residents.query.all()
+			tag_datas = Resident.query.all()
 
 		data = {
 			tag: [tag_data.json() for tag_data in tag_datas],

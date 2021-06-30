@@ -1,10 +1,10 @@
 
-from main.models import Schedules
+from main.models import Schedule
 
 def manage_schedules(models, models_name):
 	if models_name == "pin":
 		for model in models:
-			schedule = Schedules.query\
+			schedule = Schedule.query\
 				.filter_by(
 					pinId = model.id,
 					on_action = model.action,
@@ -16,7 +16,7 @@ def manage_schedules(models, models_name):
 
 	elif models_name == "device":
 		for model in models:
-			schedule = Schedules.query\
+			schedule = Schedule.query\
 				.filter_by(
 					deviceId = model.id,
 					on_command = model.command,
@@ -28,7 +28,7 @@ def manage_schedules(models, models_name):
 
 	elif models_name == "sensor":
 		for model in models:
-			schedule = Schedules.query\
+			schedule = Schedule.query\
 				.filter_by(
 					sensorId = model.id,
 					on_value = model.value,

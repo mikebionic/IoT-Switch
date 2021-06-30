@@ -17,12 +17,12 @@ from main import app
 from main import db
 
 from .models import (
-	Devices,
-	Pins,
-	Sensors,
-	Rooms,
-	Triggers,
-	Residents)
+	Device,
+	Pin,
+	Sensor,
+	Room,
+	Trigger,
+	Resident)
 from main.scheduler.utils_scheduler import run_scheduled_task
 from main.db_data_utils.get_device_data import get_device_data
 
@@ -36,7 +36,7 @@ def esp():
 		state = req["state"]
 		command = req["command"]
 		action = req["action"]
-		device = Devices.query.filter_by(command = command).first()
+		device = Device.query.filter_by(command = command).first()
 		if device:
 
 			remoteIp = device.ip
@@ -71,7 +71,7 @@ def triggers():
 		state = req["state"]
 		command = req["command"]
 		action = req["action"]
-		trigger = Triggers.query.filter_by(command = command).first()
+		trigger = Trigger.query.filter_by(command = command).first()
 		if trigger:
 			trigger.state = state
 			db.session.commit()
@@ -85,9 +85,9 @@ def esp_motionAlert():
 	device_key = request.args.get('device_key')
 	state = request.args.get('state')
 
-	device = Devices.query.filter_by(device_key = device_key).first()
+	device = Device.query.filter_by(device_key = device_key).first()
 	if device:
-		trigger = Triggers.query.filter_by(command = "motion_trigger").first()
+		trigger = Trigger.query.filter_by(command = "motion_trigger").first()
 		if trigger:
 			trigger.state = state
 			if (trigger.state == 1):
@@ -111,15 +111,15 @@ def reset_sensors():
 		sensorCommand = None
 
 	if sensorCommand:
-		sensor = Sensors.query.filter_by(command = sensorCommand).first()
+		sensor = Sensor.query.filter_by(command = sensorCommand).first()
 		sensor.value == 0.0
 	
 	elif sensorId:
-		sensor = Sensors.query.filter_by(id = sensorId).first()
+		sensor = Sensor.query.filter_by(id = sensorId).first()
 		sensor.value == 0.0	
 
 	else:
-		sensors = Sensors.query.all()
+		sensors = Sensor.query.all()
 		for sensor in sensors:
 			sensor.value == 0.0
 	db.session.commit()
@@ -130,7 +130,7 @@ def reset_sensors():
 @app.route("/send_device_reset/",methods=['GET'])
 def send_device_reset():
 	device_command = request.args.get('device_command')
-	device = Devices.query.filter_by(command = device_command).first()
+	device = Device.query.filter_by(command = device_command).first()
 	if device:
 		try:
 			r = requests.get("http://{}/reset".format(device.ip))
@@ -144,7 +144,7 @@ def send_device_reset():
 @app.route("/send_device_reconnect/",methods=['GET'])
 def send_device_reconnect():
 	device_command = request.args.get('device_command')
-	device = Devices.query.filter_by(command = device_command).first()
+	device = Device.query.filter_by(command = device_command).first()
 	if device:
 		try:
 			r = requests.get("http://{}/reconnect".format(device.ip))
@@ -162,7 +162,7 @@ def check_state():
 	# 	abort(401)
 	# print(request.headers['resident-key'])
 	secret_key = request.headers['resident-key']
-	resident = Residents.query.filter_by(secret_key = secret_key).first()
+	resident = Resident.query.filter_by(secret_key = secret_key).first()
 	print(resident.name)
 	data = get_device_data()
 	return make_response(jsonify(data),200)
@@ -183,7 +183,7 @@ def getDevice():
 		filtering["command"] = command
 	if ip:
 		filtering["ip"] = ip
-	device = Devices.query.filter_by(**filtering).first()
+	device = Device.query.filter_by(**filtering).first()
 	if device:
 		return make_response(jsonify(device.json()), 200)
 	return make_response(jsonify({"error":"Not found"}), 404)
@@ -194,7 +194,7 @@ def setEspState():
 	device_key = request.args.get('device_key')
 	state = request.args.get('state')
 
-	device = Devices.query.filter_by(device_key = device_key).first()
+	device = Device.query.filter_by(device_key = device_key).first()
 	if device:
 		try:
 			device.state = state
@@ -213,14 +213,14 @@ def detectWater():
 	
 	pump_device_command = "water_pump"
 
-	device = Devices.query.filter_by(device_key = device_key).first()
+	device = Device.query.filter_by(device_key = device_key).first()
 	if device:
 		try:
 			device.state = 1
 			db.session.commit()
 
 			try:
-				pump_device = Devices.query.filter_by(device_key = pump_device_command).first()
+				pump_device = Device.query.filter_by(device_key = pump_device_command).first()
 				pump_state = 1
 				pump_device.state = pump_state
 				db.session.commit()
@@ -250,7 +250,7 @@ def control_args():
 
 # optionalfunchtion for app init
 def refresh_esp_states():
-	devices = Devices.query.all()
+	devices = Device.query.all()
 	for device in devices:
 		try:
 			r = requests.get('http://{}/control/{}'.format(device["ip"],device["state"]))

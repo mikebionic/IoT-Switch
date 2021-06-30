@@ -7,7 +7,7 @@ from main import app
 from main import db
 
 from main.models import (
-	Devices,
+	Device,
 )
 
 # record esp's ip address to db
@@ -16,7 +16,7 @@ def esp_ping():
 	device_key = request.args.get('device_key')
 	ip_address = request.args.get('ip_address')
 	# command = request.args.get('command')
-	device = Devices.query.filter_by(device_key = device_key).first()
+	device = Device.query.filter_by(device_key = device_key).first()
 	if device:
 		try:
 			device.ip = ip_address

@@ -7,7 +7,7 @@ from random import randint
 from datetime import datetime, timedelta
 
 from main import app, db
-from main.models import Residents, QR_codes
+from main.models import Resident, QR_code
 
 
 # "secret_key: "
@@ -25,12 +25,12 @@ def qr_request_register():
 		if not auth:
 			print("no auth")
 			raise Exception
-		resident = Residents.query.filter_by(secret_key = auth.password).first()
+		resident = Resident.query.filter_by(secret_key = auth.password).first()
 		if not resident:
 			print("resident not found")
 			raise Exception
 
-		qr = QR_codes()
+		qr = QR_code()
 		db.session.add(qr)
 		db.session.commit()
 
@@ -56,7 +56,7 @@ def device_login():
 	try:
 		if not auth:
 			raise Exception
-		resident = Residents.query.filter_by(username = auth.username).first()
+		resident = Resident.query.filter_by(username = auth.username).first()
 		if not resident:
 			raise Exception
 		if resident.password != auth.password:
@@ -87,7 +87,7 @@ def qr_register():
 			print("no qr")
 			raise Exception
 		
-		code = QR_codes.query.filter_by(secret_key = qr).first()
+		code = QR_code.query.filter_by(secret_key = qr).first()
 
 		if not code:
 			print("no such code")
@@ -108,7 +108,7 @@ def qr_register():
 			"secret_key": qr_code
 		}
 
-		user = Residents(**new_user)
+		user = Resident(**new_user)
 		db.session.add(user)
 		db.session.commit()
 		
@@ -133,7 +133,7 @@ def qr_login():
 	try:
 		if not auth:
 			raise Exception
-		resident = Residents.query.filter_by(secret_key = auth.password).first()
+		resident = Resident.query.filter_by(secret_key = auth.password).first()
 		if not resident:
 			raise Exception
 

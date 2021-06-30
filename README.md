@@ -10,7 +10,7 @@ Used components:
 + Power adapter and stabilizator for esp microcontroller
 + Patience
 
-## Devices and Systems of the project:
+## Device and Systems of the project:
 
 + [x] Lights and light bulbs control
 + [x] Heater control

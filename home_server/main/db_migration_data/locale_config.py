@@ -22,7 +22,7 @@ regions = [
 
 houses = [
 	{
-		"id": 1,
+		"house_key": 1,
 		"name": "gorjaw jay 1",
 		"regionId": 1
 	}
@@ -30,10 +30,11 @@ houses = [
 
 flats = [
 	{
-		"id": 1,
+		"flat_key": 1,
 		"name": "Default flat",
 		"secret_key": "secret_key_hash",
 		"description": "Default testing flat",
+		"house_key": 1,
 		# "houseId": 1,
 		# "typeId": 1,
 	}
@@ -41,9 +42,9 @@ flats = [
 
 rooms = [
 	{
-		"id": 1,
+		"room_key": 1,
 		"name": "Office",
-		"flatId": 1,
+		"flat_key": 1,
 		"description": "Room for office work"
 	}
 ]

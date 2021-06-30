@@ -16,11 +16,11 @@ from main import db
 
 from .models import (
 	City,
-	Regions,
-	Houses,
-	Flats,
-	Residents,
-	Rooms)
+	Region,
+	House,
+	Flat,
+	Resident,
+	Room)
 
 
 @app.route("/city/")
@@ -37,7 +37,7 @@ def city_api():
 
 @app.route("/regions/")
 def regions_api():
-	regions = Regions.query.all()
+	regions = Region.query.all()
 	regions_data = []
 	for region in regions:
 		info = region.json()
@@ -49,7 +49,7 @@ def regions_api():
 
 @app.route("/houses/")
 def houses_api():
-	houses = Houses.query.all()
+	houses = House.query.all()
 	houses_data = []
 	for house in houses:
 		info = house.json()
@@ -61,7 +61,7 @@ def houses_api():
 
 @app.route("/residents/")
 def residents_api():
-	residents = Residents.query.all()
+	residents = Resident.query.all()
 	residents_data = []
 	for resident in residents:
 		info = resident.json()
@@ -73,7 +73,7 @@ def residents_api():
 
 @app.route("/rooms/")
 def rooms_api():
-	rooms = Rooms.query.all()
+	rooms = Room.query.all()
 	rooms_data = []
 	for room in rooms:
 		info = room.json()

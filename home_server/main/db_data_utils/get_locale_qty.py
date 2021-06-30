@@ -1,16 +1,16 @@
 from main.models import (
 	City,
-	Regions,
-	Houses,
-	Flats,
-	Residents,
+	Region,
+	House,
+	Flat,
+	Resident,
 )
 
 def get_locale_qty():
-	regions = Regions.query.count()
-	houses = Houses.query.count()
-	flats = Flats.query.count()
-	residents = Residents.query.count()
+	regions = Region.query.count()
+	houses = House.query.count()
+	flats = Flat.query.count()
+	residents = Resident.query.count()
 
 	data = {
 		"regions_qty": regions,

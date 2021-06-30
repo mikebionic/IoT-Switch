@@ -2,7 +2,7 @@ from datetime import datetime
 
 from main import db
 from main.models import (
-	Pins,
+	Pin,
 )
 
 from main.db_data_utils import save_pin_from_json, merge_and_commit
@@ -14,7 +14,7 @@ def save_pin_to_db(payload, deviceModel):
 	payload["dateAdded"] = None
 	payload["deviceId"] = deviceModel.id
 
-	pin = Pins.query.filter_by(command = payload["command"]).first()
+	pin = Pin.query.filter_by(command = payload["command"]).first()
 	if pin:
 		print("]]] found pin [[[")
 		if pin.dateUpdated.timestamp() < payload["dateUpdated"]:
@@ -31,7 +31,7 @@ def save_pin_to_db(payload, deviceModel):
 		print("}!! new pin !!{")
 		payload["dateUpdated"] = datetime.now()
 		print("-------saving new pin ;;;;;;;;;")
-		pin = Pins(**save_pin_from_json(payload))
+		pin = Pin(**save_pin_from_json(payload))
 		db.session.add(pin)
 		db.session.commit()
 	
