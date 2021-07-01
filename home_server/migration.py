@@ -1,6 +1,7 @@
 from main import db
 
 from main.models import (
+	Master_device,
 	Device,
 	Sensor,
 	Resident,
@@ -17,7 +18,7 @@ from main.models import (
 	Schedule,
 )
 
-from main.db_migration_data.devices_config import devices, pins, sensors
+from main.db_migration_data.devices_config import master_devices, devices, pins, sensors
 from main.db_migration_data.default_devices_config import device_types, sensor_types, triggers
 from main.db_migration_data.locale_config import cities, regions, houses, flats, rooms
 from main.db_migration_data.residents_config import residents, qr_codes
@@ -59,6 +60,10 @@ for room in rooms:
 for schedule in schedules:
 	db_schedule = Schedule(**schedule)
 	db.session.add(db_schedule)
+
+for device in master_devices:
+	db_device = Master_device(**device)
+	db.session.add(db_device)
 
 for device in devices:
 	db_device = Device(**device)
