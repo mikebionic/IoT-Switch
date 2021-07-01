@@ -1,3 +1,15 @@
+master_devices = [
+	{
+		"id": 1,
+		"name": "ESP of master arduino",
+		"ip": "192.168.1.253",
+		"device_key": "ESP_ARDU_MASTER",
+		"command": "esp_communicator_secret",
+		"typeId": 4,
+		"description": "Communicates with master arduino via UART"
+	},
+]
+
 devices = [
 	{
 		"id": 8,
@@ -7,6 +19,7 @@ devices = [
 		"device_key": "sqs20n7nI9mdio2mew",
 		"typeId": 1,
 		"command": "curtain",
+		"master_device_id": 1,
 		"description": "Moves up and down the curtain"
 	},
 	{
@@ -17,6 +30,7 @@ devices = [
 		"device_key": "conD9mdc73om934",
 		"typeId": 2,
 		"command": "conditioner_main",
+		"master_device_id": 1,
 		"description": "Controls conditioner"
 	},
 	{
@@ -27,6 +41,7 @@ devices = [
 		"device_key": "knb78G^n03foi",
 		"typeId": 2,
 		"command": "socket",
+		"master_device_id": 1,
 		"description": "Controls Smart socket"
 	},
 	{
@@ -37,6 +52,7 @@ devices = [
 		"device_key": "Qsd2dfj7sdsegf40dg",
 		"typeId": 1,
 		"command": "water_sensor_kitchen",
+		"master_device_id": 1,
 		"description": "Turns on/off hall lights"
 	},
 	{
@@ -47,6 +63,7 @@ devices = [
 		"device_key": "dfj7sdsegf40dg",
 		"typeId": 1,
 		"command": "water_sensor_toilet",
+		"master_device_id": 1,
 		"description": "Turns on/off hall lights"
 	},
 	{
@@ -57,6 +74,7 @@ devices = [
 		"device_key": "Qsd2dgwqzdsegf40dg",
 		"typeId": 1,
 		"command": "water_sensor_van",
+		"master_device_id": 1,
 		"description": "Turns on/off water sensor"
 	},
 	{
@@ -67,6 +85,7 @@ devices = [
 		"device_key": "knb78G^n0sdf3foi",
 		"typeId": 2,
 		"command": "smart_stove",
+		"master_device_id": 1,
 		"description": "Controls stove"
 	},
 	{
@@ -77,6 +96,7 @@ devices = [
 		"device_key": "asdgdsf4567)N$3zx4a2",
 		"typeId": 2,
 		"command": "tv_remote",
+		"master_device_id": 1,
 		"description": "Controls Remote of smart tv that sends IR datas"
 	},
 	{
@@ -87,6 +107,7 @@ devices = [
 		"device_key": "fuckwaddMeasurerKey",
 		"typeId": 2,
 		"command": "watt_measurer_kitchen",
+		"master_device_id": 1,
 		"description": "Measures the flow of current"
 	},
 	{
@@ -97,6 +118,7 @@ devices = [
 		"device_key": "jbhbnefb63bno2u1",
 		"typeId": 2,
 		"command": "water_measurer_kitchen",
+		"master_device_id": 1,
 		"description": "Measures the flow of water"
 	},
 	{
@@ -107,6 +129,7 @@ devices = [
 		"device_key": "lights_hash",
 		"typeId": 2,
 		"command": "three_mode_switch",
+		"master_device_id": 1,
 		"description": "Controls Two mode switch"
 	},
 	{
@@ -117,6 +140,7 @@ devices = [
 		"device_key": "pir_hash",
 		"typeId": 1,
 		"command": "water_pump",
+		"master_device_id": 1,
 		"description": "suw sensory dolandyrmak"
 	},
 	{
@@ -127,6 +151,7 @@ devices = [
 		"device_key": "alondatv2",
 		"typeId": 2,
 		"command": "tv_remote2",
+		"master_device_id": 1,
 		"description": "Controls Remote of smart tv that sends IR datas"
 	},
 	{
@@ -137,6 +162,7 @@ devices = [
 		"device_key": "suwolceya1",
 		"typeId": 2,
 		"command": "water_measurer_kitchen2",
+		"master_device_id": 1,
 		"description": "Measures the flow of water"
 	},
 	{
@@ -147,6 +173,7 @@ devices = [
 		"device_key": "door_hash",
 		"typeId": 1,
 		"command": "unlock_door",
+		"master_device_id": 1,
 		"description": "Unlock door"
 	},
 	{
@@ -157,6 +184,7 @@ devices = [
 		"device_key": "gerkon_sensor_secret",
 		"typeId": 1,
 		"command": "ping_gerkon",
+		"master_device_id": 1,
 		"description": "GERKON OPEN/CLOSE"
 	},
 	{
@@ -167,6 +195,7 @@ devices = [
 		"device_key": "gas_sensor_secret",
 		"typeId": 1,
 		"command": "gas_sensor",
+		"master_device_id": 1,
 		"description": "gas sensor, shows current gas status"
 	},
 	{
@@ -176,6 +205,7 @@ devices = [
 		"device_key": "23abcK238873244",
 		"typeId": 1,
 		"command": "test_local",
+		"master_device_id": 1,
 		"description": "Turns on/off Local test"
 	},
 	{

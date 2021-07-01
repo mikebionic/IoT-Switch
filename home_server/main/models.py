@@ -41,7 +41,7 @@ class Region(db.Model):
 	typeId = db.Column(db.Integer,db.ForeignKey("region_type.id"))
 	dateAdded = db.Column(db.DateTime,default=datetime.now())
 	dateUpdated = db.Column(db.DateTime,default=datetime.now(),onupdate=datetime.now())
-	houses = db.relationship('House',backref='regions',lazy=True)
+	houses = db.relationship('House',backref='region',lazy=True)
 
 	def json(self):
 		regions = {
@@ -68,7 +68,7 @@ class House(db.Model):
 	typeId = db.Column(db.Integer,db.ForeignKey("house_type.id"))
 	dateAdded = db.Column(db.DateTime,default=datetime.now())
 	dateUpdated = db.Column(db.DateTime,default=datetime.now(),onupdate=datetime.now())
-	flats = db.relationship('Flat',backref='houses',lazy=True)
+	flats = db.relationship('Flat',backref='house',lazy=True)
 
 	def json(self):
 		houses = {
@@ -97,9 +97,10 @@ class Flat(db.Model):
 	typeId = db.Column(db.Integer,db.ForeignKey("flat_type.id"))
 	dateAdded = db.Column(db.DateTime,default=datetime.now())
 	dateUpdated = db.Column(db.DateTime,default=datetime.now(),onupdate=datetime.now())
-	residents = db.relationship('Resident',backref='flats',lazy=True)
-	devices = db.relationship('Device',backref='flats',lazy=True)
-	rooms = db.relationship('Room',backref='flats',lazy=True)
+	residents = db.relationship('Resident',backref='flat',lazy=True)
+	devices = db.relationship('Device',backref='flat',lazy=True)
+	master_devices = db.relationship('Master_device',backref='flat',lazy=True)
+	rooms = db.relationship('Room',backref='flat',lazy=True)
 
 	def json(self):
 		flats = {
@@ -131,7 +132,7 @@ class Resident(db.Model, UserMixin):
 	typeId = db.Column(db.Integer,db.ForeignKey("resident_type.id"))
 	dateAdded = db.Column(db.DateTime,default=datetime.now())
 	dateUpdated = db.Column(db.DateTime,default=datetime.now(),onupdate=datetime.now())
-	rfidTags = db.relationship('RfidTag',backref='residents',lazy=True)
+	rfidTags = db.relationship('RfidTag',backref='resident',lazy=True)
 
 	def json(self):
 		residents = {
@@ -195,7 +196,8 @@ class Room(db.Model):
 	name = db.Column(db.String(100),nullable=False)
 	flatId = db.Column(db.Integer,db.ForeignKey("flat.id"))
 	description = db.Column(db.String(500))
-	devices = db.relationship('Device',backref='rooms',lazy=True)
+	devices = db.relationship('Device',backref='room',lazy=True)
+	master_devices = db.relationship('Master_device',backref='room',lazy=True)
 
 	def json(self):
 		room = {
@@ -207,7 +209,7 @@ class Room(db.Model):
 		return room
 
 
-class Device(db.Model):
+class Master_device(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
 	name = db.Column(db.String(100),nullable=False)
 	ip = db.Column(db.String(100))
@@ -222,10 +224,12 @@ class Device(db.Model):
 	roomId = db.Column(db.Integer,db.ForeignKey("room.id"))
 	dateAdded = db.Column(db.DateTime,default=datetime.now())
 	dateUpdated = db.Column(db.DateTime,default=datetime.now(),onupdate=datetime.now())
-	pins = db.relationship('Pin',backref='devices',lazy='joined')
-	sensors = db.relationship('Sensor',backref='devices',lazy='joined')
-	sensor_records = db.relationship('Sensor_record',backref='devices',lazy=True)
-	schedules = db.relationship('Schedule',backref='devices',lazy=True)
+	pins = db.relationship('Pin',backref='master_device',lazy='joined')
+	sensors = db.relationship('Sensor',backref='master_device',lazy='joined')
+	sensor_records = db.relationship('Sensor_record',backref='master_device',lazy=True)
+	schedules = db.relationship('Schedule',backref='master_device',lazy=True)
+	devices = db.relationship('Device',backref='master_device',lazy=True)
+
 
 	def do_update(self, **kwargs):
 		for key, value in kwargs.items():
@@ -253,6 +257,54 @@ class Device(db.Model):
 		return device
 
 
+class Device(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	name = db.Column(db.String(100),nullable=False)
+	ip = db.Column(db.String(100))
+	barcode = db.Column(db.String(100))
+	device_key = db.Column(db.String(1000),nullable=False,default=random_gen(10))
+	secret_key = db.Column(db.String(1000),nullable=False,default=random_gen(100))
+	command = db.Column(db.String(100),default=random_gen(10))
+	state = db.Column(db.Integer,default=0)
+	description = db.Column(db.String(500))
+	master_device_id = db.Column(db.Integer,db.ForeignKey("master_device.id"))
+	typeId = db.Column(db.Integer,db.ForeignKey("device_type.id"))
+	flatId = db.Column(db.Integer,db.ForeignKey("flat.id"))
+	roomId = db.Column(db.Integer,db.ForeignKey("room.id"))
+	dateAdded = db.Column(db.DateTime,default=datetime.now())
+	dateUpdated = db.Column(db.DateTime,default=datetime.now(),onupdate=datetime.now())
+	pins = db.relationship('Pin',backref='device',lazy='joined')
+	sensors = db.relationship('Sensor',backref='device',lazy='joined')
+	sensor_records = db.relationship('Sensor_record',backref='device',lazy=True)
+	schedules = db.relationship('Schedule',backref='device',lazy=True)
+
+	def do_update(self, **kwargs):
+		for key, value in kwargs.items():
+			if value is not None:
+				if hasattr(self, key):
+					setattr(self, key, value)
+
+	def json(self):
+		device = {
+			"id": self.id,
+			"name": self.name,
+			"ip": self.ip,
+			"barcode": self.barcode,
+			"device_key": self.device_key,
+			"secret_key": self.secret_key,
+			"command": self.command,
+			"state": self.state,
+			"description": self.description,
+			"master_device_id": self.master_device_id,
+			"typeId": self.typeId,
+			"flatId": self.flatId,
+			"roomId": self.roomId,
+			"dateAdded": self.dateAdded,
+			"dateUpdated": self.dateUpdated.timestamp(),
+		}
+		return device
+
+
 class Pin(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
 	name = db.Column(db.String(100),nullable=False)
@@ -261,10 +313,11 @@ class Pin(db.Model):
 	secret_key = db.Column(db.String(1000),nullable=False,default=random_gen(100))
 	description = db.Column(db.String(500))
 	action = db.Column(db.String(500))
+	master_device_id = db.Column(db.Integer,db.ForeignKey("master_device.id"))
 	deviceId = db.Column(db.Integer,db.ForeignKey("device.id"))
 	dateAdded = db.Column(db.DateTime,default=datetime.now())
 	dateUpdated = db.Column(db.DateTime,default=datetime.now(),onupdate=datetime.now())
-	schedules = db.relationship('Schedule',backref='pins',lazy=True)
+	schedules = db.relationship('Schedule',backref='pin',lazy=True)
 
 	def do_update(self, **kwargs):
 		for key, value in kwargs.items():
@@ -281,6 +334,7 @@ class Pin(db.Model):
 			"secret_key": self.secret_key,
 			"description": self.description,
 			"action": self.action,
+			"master_device_id": self.master_device_id,
 			"deviceId": self.deviceId,
 			"dateAdded": self.dateAdded,
 			"dateUpdated": self.dateUpdated.timestamp(),
@@ -316,11 +370,12 @@ class Sensor(db.Model):
 	value = db.Column(db.Float,default=0.0)
 	secret_key = db.Column(db.String(1000),nullable=False,default=random_gen(100))
 	typeId = db.Column(db.Integer,db.ForeignKey("sensor_type.id"))
+	master_device_id = db.Column(db.Integer,db.ForeignKey("master_device.id"))
 	deviceId = db.Column(db.Integer,db.ForeignKey("device.id"))
 	dateAdded = db.Column(db.DateTime,default=datetime.now())
 	dateUpdated = db.Column(db.DateTime,default=datetime.now(),onupdate=datetime.now())
-	sensor_records = db.relationship('Sensor_record',backref='sensors',lazy=True)
-	schedules = db.relationship('Schedule',backref='sensors',lazy=True)
+	sensor_records = db.relationship('Sensor_record',backref='sensor',lazy=True)
+	schedules = db.relationship('Schedule',backref='sensor',lazy=True)
 
 	def do_update(self, **kwargs):
 		for key, value in kwargs.items():
@@ -337,6 +392,7 @@ class Sensor(db.Model):
 			"value": self.value,
 			"secret_key": self.secret_key,
 			"typeId": self.typeId,
+			"master_device_id": self.master_device_id,
 			"deviceId": self.deviceId,
 			"dateAdded": self.dateAdded,
 			"dateUpdated": self.dateUpdated.timestamp(),
@@ -350,6 +406,7 @@ class Sensor_record(db.Model):
 	description = db.Column(db.String(500))
 	value = db.Column(db.Float,default=0.0)
 	date = db.Column(db.DateTime,nullable=False,default=datetime.now())
+	master_device_id = db.Column(db.Integer,db.ForeignKey("master_device.id"))
 	deviceId = db.Column(db.Integer,db.ForeignKey("device.id"))
 	sensorId = db.Column(db.Integer,db.ForeignKey("sensor.id"))
 	dateAdded = db.Column(db.DateTime,default=datetime.now())
@@ -362,6 +419,7 @@ class Sensor_record(db.Model):
 			"description": self.description,
 			"value": self.value,
 			"date": self.date,
+			"master_device_id": self.master_device_id,
 			"deviceId": self.deviceId,
 			"sensorId": self.sensorId,
 			"dateAdded": self.dateAdded,
@@ -375,7 +433,9 @@ class Device_type(db.Model):
 	device_type_key = db.Column(db.String)
 	name = db.Column(db.String(100),nullable=False)
 	description = db.Column(db.String(500))
-	devices = db.relationship('Device',backref='device_types',lazy=True)
+	devices = db.relationship('Device',backref='device_type',lazy=True)
+	master_devices = db.relationship('Master_device',backref='device_type',lazy=True)
+
 
 	def json(self):
 		db_type = {
@@ -392,7 +452,7 @@ class Sensor_type(db.Model):
 	sensor_type_key = db.Column(db.String)
 	name = db.Column(db.String(100),nullable=False)
 	description = db.Column(db.String(500))
-	sensors = db.relationship('Sensor',backref='sensor_types',lazy=True)
+	sensors = db.relationship('Sensor',backref='sensor_type',lazy=True)
 
 	def json(self):
 		db_type = {
@@ -408,7 +468,7 @@ class City_type(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
 	name = db.Column(db.String(100),nullable=False)
 	description = db.Column(db.String(500))
-	city = db.relationship('City',backref='city_types',lazy=True)
+	city = db.relationship('City',backref='city_type',lazy=True)
 
 	def json(self):
 		db_type = {
@@ -423,7 +483,7 @@ class Region_type(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
 	name = db.Column(db.String(100),nullable=False)
 	description = db.Column(db.String(500))
-	regions = db.relationship('Region',backref='region_types',lazy=True)
+	regions = db.relationship('Region',backref='region_type',lazy=True)
 
 	def json(self):
 		db_type = {
@@ -438,7 +498,7 @@ class House_type(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
 	name = db.Column(db.String(100),nullable=False)
 	description = db.Column(db.String(500))
-	houses = db.relationship('House',backref='house_types',lazy=True)
+	houses = db.relationship('House',backref='house_type',lazy=True)
 
 	def json(self):
 		db_type = {
@@ -453,7 +513,7 @@ class Flat_type(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
 	name = db.Column(db.String(100),nullable=False)
 	description = db.Column(db.String(500))
-	flats = db.relationship('Flat',backref='flat_types',lazy=True)
+	flats = db.relationship('Flat',backref='flat_type',lazy=True)
 
 	def json(self):
 		db_type = {
@@ -468,7 +528,7 @@ class Resident_type(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
 	name = db.Column(db.String(100),nullable=False)
 	description = db.Column(db.String(500))
-	residents = db.relationship('Resident',backref='resident_types',lazy=True)
+	residents = db.relationship('Resident',backref='resident_type',lazy=True)
 
 	def json(self):
 		db_type = {
@@ -483,6 +543,7 @@ class Schedule(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
 	name = db.Column(db.String(100),nullable=False)
 	typeId = db.Column(db.Integer,default=1)
+	master_device_id = db.Column(db.Integer,db.ForeignKey("master_device.id"))
 	deviceId = db.Column(db.Integer,db.ForeignKey("device.id"))
 	pinId = db.Column(db.Integer,db.ForeignKey("pin.id"))
 	sensorId = db.Column(db.Integer,db.ForeignKey("sensor.id"))
@@ -502,6 +563,7 @@ class Schedule(db.Model):
 			"id": self.id,
 			"name": self.name,
 			"typeId": self.typeId,
+			"master_device_id": self.master_device_id,
 			"deviceId": self.deviceId,
 			"pinId": self.pinId,
 			"sensorId": self.sensorId,

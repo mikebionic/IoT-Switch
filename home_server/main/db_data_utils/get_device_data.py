@@ -1,9 +1,12 @@
 from main.models import Device
 
 
-def get_device_data(id = None):
+def get_device_data(id = None, device_models = None):
 	if id:
 		devices = Device.query.filter_by(id = id).all()
+
+	elif device_models:
+		devices = device_models
 
 	else:
 		devices = Device.query.all()

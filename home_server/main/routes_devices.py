@@ -161,32 +161,11 @@ def check_state():
 	# 	print("notin")
 	# 	abort(401)
 	# print(request.headers['resident-key'])
-	secret_key = request.headers['resident-key']
-	resident = Resident.query.filter_by(secret_key = secret_key).first()
-	print(resident.name)
+	# secret_key = request.headers['resident-key']
+	# resident = Resident.query.filter_by(secret_key = secret_key).first()
+	# print(resident.name)
 	data = get_device_data()
 	return make_response(jsonify(data),200)
-
-
-@app.route("/esp/getDevice/")
-def getDevice():
-	filtering = {}
-	barcode = request.args.get("barcode","",type=str)
-	name = request.args.get("name","",type=str)
-	command = request.args.get("command","",type=str)
-	ip = request.args.get("ip","",type=str)
-	if barcode:
-		filtering["barcode"] = barcode
-	if name:
-		filtering["name"] = name
-	if command:
-		filtering["command"] = command
-	if ip:
-		filtering["ip"] = ip
-	device = Device.query.filter_by(**filtering).first()
-	if device:
-		return make_response(jsonify(device.json()), 200)
-	return make_response(jsonify({"error":"Not found"}), 404)
 
 
 @app.route("/esp/setState/")

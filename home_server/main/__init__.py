@@ -16,6 +16,10 @@ from . import routes_devices
 from . import routes_locale
 from . import routes_netscan
 from .device_routes import esp_json_to_arg
+from .device_routes import v2_esp_json_to_arg
+from .device_routes import getDevice
+
+
 from .login import login
 # from . import routes_serial
 
