@@ -101,6 +101,7 @@ class Flat(db.Model):
 	devices = db.relationship('Device',backref='flat',lazy=True)
 	master_devices = db.relationship('Master_device',backref='flat',lazy=True)
 	rooms = db.relationship('Room',backref='flat',lazy=True)
+	qr_codes = db.relationship('QR_code',backref='flat',lazy=True)
 
 	def json(self):
 		flats = {
@@ -126,7 +127,7 @@ class Resident(db.Model, UserMixin):
 	password = db.Column(db.String(100))
 	phoneNumber = db.Column(db.String(100))
 	passportCode = db.Column(db.String(100))
-	secret_key = db.Column(db.String(1000),nullable=False,default=random_gen())
+	secret_key = db.Column(db.String(1000),nullable=False,default=random_gen(20))
 	description = db.Column(db.String(500))
 	flatId = db.Column(db.Integer,db.ForeignKey("flat.id"))
 	typeId = db.Column(db.Integer,db.ForeignKey("resident_type.id"))
@@ -160,6 +161,7 @@ class QR_code(db.Model):
 	dateAdded = db.Column(db.DateTime,default=datetime.now())
 	dateUpdated = db.Column(db.DateTime,default=datetime.now(),onupdate=datetime.now())
 	registered = db.Column(db.Boolean, default=False)
+	flatId = db.Column(db.Integer,db.ForeignKey("flat.id"))
 	typeId = db.Column(db.Integer, default=0)
 
 	def json(self):
@@ -168,6 +170,7 @@ class QR_code(db.Model):
 			"secret_key": self.secret_key,
 			"dateAdded": self.dateAdded,
 			"registered": self.registered,
+			"flatId": self.flatId,
 			"typeId": self.typeId,
 		}
 		return data

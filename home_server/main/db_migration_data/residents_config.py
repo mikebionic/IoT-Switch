@@ -8,7 +8,8 @@ residents = [
 		"username": "admin",
 		"password": "123",
 		"flatId": 1,
-		"typeId": 1
+		"typeId": 1,
+		"secret_key": "administator_resident S3cret"
 	}
 ]
 
@@ -17,6 +18,7 @@ qr_codes = [
 		"id": 1,
 		"secret_key": "kjn098hjnfd92h3fd2iojhnbc79h23jfc24uf024fhn",
 		"dateAdded": datetime(9999, 1, 1),
-		"typeId": 1
+		"typeId": 1,
+		"flatId": 1,
 	}
 ]

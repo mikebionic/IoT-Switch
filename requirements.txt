@@ -4,6 +4,7 @@ sqlalchemy
 flask-login
 pyserial
 requests
+pyjwt==1.7.1
 gunicorn
 flask-socketio
 playsound

@@ -2,6 +2,7 @@ class Config:
 	FLASK_ENV = 'development'
 	TESTING = True
 	SECRET_KEY = "somecrappysecretKey"
+	AUTH_TOKEN_EXP_TIME_MINUTES = 40
 
 	# Database
 	SQLALCHEMY_DATABASE_URI = "sqlite:///SmartSwitches.db"
