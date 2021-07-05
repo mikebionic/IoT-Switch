@@ -98,6 +98,7 @@ class Flat(db.Model):
 	dateAdded = db.Column(db.DateTime,default=datetime.now())
 	dateUpdated = db.Column(db.DateTime,default=datetime.now(),onupdate=datetime.now())
 	residents = db.relationship('Resident',backref='flat',lazy=True)
+	sensors = db.relationship('Sensor',backref='flat',lazy=True)
 	devices = db.relationship('Device',backref='flat',lazy=True)
 	master_devices = db.relationship('Master_device',backref='flat',lazy=True)
 	rooms = db.relationship('Room',backref='flat',lazy=True)
@@ -372,6 +373,7 @@ class Sensor(db.Model):
 	description = db.Column(db.String(500))
 	value = db.Column(db.Float,default=0.0)
 	secret_key = db.Column(db.String(1000),nullable=False,default=random_gen(100))
+	flatId = db.Column(db.Integer,db.ForeignKey("flat.id"))
 	typeId = db.Column(db.Integer,db.ForeignKey("sensor_type.id"))
 	master_device_id = db.Column(db.Integer,db.ForeignKey("master_device.id"))
 	deviceId = db.Column(db.Integer,db.ForeignKey("device.id"))
@@ -394,6 +396,7 @@ class Sensor(db.Model):
 			"description": self.description,
 			"value": self.value,
 			"secret_key": self.secret_key,
+			"flatId": self.flatId,
 			"typeId": self.typeId,
 			"master_device_id": self.master_device_id,
 			"deviceId": self.deviceId,

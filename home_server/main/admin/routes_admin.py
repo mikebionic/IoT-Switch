@@ -9,8 +9,8 @@ from flask import (
 from main import app
 from main.db_data_utils.get_locale_data import get_locale_data
 from main.db_data_utils.get_locale_qty import get_locale_qty
-from main.db_data_utils.get_sensor_data import get_sensor_data
-from main.db_data_utils.get_device_data import get_device_data
+from main.db_data_utils.get_sensors_data import get_sensors_data
+from main.db_data_utils.get_devices_data import get_devices_data
 
 
 @app.route("/admin")
@@ -48,7 +48,7 @@ def residents_table():
 
 @app.route("/admin/sensors_table")
 def sensors_table():
-	data = get_sensor_data()
+	data = get_sensors_data()
 	return render_template(
 		"admin/sensors_table.html",
 		data = data

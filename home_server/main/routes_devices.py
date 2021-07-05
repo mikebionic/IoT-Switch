@@ -24,7 +24,7 @@ from .models import (
 	Trigger,
 	Resident)
 from main.scheduler.utils_scheduler import run_scheduled_task
-from main.db_data_utils.get_device_data import get_device_data
+from main.db_data_utils.get_devices_data import get_devices_data
 
 
 @app.route("/esp/",methods=['GET','POST'])
@@ -164,7 +164,7 @@ def check_state():
 	# secret_key = request.headers['resident-key']
 	# resident = Resident.query.filter_by(secret_key = secret_key).first()
 	# print(resident.name)
-	data = get_device_data()
+	data = get_devices_data()
 	return make_response(jsonify(data),200)
 
 

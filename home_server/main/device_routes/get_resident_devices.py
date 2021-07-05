@@ -2,12 +2,12 @@ from flask import request, make_response, jsonify
 
 from main import app
 from main.models import Device
-from main.db_data_utils import get_device_data
+from main.db_data_utils import get_devices_data
 from main.api_auth import auth_required
 
-@app.route("/resident/esp/getDevice/")
+@app.route("/resident/esp/get-devices/")
 @auth_required
-def get_resident_device(current_user):
+def get_resident_devices(current_user):
 	filtering = {}
 	filtering["flatId"] = current_user.flatId
 
@@ -52,7 +52,7 @@ def get_resident_device(current_user):
 
 	devices = Device.query.filter_by(**filtering).all()
 	if devices:
-		device_data = get_device_data(device_models = devices)
+		device_data = get_devices_data(db_models = devices)
 		if device_data:
 			return make_response(jsonify(device_data), 200)
 

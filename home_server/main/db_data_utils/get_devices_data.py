@@ -1,12 +1,12 @@
 from main.models import Device
 
 
-def get_device_data(id = None, device_models = None):
+def get_devices_data(id = None, db_models = None):
 	if id:
 		devices = Device.query.filter_by(id = id).all()
 
-	elif device_models:
-		devices = device_models
+	elif db_models:
+		devices = db_models
 
 	else:
 		devices = Device.query.all()
@@ -19,4 +19,11 @@ def get_device_data(id = None, device_models = None):
 		sensors = [sensor.json() for sensor in device.sensors]
 		info['sensors'] = sensors
 		data.append(info)
-	return data
+
+
+	res = {
+		"data": data,
+		"message": "All sensor datas",
+		"type": "sensors"
+	}
+	return res

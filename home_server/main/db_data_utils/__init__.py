@@ -1,4 +1,5 @@
-from .get_device_data import get_device_data
+from .get_devices_data import get_devices_data
+from .get_sensors_data import get_sensors_data
 from .merge_and_commit import merge_and_commit
 from .save_device_from_json import save_device_from_json
 from .save_pin_from_json import save_pin_from_json

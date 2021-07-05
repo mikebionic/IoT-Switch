@@ -2,7 +2,7 @@ from flask import request, make_response, jsonify
 
 from main import app
 from main.models import Device
-from main.db_data_utils import get_device_data
+from main.db_data_utils import get_devices_data
 
 @app.route("/esp/getDevice/")
 def getDevice():
@@ -49,7 +49,7 @@ def getDevice():
 
 	devices = Device.query.filter_by(**filtering).all()
 	if devices:
-		device_data = get_device_data(device_models = devices)
+		device_data = get_devices_data(db_models = devices)
 		if device_data:
 			return make_response(jsonify(device_data), 200)
 	return make_response(jsonify({"error":"Not found"}), 404)
