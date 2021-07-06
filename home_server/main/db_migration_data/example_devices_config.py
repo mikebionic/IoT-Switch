@@ -14,23 +14,25 @@ devices = [
 	{
 		"id": 8,
 		"name": "Curtain",
-		"ip": "192.168.1.102",
+		"ip": "192.168.1.103",
 		"state": 0,
-		"device_key": "sqs20n7nI9mdio2mew",
+		"device_key": "curtain_hash",
+		"master_device_id": 1,
+		"flatId": 1,
 		"typeId": 1,
 		"command": "curtain",
-		"master_device_id": 1,
 		"description": "Moves up and down the curtain"
 	},
 	{
 		"id": 9,
 		"name": "Smart conditioner",
-		"ip": "192.168.1.243",
+		"ip": "192.168.1.246",
 		"state": 0,
 		"device_key": "conD9mdc73om934",
+		"master_device_id": 1,
+		"flatId": 1,
 		"typeId": 2,
 		"command": "conditioner_main",
-		"master_device_id": 1,
 		"description": "Controls conditioner"
 	},
 	{
@@ -38,10 +40,11 @@ devices = [
 		"name": "ESP-01 Smart Socket",
 		"ip": "192.168.1.144",
 		"state": 0,
-		"device_key": "knb78G^n03foi",
+		"device_key": "socket_hash",
+		"master_device_id": 1,
+		"flatId": 1,
 		"typeId": 2,
 		"command": "socket",
-		"master_device_id": 1,
 		"description": "Controls Smart socket"
 	},
 	{
@@ -50,9 +53,10 @@ devices = [
 		"ip": "192.168.1.130",
 		"state": 0,
 		"device_key": "Qsd2dfj7sdsegf40dg",
+		"master_device_id": 1,
+		"flatId": 1,
 		"typeId": 1,
 		"command": "water_sensor_kitchen",
-		"master_device_id": 1,
 		"description": "Turns on/off hall lights"
 	},
 	{
@@ -61,20 +65,22 @@ devices = [
 		"ip": "192.168.1.131",
 		"state": 0,
 		"device_key": "dfj7sdsegf40dg",
+		"master_device_id": 1,
+		"flatId": 1,
 		"typeId": 1,
 		"command": "water_sensor_toilet",
-		"master_device_id": 1,
 		"description": "Turns on/off hall lights"
 	},
 	{
 		"id": 20,
 		"name": "water_sensor van",
-		"ip": "192.168.1.132",
+		"ip": "192.168.1.102",
 		"state": 0,
-		"device_key": "Qsd2dgwqzdsegf40dg",
+		"device_key": "watersensor_hash",
+		"master_device_id": 1,
+		"flatId": 1,
 		"typeId": 1,
 		"command": "water_sensor_van",
-		"master_device_id": 1,
 		"description": "Turns on/off water sensor"
 	},
 	{
@@ -83,9 +89,10 @@ devices = [
 		"ip": "192.168.1.154",
 		"state": 0,
 		"device_key": "knb78G^n0sdf3foi",
+		"master_device_id": 1,
+		"flatId": 1,
 		"typeId": 2,
 		"command": "smart_stove",
-		"master_device_id": 1,
 		"description": "Controls stove"
 	},
 	{
@@ -93,10 +100,11 @@ devices = [
 		"name": "IoT TV Remote",
 		"ip": "192.168.1.176",
 		"state": 0,
-		"device_key": "asdgdsf4567)N$3zx4a2",
+		"device_key": "alondatv2",
+		"master_device_id": 1,
+		"flatId": 1,
 		"typeId": 2,
 		"command": "tv_remote",
-		"master_device_id": 1,
 		"description": "Controls Remote of smart tv that sends IR datas"
 	},
 	{
@@ -105,42 +113,46 @@ devices = [
 		"ip": "192.168.1.104",
 		"state": 0,
 		"device_key": "fuckwaddMeasurerKey",
+		"master_device_id": 1,
+		"flatId": 1,
 		"typeId": 2,
 		"command": "watt_measurer_kitchen",
-		"master_device_id": 1,
 		"description": "Measures the flow of current"
 	},
 	{
 		"id": 24,
 		"name": "Water measurer of kitchen",
-		"ip": "192.168.1.223",
+		"ip": "192.168.1.108",
 		"state": 0,
 		"device_key": "jbhbnefb63bno2u1",
+		"master_device_id": 1,
+		"flatId": 1,
 		"typeId": 2,
 		"command": "water_measurer_kitchen",
-		"master_device_id": 1,
 		"description": "Measures the flow of water"
 	},
 	{
 		"id": 25,
 		"name": "Three mode switch",
-		"ip": "192.168.1.209",
+		"ip": "192.168.1.219",
 		"state": 0,
 		"device_key": "lights_hash",
+		"master_device_id": 1,
+		"flatId": 1,
 		"typeId": 2,
 		"command": "three_mode_switch",
-		"master_device_id": 1,
 		"description": "Controls Two mode switch"
 	},
 	{
 		"id": 26,
 		"name": "Suw sensor",
-		"ip": "192.168.1.130",
+		"ip": "192.168.1.104",
 		"state": 0,
-		"device_key": "pir_hash",
+		"device_key": "waterpump_hash",
+		"master_device_id": 1,
+		"flatId": 1,
 		"typeId": 1,
 		"command": "water_pump",
-		"master_device_id": 1,
 		"description": "suw sensory dolandyrmak"
 	},
 	{
@@ -149,9 +161,10 @@ devices = [
 		"ip": "192.168.1.177",
 		"state": 0,
 		"device_key": "alondatv2",
+		"master_device_id": 1,
+		"flatId": 1,
 		"typeId": 2,
 		"command": "tv_remote2",
-		"master_device_id": 1,
 		"description": "Controls Remote of smart tv that sends IR datas"
 	},
 	{
@@ -160,20 +173,22 @@ devices = [
 		"ip": "192.168.1.224",
 		"state": 0,
 		"device_key": "suwolceya1",
+		"master_device_id": 1,
+		"flatId": 1,
 		"typeId": 2,
 		"command": "water_measurer_kitchen2",
-		"master_device_id": 1,
 		"description": "Measures the flow of water"
 	},
 	{
 		"id": 29,
 		"name": "Door Lock",
-		"ip": "192.168.1.100",
+		"ip": "192.168.1.178",
 		"state": 0,
 		"device_key": "door_hash",
+		"master_device_id": 1,
+		"flatId": 1,
 		"typeId": 1,
 		"command": "unlock_door",
-		"master_device_id": 1,
 		"description": "Unlock door"
 	},
 	{
@@ -182,40 +197,52 @@ devices = [
 		"ip": "192.168.1.149",
 		"state": 0,
 		"device_key": "gerkon_sensor_secret",
+		"master_device_id": 1,
+		"flatId": 1,
 		"typeId": 1,
 		"command": "ping_gerkon",
-		"master_device_id": 1,
 		"description": "GERKON OPEN/CLOSE"
 	},
 	{
-		"id": 31,
-		"name": "Gaz sensor",
-		"ip": "192.168.1.145",
-		"state": 0,
-		"device_key": "gas_sensor_secret",
-		"typeId": 1,
-		"command": "gas_sensor",
-		"master_device_id": 1,
-		"description": "gas sensor, shows current gas status"
-	},
+                "id": 31,
+                "name": "Gaz sensor",
+                "ip": "192.168.1.145",
+                "state": 0,
+                "device_key": "gas_sensor_secret",
+                "typeId": 1,
+                "command": "gas_sensor",
+		"description":"gas sensor detect gas"
+        },
+	{
+                "id": 32,
+                "name": "Gaz  Valve",
+                "ip": "192.168.1.165",
+                "state": 0,
+                "device_key": "gas_hash",
+                "typeId": 1,
+                "command": "gas_valve_sensor",
+                "description": "gas valve for open and close"
+        },
+        {
+                "id": 33,
+                "name": "PIR",
+                "ip": "192.168.1.100",
+                "state": 0,
+                "device_key": "pir_sensor_secrett",
+                "typeId": 1,
+                "command": "pir_sensor",
+                "description": "PIR sensor detect moving"
+        },
 	{
 		"name": "Local binary test",
 		"ip": "127.0.0.1:5000",
 		"state": 0,
 		"device_key": "23abcK238873244",
+		"master_device_id": 1,
+		"flatId": 1,
 		"typeId": 1,
 		"command": "test_local",
-		"master_device_id": 1,
 		"description": "Turns on/off Local test"
-	},
-	{
-		"id": 99999,
-		"name": "ESP of master arduino",
-		"ip": "192.168.1.253",
-		"device_key": "ESP_ARDU_MASTER",
-		"command": "esp_communicator_secret",
-		"typeId": 4,
-		"description": "Communicates with master arduino via UART"
 	},
 	{
 		"id": 999,
@@ -223,6 +250,8 @@ devices = [
 		"ip": "127.0.0.1:5000",
 		"state": 0,
 		"device_key": "ase44f3f23f3",
+		"master_device_id": 1,
+		"flatId": 1,
 		"typeId": 2,
 		"command": "test_local_json",
 		"description": "Json to args of local test func"
@@ -397,15 +426,25 @@ pins = [
 		"description": "Activates AI function",
 		"action": "0",
 		"deviceId": 999,
+	}
+]
+
+device_types = [
+	{
+		"id": 1,
+		"name": "ESP-01-binary",
+		"description": "ESP8266 Binary data like '/control/1' or '/control/0'"
 	},
 	{
-		"name": "Arduino Conditioner Mode HIGH",
-		"command": "mode_high",
-		"description": "Changes the conditioner operation power",
-		"action": "0",
-		"process_key": "main_arduino_process_secret_key",
-		"deviceId": 99999,
+		"id": 2,
+		"name": "ESP-JSON-to-Arguments",
+		"description": "ESP8266 with several arguments provided from data in JSON"
 	},
+	{
+		"id": 3,
+		"name": "Esp8266-command-argument",
+		"description": "ESP8266 with argument provided in 'control' from data in 'action' of JSON"
+	}
 ]
 
 
@@ -417,6 +456,8 @@ sensors = [
 		"description": "Measured amount of current",
 		"value": "0.0",
 		"deviceId": 23,
+		"master_device_id": 1,
+		"flatId": 1,
 		"typeId": 1
 	},
 	{
@@ -426,6 +467,8 @@ sensors = [
 		"description": "Measured amount of water",
 		"value": "0.0",
 		"deviceId": 24,
+		"master_device_id": 1,
+		"flatId": 1,
 		"typeId": 1,
 	},
 	{
@@ -435,6 +478,8 @@ sensors = [
 		"description": "Measured amount of water",
 		"value": "0.0",
 		"deviceId": 28,
+		"master_device_id": 1,
+		"flatId": 1,
 		"typeId": 1
 	}
 ]

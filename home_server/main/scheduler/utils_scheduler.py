@@ -42,7 +42,6 @@ def do_device_JsonToArg_req(
 	device_command,
 ):
 	if device:
-		print(device.json())
 		current_pin = None
 		for pin in device.pins:
 			if pin.id == pinId:
@@ -61,10 +60,9 @@ def do_device_JsonToArg_req(
 				}
 			]
 		}
+		print("making the request----------")
 
-		print(payload)
-
-		# r = requests.post(
-		# 	"{}{}{}".format(local_addr, url,"?isSchedule=1"),
-		# 	data = json.dumps(payload),
-		# 	headers = {'Content-Type': 'application/json'})
+		r = requests.post(
+			"{}{}{}".format(local_addr, url,"?isSchedule=0"),
+			data = json.dumps(payload),
+			headers = {'Content-Type': 'application/json'})
