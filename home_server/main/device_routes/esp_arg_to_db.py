@@ -3,6 +3,7 @@ from flask import (
 	make_response,
 )
 from datetime import datetime
+from sqlalchemy import func
 
 from main import app
 from main import db
@@ -60,10 +61,12 @@ def esp_arg_to_db():
 
 						current_date = datetime.now().date()
 						found_s_record = Sensor_record.query\
-							.filter_by(
-								date = current_date,
-								deviceId = device.id,
-								sensorId = sensor.id
+                                                        .filter_by(
+                                                                deviceId = device.id,
+                                                                sensorId = sensor.id
+                                                        )\
+                                                        .filter(
+                                                                func.date(Sensor_record.date) == current_date
 							).first()
 
 						if found_s_record:
