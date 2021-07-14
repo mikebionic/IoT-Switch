@@ -255,6 +255,18 @@ devices = [
 		"typeId": 2,
 		"command": "test_local_json",
 		"description": "Json to args of local test func"
+	},
+	{
+		"id": 123,
+		"name": "Esp 32 camera",
+		"ip": "192.168.1.105",
+		"state": 0,
+		"device_key": "camera_secret",
+		"flatId": 1,
+		"typeId": 5,
+		"command": "camera_command",
+		"description": "Camera url location",
+		"url_path": ":81/stream"
 	}
 ]
 

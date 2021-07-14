@@ -18,6 +18,11 @@ device_types = [
 		"device_type_key": 4,
 		"name": "Esp8266-Arduino Master communicator",
 		"description": "ESP8266 with argument provided 'command' 'action' 'process_key' from data, found in PIN with given 'action' of JSON"
+	},
+	{
+		"device_type_key": 5,
+		"name": "ESP camera",
+		"description": "Esp camera"
 	}
 ]
 

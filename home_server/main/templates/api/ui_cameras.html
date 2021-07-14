@@ -1,0 +1,17 @@
+<html>
+	<style type="text/css">
+body {
+background-color: black;}
+</style>
+	<body>
+		<div class="row" align="center">
+			<div>
+				{% for camera in cameras_list %}
+					<IMG SRC="http://{{camera.ip}}{{camera.url_path if camera.url_path else ':81/stream' }}" style='width:310px; transform:rotate(180deg);'>
+				{% endfor %}
+			</div>
+		</div>
+	</body>
+	
+</html>
+

@@ -8,4 +8,5 @@ from .getDevice import getDevice
 from .get_resident_devices import get_resident_devices
 from .make_device_request import make_device_request
 from .process_pins import process_pins
+from .ui_cameras import ui_cameras
 from .v2_esp_json_to_arg import v2_esp_json_to_arg
