@@ -1,0 +1,40 @@
+{% extends "/admin/layout.html" %}
+
+{% block content %}
+
+	<h4>{{ data.message }}</h4>
+	<div class="row">
+		{% for device in data["data"] %}
+
+
+		<div class="col-xl-3 col-lg-6 col-md-12 col-sm-12">
+			<div class="card card-counter {{ 'bg-gradient-warning' if device.state > 1 else 'bg-gradient-primary'}}">
+				<div class="card-body">
+					<div class="row">
+						<div class="col-8">
+							<div class="mt-4 mb-0 text-white">
+								<h3 class="mb-0">{{ device.name }}</h3>
+								<p class="text-white mt-1 ">{{ device.description if device.description else 'no description..' }}</p>
+							</div>
+						</div>
+						<div class="col-4">
+							<p class="text-white mt-1 ">{{device.state}}</p>
+							<!-- <i class="fa fa-bulb mt-3 mb-0 text-white-transparent"></i> -->
+						</div>
+					</div>
+					{% if device.pins %}
+						<p class="text-muted mb-1">Pins</p>
+						<ul>
+							{% for pin in device.pins %}
+								<li class="text-white mt-1 ">{{pin.name}}: {{ pin.command }}</li>		
+							{% endfor %}
+						</ul>
+						{% endif %}
+				</div>
+			</div>
+		</div>
+		
+		{% endfor %}
+	</div>
+
+{% endblock %}

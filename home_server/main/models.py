@@ -420,7 +420,7 @@ class Sensor_record(db.Model):
 	dateAdded = db.Column(db.DateTime,default=datetime.now())
 	dateUpdated = db.Column(db.DateTime,default=datetime.now(),onupdate=datetime.now())
 
-	def json(self):
+	def json(self, withDates=True):
 		sensor_records = {
 			"id": self.id,
 			"name": self.name,
@@ -430,8 +430,8 @@ class Sensor_record(db.Model):
 			"master_device_id": self.master_device_id,
 			"deviceId": self.deviceId,
 			"sensorId": self.sensorId,
-			"dateAdded": self.dateAdded,
-			"dateUpdated": self.dateUpdated.timestamp(),
+			"dateAdded": self.dateAdded if withDates else None,
+			"dateUpdated": self.dateUpdated.timestamp() if withDates else None,
 		}
 		return sensor_records
 

@@ -44,11 +44,11 @@
 							</ul>
 							<ul class="nav header-nav">
 
-								<li class="nav-item dropdown header-option m-2">
+								<!-- <li class="nav-item dropdown header-option m-2">
 									<a class="nav-link" href="/settings" role="button">
 										<i class="fe fe-settings mr-2"></i>Settings
 									</a>
-								</li>
+								</li> -->
 							</ul>
 							
 						</div>
@@ -92,7 +92,15 @@
 				</div>
 
 				<div class="container content-area">
-
+					{% with messages = get_flashed_messages(with_categories=true) %}
+						{% if messages %}
+							{% for category, message in messages %}
+								<div class="p-3 alert alert-{{ category }}" role="alert">
+									{{ message }}
+								</div>
+							{% endfor %}
+						{% endif %}
+					{% endwith %}
 					{% block content %}{% endblock %}
 
 					<footer class="footer">

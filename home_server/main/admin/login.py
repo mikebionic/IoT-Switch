@@ -7,6 +7,8 @@ from flask import (
 from random import randint
 from datetime import datetime, timedelta
 
+from flask.helpers import url_for
+
 from main import app, db
 from main.models import Resident, QR_code
 
@@ -14,7 +16,7 @@ from flask_login import (
 	login_user,
 	current_user,
 	logout_user,
-	login_required)
+)
 
 
 @app.route('/admin/login', methods=["GET", "POST"])
@@ -47,4 +49,4 @@ def admin_login():
 @app.route("/admin/logout")
 def admin_logout():
 	logout_user()
-	return redirect ("/")
+	return redirect(url_for("admin_login"))

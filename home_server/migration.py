@@ -16,6 +16,7 @@ from main.models import (
 	QR_code,
 	Room,
 	Schedule,
+	Sensor_record,
 )
 
 from main.db_migration_data.devices_config import master_devices, devices, pins, sensors
@@ -25,8 +26,14 @@ from main.db_migration_data.residents_config import residents, qr_codes
 from main.db_migration_data.schedules_config import schedules
 
 
+cached_records = [record.json(withDates = False) for record in Sensor_record.query.all()]
+
 db.drop_all()
 db.create_all()
+
+for record in cached_records:
+	db_sensor_record = Sensor_record(**cached_records)
+	db.session.add(db_sensor_record)
 
 
 for city in cities:

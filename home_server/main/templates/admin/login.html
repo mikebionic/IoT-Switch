@@ -36,6 +36,15 @@
 					<div class="col-xl-12 col-md-12 col-md-12">
 						<div class="card">
 							<div class="card-body">
+								{% with messages = get_flashed_messages(with_categories=true) %}
+									{% if messages %}
+										{% for category, message in messages %}
+											<div class="p-3 alert alert-{{ category }}" role="alert">
+												{{ message }}
+											</div>
+										{% endfor %}
+									{% endif %}
+								{% endwith %}
 								<div class="text-center mb-6">
 									<img src="../assets/images/brand/logo.png" class="" alt="">
 								</div>
