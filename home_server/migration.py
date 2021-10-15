@@ -26,14 +26,15 @@ from main.db_migration_data.residents_config import residents, qr_codes
 from main.db_migration_data.schedules_config import schedules
 
 
-cached_records = [record.json(withDates = False) for record in Sensor_record.query.all()]
+# saving old record before migration
+cached_records = []
+try:
+	cached_records = [record.json(withDates = False) for record in Sensor_record.query.all()]
+except Exception as ex:
+	print(ex)
 
 db.drop_all()
 db.create_all()
-
-for record in cached_records:
-	db_sensor_record = Sensor_record(**cached_records)
-	db.session.add(db_sensor_record)
 
 
 for city in cities:
@@ -95,6 +96,12 @@ for sensor_type in sensor_types:
 for trigger in triggers:
 	db_trigger = Trigger(**trigger)
 	db.session.add(db_trigger)
+
+
+if cached_records:
+	for record in cached_records:
+		db_sensor_record = Sensor_record(**record)
+		db.session.add(db_sensor_record)
 
 
 db.session.commit()
