@@ -3,7 +3,7 @@ import requests
 
 from main import app, db
 
-from .models import Device
+from .models import Device, Master_device
 from .netScanner import map_network
 
 
@@ -22,6 +22,15 @@ def scanNetwork():
 					if device:
 						try:
 							device.ip = ip
+							db.session.commit()
+						except Exception as ex:
+							print(ex)
+
+					master_device = Master_device.query.filter_by(device_key = device_command).first()
+					if master_device:
+						try:
+							master_device.ip = ip
+							print("added master dev ip")
 							db.session.commit()
 						except Exception as ex:
 							print(ex)

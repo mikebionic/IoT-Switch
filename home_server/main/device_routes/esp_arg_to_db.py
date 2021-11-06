@@ -61,12 +61,12 @@ def esp_arg_to_db():
 
 						current_date = datetime.now().date()
 						found_s_record = Sensor_record.query\
-                                                        .filter_by(
-                                                                deviceId = device.id,
-                                                                sensorId = sensor.id
-                                                        )\
-                                                        .filter(
-                                                                func.date(Sensor_record.date) == current_date
+							.filter_by(
+								deviceId = device.id,
+								sensorId = sensor.id
+							)\
+							.filter(
+								func.date(Sensor_record.date) == current_date
 							).first()
 
 						if found_s_record:

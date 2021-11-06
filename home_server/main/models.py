@@ -271,6 +271,7 @@ class Device(db.Model):
 	command = db.Column(db.String(100),default=random_gen(10))
 	state = db.Column(db.Integer,default=0)
 	description = db.Column(db.String(500))
+	toMaster = db.Column(db.Integer)
 	url_path = db.Column(db.String(500))
 	master_device_id = db.Column(db.Integer,db.ForeignKey("master_device.id"))
 	typeId = db.Column(db.Integer,db.ForeignKey("device_type.id"))
@@ -300,6 +301,7 @@ class Device(db.Model):
 			"command": self.command,
 			"state": self.state,
 			"description": self.description,
+			"toMaster": self.toMaster,
 			"url_path": self.url_path,
 			"master_device_id": self.master_device_id,
 			"typeId": self.typeId,

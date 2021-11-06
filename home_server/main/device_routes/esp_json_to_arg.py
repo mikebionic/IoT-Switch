@@ -20,6 +20,8 @@ from main.scheduler.manage_schedules import manage_schedules
 @app.route("/esp/JsonToArg/",methods=['GET','POST'])
 def esp_json_to_arg():
 	isSchedule = request.args.get('isSchedule',0,type=int)
+	toMaster = request.args.get('toMaster',0,type=int)
+
 	if request.method == 'POST':
 		req = request.get_json()
 
@@ -30,7 +32,34 @@ def esp_json_to_arg():
 		if device:
 			process_pins(device, pins_json)
 
-			if device.typeId == 2:
+			if device.toMaster == 1 or toMaster == 1:
+				argumented_url_list = create_separated_device_typeId4_argumented_url_list(device)
+
+				print(argumented_url_list)
+				if (device.typeId == 4):
+					remoteIp = device.ip
+					print("getting typeid4 ip")
+				else:
+					remoteIp = device.master_device.ip
+					print(device.master_device.ip)
+
+				try:
+					for pending_argument in argumented_url_list:
+						argumented_url = create_argumented_url(pending_argument)
+						r = requests.get('http://{}/control/?{}'.format(remoteIp, argumented_url))
+
+					response = device.json()
+					pins = [pin.json() for pin in device.pins]
+					response['pins'] = pins
+
+					# handle_schedule(device, isSchedule)
+					return make_response(jsonify(response),200)
+
+				except Exception as ex:
+					print(ex)
+					return make_response("error, couldn't make a device typeId=4 request (connection issue)")
+
+			elif device.typeId == 2:
 				pending_arguments = create_pending_arguments_from_device(device)
 				argumented_url = create_argumented_url(pending_arguments)
 
@@ -50,24 +79,6 @@ def esp_json_to_arg():
 					return make_response("error, couldn't make a device typeId=2 request (connection issue)")
 
 
-			if device.typeId == 4:
-				argumented_url_list = create_separated_device_typeId4_argumented_url_list(device)
-
-				try:
-					for pending_argument in argumented_url_list:
-						argumented_url = create_argumented_url(pending_argument)
-						r = requests.get('http://{}/control/?{}'.format(device.ip, argumented_url))
-
-					response = device.json()
-					pins = [pin.json() for pin in device.pins]
-					response['pins'] = pins
-
-					# handle_schedule(device, isSchedule)
-					return make_response(jsonify(response),200)
-
-				except Exception as ex:
-					print(ex)
-					return make_response("error, couldn't make a device typeId=4 request (connection issue)")
 
 		return make_response("error, device is not supported for current action",200)
 	return make_response("error, couldn't make a request (no device found)",200)
