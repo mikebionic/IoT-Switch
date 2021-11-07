@@ -11,6 +11,9 @@ String process_key = "";
 int sock2pin = 4; // D0
 int sock1pin = 5; // D1
 int sock3pin = 6; // D2
+
+// take this from devices_config of specific device
+String socket_command = "socket";
 /////
 
 
@@ -24,6 +27,13 @@ void setup() {
   pinMode(sock3pin, OUTPUT);
   ////
 }
+
+
+void send_uart_message(String command, String action){
+  String payload = "command="+command+"&action"=action;
+  Serial.println(payload);
+}
+
 
 void loop() {
   if(Serial.available() != 0){
@@ -85,6 +95,10 @@ void control_device(String command, String action){
     }
     else if(action == "0"){
         digitalWrite(sock3pin,0);
+    }
+
+    else if (action == "uartoff"){
+      send_uart_message("0", socket_command);
     }
   }
   //////
