@@ -1,6 +1,7 @@
 from flask import (
 	request,
 	make_response,
+	abort,
 )
 from datetime import datetime
 from sqlalchemy import func
@@ -10,6 +11,7 @@ from main import db
 
 from main.models import (
 	Device,
+	Master_device,
 	Pin,
 	Sensor,
 	Sensor_record
@@ -20,6 +22,7 @@ from main.models import (
 def esp_arg_to_db():
 	device_key = request.args.get('device_key')
 	pin_sensor_command = request.args.get('command')
+	isMaster = request.args.get('isMaster', 0, int)
 
 	try:
 		value = request.args.get('value')
@@ -30,6 +33,19 @@ def esp_arg_to_db():
 		action = request.args.get('action')
 	except:
 		action = None
+
+	if isMaster == 1:
+		master_device = Master_device.query.filter_by(device_key = device_key).first()
+		if not master_device:
+			abort(404)
+		else:
+			device = Device.query.filter_by(command = pin_sensor_command).first()
+			if device:
+				device.state = action
+				db.session.commit()
+				return make_response("OK", 200)
+			else:
+				abort(404)
 
 	device = Device.query.filter_by(device_key = device_key).first()
 	if device:
