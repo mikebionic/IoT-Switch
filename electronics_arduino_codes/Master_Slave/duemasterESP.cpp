@@ -76,8 +76,10 @@ void sendDataFromMaster(){
       Serial.println(stream);
       // String argument_data = "?device_key="+device_key+"&command="+command+"&value="+String(stream);
       // // we will provide command=somecommand&value=somevalue from stream
-      String argument_data = "?device_key="+device_key+"&"+String(stream);
-      sendRequest("http://"+serverUrl+"/esp/ArgToDB/",argument_data);
+      if (stream.length() > 20){
+        String argument_data = "?device_key="+device_key+"&"+String(stream)+"&isMaster=1";
+        sendRequest("http://"+serverUrl+"/esp/ArgToDB/",argument_data); 
+      }
     }
   }
 }
