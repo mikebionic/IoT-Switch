@@ -99,3 +99,9 @@ curl --header "Content-Type: application/json" \
 	--data '{"command":"test_local_json","pins":[{"command":"switch_mirror","action":"1"},{"command":"switch_AI","action":"activate"}]}' \
 	http://127.0.0.1:5000/esp/JsonToArg/
 ```
+
+
+> Browser Get request to raspberry for test:
+```url
+http://192.168.1.252/esp/ArgToDB/?device_key=<device_key>&command=<sensor_command>&value=<value of water, example 112>
+```

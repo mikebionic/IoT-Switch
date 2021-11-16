@@ -10,16 +10,15 @@ IPAddress gateway(192, 168, 1, 1);   //IP Address of your WiFi Router (Gateway)
 IPAddress subnet(255, 255, 255, 0);  //Subnet mask
 IPAddress dns(8, 8, 8, 8);  //DNS
  
-const char* ssid = "Akylly_Oy25";
-const char* password = "abadanhaly@!25";
+const char* ssid = "Smart_Gorjaw";
+const char* password = "gorjaw@!85";
 const char* deviceName = "Esp water meter";
 String serverUrl = "192.168.1.252";
 String payload;
-String device_key = "jHvsbhbnefb63bQno2u1";
-String command = "water_measurer_sensor";
+String device_key = "jHvsbhbnefb63bQno2u1"; //Change this to device_config device_key
+String command = "water_measurer_sensor"; // Change this to device's sensor command
 
 ESP8266WebServer server(80);
-
 String stream;
 
 
