@@ -6,34 +6,46 @@ String command = "";
 String action = "";
 String process_key = "";
 
+// curtain sketch
+long curtain_delay = 2000; // seconds of curtain spin
+long curtain_time = millis();
+long curtainTime;
+int curtain_up_button = CONTROLLINO_A0;
+int curtain_down_button = CONTROLLINO_A1;
+int curtain_direction = 0; // curtain up if = 1, down if = 2
+
+// curtain dc motor
+int curtain_up_motor = CONTROLLINO_R0;
+int curtain_down_motor = CONTROLLINO_R1;
+
 
 
 // Socketlerin pineri
-int sock1pin = CONTROLLINO_R0; // D0
-int sock2pin = CONTROLLINO_R1; // D1
-int sock3pin = CONTROLLINO_R2; // D2
-
-// aircondinsionerin pinleri
-int condmodelow = CONTROLLINO_R3;
-int condmodemed = CONTROLLINO_R4;
-int condmodehigh = CONTROLLINO_R5;
+int sock1pin = CONTROLLINO_R2; // D0
+int sock2pin = CONTROLLINO_R3; // D1
+int sock3pin = CONTROLLINO_R4; // D2
 
 // PIR sensor
-int pirsensorpin = CONTROLLINO_A0;
-int pirsensorled = CONTROLLINO_R6;
+int pirsensorpin = CONTROLLINO_A2;
+int pirsensorled = CONTROLLINO_R5;
 
 // Water sensor
-int watersensorpin = CONTROLLINO_A1;
-int watersensorkl = CONTROLLINO_R7;
+int watersensorpin = CONTROLLINO_A3;
+int watersensorkl = CONTROLLINO_R6;
+
+// aircondinsionerin pinleri
+int condmodelow = CONTROLLINO_R13;
+int condmodemed = CONTROLLINO_R14;
+int condmodehigh = CONTROLLINO_R15;
 
 // gas sensor
-int gassensorpin = CONTROLLINO_A2;
+int gassensorpin = CONTROLLINO_A4;
 
 // fire sensor
-int firesensorpin = CONTROLLINO_A3;
+int firesensorpin = CONTROLLINO_A5;
 
 // gerkon sensor
-int gerkonsensorpin = CONTROLLINO_A4;
+int gerkonsensorpin = CONTROLLINO_A6;
 
 // pwm pin of fan
 int fanpin = CONTROLLINO_D0;
@@ -48,26 +60,29 @@ String gas_device_command = "gas_sensor";
 String fire_device_command = "fire_command";
 String gerkon_device_command = "ping_gerkon";
 String curtain_device_command = "curtain";
-
+String kitchen_light_device_command = "kitchen_light123";
+String control_tok_device_command = "control_tok_command";
+String water_pump_device_command = "water_pump";
 
 // 4 MODE DIMMER
 char room_light = CONTROLLINO_D1;
-int roomSwitch = CONTROLLINO_A5;
+int roomSwitch = CONTROLLINO_A7;
 int buttonState = 0;     // make it 1 if INPUT_PULLUP
 int lastButtonState = 0; // make it 1 if INPUT_PULLUP
 int buttonPushCounter = 0;
 
-// curtain sketch
-long curtain_delay = 2000; // seconds of curtain spin
-long curtain_time = millis()
-int curtain_up_button = CONTROLLINO_A6;
-int curtain_down_button = CONTROLLINO_A7;
-int curtain_direction = 0; // curtain up if = 1, down if = 2
+// Kitchen light
+int kitchenlightpin = CONTROLLINO_R7;
 
-// curtain dc motor
-int curtain_up_motor = CONTROLLINO_R8;
-int curtain_down_motor = CONTROLLINO_R9;
+// esasy tok cesmesi
+int tokpin = CONTROLLINO_R8;
 
+
+int fire_message_sent = 0;
+int pir_message_sent = 0;
+int water_message_sent = 0;
+int gas_message_sent = 0;
+int gerkon_message_sent = 0;
 
 void setup() {
   Serial.begin(115200);
@@ -86,30 +101,34 @@ void setup() {
   ////
 
   //pir sensor
-  pinMode(pirsensorpin, INPUT);
+  pinMode(pirsensorpin, INPUT_PULLUP);
   pinMode(pirsensorled, OUTPUT);
 
   //pir sensor
-  pinMode(watersensorpin, INPUT);
+  pinMode(watersensorpin, INPUT_PULLUP);
   pinMode(watersensorkl, OUTPUT);
 
-  pinMode(gassensorpin, INPUT);
-  pinMode(firesensorpin, INPUT);
-  pinMode(gerkonsensorpin, INPUT);
+  pinMode(gassensorpin, INPUT_PULLUP);
+  pinMode(firesensorpin, INPUT_PULLUP);
+  pinMode(gerkonsensorpin, INPUT_PULLUP);
 
   pinMode(fanpin, OUTPUT);
-  
+
   // 4 MODE DIMMER
   pinMode(room_light, OUTPUT); // PWM
-  pinMode(roomSwitch, INPUT);
+  pinMode(roomSwitch, INPUT_PULLUP);
 
   // curtain sketch
-  pinMode(curtain_up_button, INPUT);
-  pinMode(curtain_down_button, INPUT);
+  pinMode(curtain_up_button, INPUT_PULLUP);
+  pinMode(curtain_down_button, INPUT_PULLUP);
 
   pinMode(curtain_up_motor, OUTPUT);
   pinMode(curtain_down_motor, OUTPUT);
-  
+
+  pinMode(kitchenlightpin, OUTPUT);
+
+  pinMode(tokpin, OUTPUT);
+
 }
 
 
@@ -120,7 +139,7 @@ void send_uart_message(String command, String action) {
 
 
 void loop() {
-  
+
   if (Serial.available() != 0) {
     String stream = Serial.readStringUntil('\n');
     stream.trim();
@@ -138,37 +157,60 @@ void loop() {
   //pir sensor
   int pirsensorstate = digitalRead(pirsensorpin);
   if (pirsensorstate == 1) {
-    digitalWrite(pirsensorled, 1);
-    send_uart_message(pir_device_command, "1");
+    if (pir_message_sent == 0){
+      digitalWrite(pirsensorled, 1);
+      send_uart_message(pir_device_command, "1");
+      pir_message_sent = 1;
+    }
   }
   else if (pirsensorstate == 0) {
     digitalWrite(pirsensorled, 0);
+    pir_message_sent = 0;
   }
 
   //water sensor
   int watersensorstate = digitalRead(watersensorpin);
   if (watersensorstate == 1) {
-    digitalWrite(watersensorkl, 1);
-    send_uart_message(water_device_command, "1");
+    if (water_message_sent == 0){
+      digitalWrite(watersensorkl, 1);
+      send_uart_message(water_device_command, "1");
+      water_message_sent = 1;
+    }
   }
   else if (watersensorstate == 0) {
     digitalWrite(watersensorkl, 0);
+    water_message_sent = 0;
   }
 
 
   int gassensorpinstate = digitalRead(gassensorpin);
   if (gassensorpinstate == 1) {
-    send_uart_message(gas_device_command, "1");
+    if (gas_message_sent == 0){
+      send_uart_message(gas_device_command, "1");
+      gas_message_sent = 1;    
+    }
+  } else {
+    gas_message_sent = 0;
   }
 
   int firesensorpinstate = digitalRead(firesensorpin);
   if (firesensorpinstate == 1) {
-    send_uart_message(fire_device_command, "1");
+    if (fire_message_sent == 0){
+      send_uart_message(fire_device_command, "1"); 
+      fire_message_sent = 1;
+    }
+  } else {
+    fire_message_sent = 0;
   }
 
   int gerkonsensorpinstate = digitalRead(gerkonsensorpin);
   if (gerkonsensorpinstate == 1) {
-    send_uart_message(gerkon_device_command, "1");
+    if (gerkon_message_sent == 0){
+      send_uart_message(gerkon_device_command, "1");
+      gerkon_message_sent = 1;    
+    }
+  } else {
+    gerkon_message_sent = 0;
   }
 
 
@@ -178,21 +220,16 @@ void loop() {
     if (buttonState == 1) { // change 1 to 0 if INPUT_PULLUP
       buttonPushCounter++;
       char count = buttonPushCounter;
-      Serial.print("Basylan sany: ");
-      Serial.println(buttonPushCounter);
-      if(buttonPushCounter == 1){
-        analogWrite(room_light, 80);
+      if (buttonPushCounter == 1) {
+        analogWrite(room_light, 10);
       }
-      if(buttonPushCounter == 2){
-        analogWrite(room_light, 130);
+      if (buttonPushCounter == 2) {
+        analogWrite(room_light, 100);
       }
-      if(buttonPushCounter == 3){
-        analogWrite(room_light, 180);
-      }
-      if(buttonPushCounter == 4){
+      if (buttonPushCounter == 3) {
         analogWrite(room_light, 255);
       }
-      if(buttonPushCounter > 4){
+      if (buttonPushCounter > 3) {
         buttonPushCounter = 0;
         analogWrite(room_light, 0);
       }
@@ -206,22 +243,22 @@ void loop() {
   int curtain_up_button_state = digitalRead(curtain_up_button);
   int curtain_down_button_state = digitalRead(curtain_down_button);
 
-  if (curtain_up_button_state == 1){
+  if (curtain_up_button_state == 1) {
     curtainTime = millis();
     curtain_direction = 1;
   }
- 
-  if (curtain_down_button_state == 1){
+
+  if (curtain_down_button_state == 1) {
     curtainTime = millis();
     curtain_direction = 2;
   }
 
-  if (curtainTime + curtain_delay > millis()){
-    if (curtain_direction == 1){
+  if (curtainTime + curtain_delay > millis()) {
+    if (curtain_direction == 1) {
       digitalWrite(curtain_up_motor, 1);
       digitalWrite(curtain_down_motor, 0);
     }
-    if (curtain_direction == 2){
+    if (curtain_direction == 2) {
       digitalWrite(curtain_down_motor, 1);
       digitalWrite(curtain_up_motor, 0);
     }
@@ -284,6 +321,16 @@ void control_device(String command, String action) {
   }
   //////
 
+  // kitchen light
+  if (command == "kitchen_light123") {
+    if (action == "1") {
+      digitalWrite(kitchenlightpin, 1);
+    }
+    else if (action == "0") {
+      digitalWrite(kitchenlightpin, 0);
+    }
+  }
+
 
   // condinsioner control functions
   //mode_high
@@ -328,10 +375,35 @@ void control_device(String command, String action) {
     if (action == "auto") {
       analogWrite(fanpin, 0);
       digitalWrite(condmodehigh, 0);
-      
+
     }
     else if (action == "0") {
       digitalWrite(condmodehigh, 0);
+    }
+  }
+
+  if (command == "water_pump") {
+    if (action == "1") {
+      digitalWrite(watersensorkl, 1);
+    }
+    else if (action == "0") {
+      digitalWrite(watersensorkl, 0);
+    }
+  }
+    
+  // Myhman otag led pwm
+  if (command == "three_mode_switch") {
+    if (action == "1") {
+      analogWrite(room_light, 10);
+    }
+    else if (action == "2") {
+      analogWrite(room_light, 100);
+    }
+    else if (action == "3") {
+      analogWrite(room_light, 255);
+    }
+    else if (action == "0") {
+      analogWrite(room_light, 0);
     }
   }
 
@@ -340,19 +412,29 @@ void control_device(String command, String action) {
     if (action == "1") {
       digitalWrite(curtain_up_motor, 1);
       digitalWrite(curtain_down_motor, 0);
+      delay(200);
     }
     else if (action == "2") {
       digitalWrite(curtain_up_motor, 0);
       digitalWrite(curtain_down_motor, 1);
-    } 
-    else if(action == "0") {
+      delay(200);
+    }
+    else if (action == "0") {
       digitalWrite(curtain_up_motor, 0);
       digitalWrite(curtain_down_motor, 0);
     }
   }
 
+   if (command == "control_tok_command") {
+    if (action == "1") {
+      digitalWrite(tokpin, 1);
+    }
+    else if (action == "0") {
+      digitalWrite(tokpin, 0);
+    }
+   }
 
-  if (command == "led13") {
+   if(command == "led13") {
     if (action == "on") {
       digitalWrite(led, 1);
     }

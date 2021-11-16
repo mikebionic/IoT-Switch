@@ -25,10 +25,29 @@ def esp_json_to_arg():
 	if request.method == 'POST':
 		req = request.get_json()
 
+		legacy_action = 0
 		command = req["command"]
-		pins_json = req["pins"]
+
+		try:
+			pins_json = req["pins"]
+		except:
+			pins_json = []
+			legacy_action = 1
+			state = req["state"]
+
 
 		device = Device.query.filter_by(command = command).first()
+		
+		if legacy_action:
+			if (device.typeId == 4):
+				remoteIp = device.ip
+			else:
+				remoteIp = device.master_device.ip
+
+			argumented_url = f"command={command}&action={state}&process_key=main_arduino_process_secret_key"
+			r = requests.get('http://{}/control/?{}'.format(remoteIp, argumented_url))
+			return "OK"
+
 		if device:
 			process_pins(device, pins_json)
 
