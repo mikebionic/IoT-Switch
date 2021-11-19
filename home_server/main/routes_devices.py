@@ -27,6 +27,28 @@ from main.scheduler.utils_scheduler import run_scheduled_task
 from main.db_data_utils.get_devices_data import get_devices_data
 
 
+@app.route("/set-ip/")
+def set_ip():
+	device_key = request.args.get('device_key')
+
+	try:
+		if not device_key:
+			raise Exception
+
+		this_device = Device.query.filter_by(device_key = device_key).first()
+		if not this_device:
+			raise Exception
+
+		this_device.ip = request.remote_addr
+		db.session.commit()
+
+	except:
+		print("Setting ip failed")
+		return make_response("err", 400)
+
+	return make_response("ok", 200)
+
+
 @app.route("/esp/",methods=['GET','POST'])
 def esp():
 	# !!! deprecated, now uses device typeId=4
