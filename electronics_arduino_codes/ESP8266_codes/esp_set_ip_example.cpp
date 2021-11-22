@@ -48,7 +48,7 @@ void setup() {
   server.on("/ping/", handlePong);
   server.begin();
 
-  sendRequest("?device_key=" + device_key);
+  sendRequest("http://"+serverUrl+"/set-ip/", "?device_key=" + device_key);
   current_time = millis();
 }
  
@@ -56,7 +56,7 @@ void loop() {
   server.handleClient();
 
   if (current_time + setiptimeout < millis()){
-    sendRequest("?device_key=" + device_key);
+    sendRequest("http://"+serverUrl+"/set-ip/", "?device_key=" + device_key);
     current_time = millis();
   }
 
