@@ -31,12 +31,13 @@ int pirsensorled = CONTROLLINO_R5;
 
 // Water sensor
 int watersensorpin = CONTROLLINO_A3;
-int watersensorkl = CONTROLLINO_R6;
+int suwklapanpin = CONTROLLINO_R12;
 
 // aircondinsionerin pinleri
 int condmodelow = CONTROLLINO_R13;
 int condmodemed = CONTROLLINO_R14;
 int condmodehigh = CONTROLLINO_R15;
+
 
 // gas sensor
 int gassensorpin = CONTROLLINO_A4;
@@ -62,7 +63,7 @@ String gerkon_device_command = "ping_gerkon";
 String curtain_device_command = "curtain";
 String kitchen_light_device_command = "kitchen_light123";
 String control_tok_device_command = "control_tok_command";
-String water_pump_device_command = "water_pump";
+String water_pump_device_command = "suw_klapan";
 
 // 4 MODE DIMMER
 char room_light = CONTROLLINO_D1;
@@ -80,6 +81,7 @@ int tokpin = CONTROLLINO_R8;
 
 int fire_message_sent = 0;
 int pir_message_sent = 0;
+long pir_message_millis;
 int water_message_sent = 0;
 int gas_message_sent = 0;
 int gerkon_message_sent = 0;
@@ -106,7 +108,7 @@ void setup() {
 
   //pir sensor
   pinMode(watersensorpin, INPUT_PULLUP);
-  pinMode(watersensorkl, OUTPUT);
+  pinMode(suwklapanpin, OUTPUT);
 
   pinMode(gassensorpin, INPUT_PULLUP);
   pinMode(firesensorpin, INPUT_PULLUP);
@@ -156,29 +158,37 @@ void loop() {
   }
   //pir sensor
   int pirsensorstate = digitalRead(pirsensorpin);
+  if (millis() - pir_message_millis > 5000){
+    pir_message_sent = 0;
+  }
   if (pirsensorstate == 1) {
     if (pir_message_sent == 0){
-      digitalWrite(pirsensorled, 1);
+//      digitalWrite(pirsensorled, 1);
       send_uart_message(pir_device_command, "1");
       pir_message_sent = 1;
+      pir_message_millis = millis();
     }
   }
   else if (pirsensorstate == 0) {
-    digitalWrite(pirsensorled, 0);
-    pir_message_sent = 0;
+      if (pir_message_sent == 0){
+    //    digitalWrite(pirsensorled, 0);
+        send_uart_message(pir_device_command, "0");  
+        pir_message_sent = 1;
+        pir_message_millis = millis();
+      }
   }
 
   //water sensor
   int watersensorstate = digitalRead(watersensorpin);
   if (watersensorstate == 1) {
     if (water_message_sent == 0){
-      digitalWrite(watersensorkl, 1);
+      digitalWrite(suwklapanpin, 1);
       send_uart_message(water_device_command, "1");
       water_message_sent = 1;
     }
   }
   else if (watersensorstate == 0) {
-    digitalWrite(watersensorkl, 0);
+    digitalWrite(suwklapanpin, 0);
     water_message_sent = 0;
   }
 
@@ -382,12 +392,12 @@ void control_device(String command, String action) {
     }
   }
 
-  if (command == "water_pump") {
+ if (command == "suw_klapan") {
     if (action == "1") {
-      digitalWrite(watersensorkl, 1);
+      digitalWrite(suwklapanpin, 1);
     }
     else if (action == "0") {
-      digitalWrite(watersensorkl, 0);
+      digitalWrite(suwklapanpin, 0);
     }
   }
     
@@ -412,18 +422,27 @@ void control_device(String command, String action) {
     if (action == "1") {
       digitalWrite(curtain_up_motor, 1);
       digitalWrite(curtain_down_motor, 0);
-      delay(200);
+      delay(1000);
     }
     else if (action == "2") {
       digitalWrite(curtain_up_motor, 0);
       digitalWrite(curtain_down_motor, 1);
-      delay(200);
+      delay(1000);
     }
     else if (action == "0") {
       digitalWrite(curtain_up_motor, 0);
       digitalWrite(curtain_down_motor, 0);
     }
   }
+
+    if (command == "pir_led_command") {
+        if (action == "1") {
+        digitalWrite(pirsensorled, 1);
+        }
+        else if (action == "0") {
+        digitalWrite(pirsensorled, 0);
+        }
+    }
 
    if (command == "control_tok_command") {
     if (action == "1") {
