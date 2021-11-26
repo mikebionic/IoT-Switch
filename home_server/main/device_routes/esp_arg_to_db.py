@@ -15,6 +15,7 @@ from main.models import (
 	Sensor,
 	Sensor_record
 )
+from main.routes_devices import manage_pir_detector_leds
 
 
 @app.route("/esp/ArgToDB/",methods=['GET'])
@@ -33,6 +34,10 @@ def esp_arg_to_db():
 	except:
 		action = None
 
+	if pin_sensor_command == "pir_sensor":
+                management = manage_pir_detector_leds(action)
+                print(management)
+
 	if isMaster == 1:
 		master_device = Master_device.query.filter_by(device_key = device_key).first()
 		if not master_device:
@@ -45,8 +50,6 @@ def esp_arg_to_db():
 				db.session.commit()
 				return "OK"
 
-	if pin_sensor_command == "pir_sensor":
-		manage_pir_detector_leds()
 
 	device = Device.query.filter_by(device_key = device_key).first()
 	if device:

@@ -105,3 +105,20 @@ curl --header "Content-Type: application/json" \
 ```url
 http://192.168.1.252/esp/ArgToDB/?device_key=<device_key>&command=<sensor_command>&value=<value of water, example 112>
 ```
+
+
+-----
+
+PIR sensor workflow
+
+> The command that sensor sends from controllino to raspberrypi
+
+http://192.168.1.252:5000/esp/ArgToDB/?command=pir_sensor&device_key=ESP_ARDU_MASTER&isMaster=1&action=0
+
+action should change here
+
+> The command that triggers the mode of pir work
+
+curl --header "Content-Type: application/on" --request POST --data '{"command":"pir_led_selector_command","state":0,"action":""}' http://192.168.1.252:5000/esp/JsonToArg/
+
+If you change state to 1, Then pir will work

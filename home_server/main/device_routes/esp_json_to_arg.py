@@ -44,6 +44,9 @@ def esp_json_to_arg():
 			else:
 				remoteIp = device.master_device.ip
 
+			device.state = state
+			db.session.commit()
+
 			argumented_url = f"command={command}&action={state}&process_key=main_arduino_process_secret_key"
 			r = requests.get('http://{}/control/?{}'.format(remoteIp, argumented_url))
 			return "OK"
@@ -62,6 +65,7 @@ def esp_json_to_arg():
 				else:
 					remoteIp = device.master_device.ip
 					print(device.master_device.ip)
+
 
 				try:
 					for pending_argument in argumented_url_list:

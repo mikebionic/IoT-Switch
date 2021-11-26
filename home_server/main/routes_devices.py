@@ -240,7 +240,7 @@ def detectWater():
 
 
 
-def manage_pir_detector_leds():
+def manage_pir_detector_leds(action):
 	# !!! TODO these strings should be in config
 	pir_led_device_command = "pir_led_command"
 	pir_led_mode_selector_command = "pir_led_selector_command"
@@ -252,7 +252,7 @@ def manage_pir_detector_leds():
 			raise Exception
 
 		if mode_selector_device.state == 0:
-			return make_response("mode 0, not action wasn't made", 200)
+			return "mode 0, not action wasn't made"
 
 		device = Device.query.filter_by(command = pir_led_device_command).first()
 		if device:
@@ -262,7 +262,7 @@ def manage_pir_detector_leds():
 				remoteIp = device.ip
 
 			try:
-				device.state = 1
+				device.state = action if action else 0
 				db.session.commit()
 
 			except Exception as ex:
@@ -272,8 +272,9 @@ def manage_pir_detector_leds():
 			# !!! TODO main arduino process key should be known or given from config
 			command = device.command
 			action = device.state
-			argumented_url = f"command={command}&action={state}&process_key=main_arduino_process_secret_key"
+			argumented_url = f"command={command}&action={action}&process_key=main_arduino_process_secret_key"
 			r = requests.get('http://{}/control/?{}'.format(remoteIp, argumented_url))
+			print("pirLED response", r.text())
 
 		except Exception as ex:
 			print(f"error, couldn't make a request (connection issue) {ex}",200)
@@ -282,7 +283,7 @@ def manage_pir_detector_leds():
 
 	except Exception as ex:
 		print(ex)
-		return make_response("Error, probably no mode selector device present", 200)
+		return "Error, probably no mode selector device present"
 
 
 # test functions
