@@ -39,11 +39,13 @@ def set_ip():
 		if not this_device:
 			raise Exception
 
-		this_device.ip = request.remote_addr
-		db.session.commit()
+		#print(request.remote_addr)
+		#this_device.ip = request.remote_addr
+		#db.session.commit()
+		#print(this_device.json())
 
-	except:
-		print("Setting ip failed")
+	except Exception as ex:
+		print(f"Setting ip failed {ex}")
 		return make_response("err", 400)
 
 	return make_response("ok", 200)
@@ -210,9 +212,9 @@ def setEspState():
 @app.route("/esp/detectWater/")
 def detectWater():
 	device_key = request.args.get('device_key')
-	state = request.args.get('state')
+	state = 1 #request.args.get('state')
 	
-	pump_device_command = "water_pump"
+	pump_device_command = "waterpump"
 
 	device = Device.query.filter_by(device_key = device_key).first()
 	if device:
@@ -220,19 +222,67 @@ def detectWater():
 			device.state = 1
 			db.session.commit()
 
-			try:
-				pump_device = Device.query.filter_by(device_key = pump_device_command).first()
-				pump_state = 1
-				pump_device.state = pump_state
-				db.session.commit()
-				r = requests.get('http://{}/control/{}'.format(pump_device.ip, pump_state))
-			except Exception as ex:
-				print(f"error, couldn't make a request (connection issue) {ex}",200)
-
-			print(device.name)
-			return make_response("ok",200)
 		except Exception as ex:
-			return make_response("err",200)
+                	print(f"error, device not found {ex}",200)
+
+	try:
+		print("trying request pump")
+		pump_device = Device.query.filter_by(device_key = pump_device_command).first()
+		pump_state = 0
+		print(pump_device)
+		pump_device.state = pump_state
+		db.session.commit()
+		r = requests.get('http://{}/control/{}'.format(pump_device.ip, pump_state))
+	except Exception as ex:
+		print(f"error, couldn't make a request (connection issue) {ex}",200)
+
+	return make_response("ok",200)
+
+
+
+def manage_pir_detector_leds():
+	# !!! TODO these strings should be in config
+	pir_led_device_command = "pir_led_command"
+	pir_led_mode_selector_command = "pir_led_selector_command"
+
+	try:
+		mode_selector_device = Device.query.filter_by(command = pir_led_mode_selector_command).first()
+		if not mode_selector_device:
+			print("Mode selector device not present, cannot continue")
+			raise Exception
+
+		if mode_selector_device.state == 0:
+			return make_response("mode 0, not action wasn't made", 200)
+
+		device = Device.query.filter_by(command = pir_led_device_command).first()
+		if device:
+			if (device.toMaster == 1):
+				remoteIp = device.master_device.ip
+			else:
+				remoteIp = device.ip
+
+			try:
+				device.state = 1
+				db.session.commit()
+
+			except Exception as ex:
+				print(f"error, device not found {ex}",200)
+
+		try:
+			# !!! TODO main arduino process key should be known or given from config
+			command = device.command
+			action = device.state
+			argumented_url = f"command={command}&action={state}&process_key=main_arduino_process_secret_key"
+			r = requests.get('http://{}/control/?{}'.format(remoteIp, argumented_url))
+
+		except Exception as ex:
+			print(f"error, couldn't make a request (connection issue) {ex}",200)
+
+		return make_response(device.json(),200)
+
+	except Exception as ex:
+		print(ex)
+		return make_response("Error, probably no mode selector device present", 200)
 
 
 # test functions

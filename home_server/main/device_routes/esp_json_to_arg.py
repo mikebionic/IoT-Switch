@@ -55,6 +55,7 @@ def esp_json_to_arg():
 				argumented_url_list = create_separated_device_typeId4_argumented_url_list(device)
 
 				print(argumented_url_list)
+				# if it is already master
 				if (device.typeId == 4):
 					remoteIp = device.ip
 					print("getting typeid4 ip")

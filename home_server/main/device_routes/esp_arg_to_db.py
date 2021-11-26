@@ -23,7 +23,6 @@ def esp_arg_to_db():
 	pin_sensor_command = request.args.get('command')
 	isMaster = request.args.get('isMaster', 0, int)
 
-
 	try:
 		value = request.args.get('value')
 	except:
@@ -45,6 +44,9 @@ def esp_arg_to_db():
 				device.state = action
 				db.session.commit()
 				return "OK"
+
+	if pin_sensor_command == "pir_sensor":
+		manage_pir_detector_leds()
 
 	device = Device.query.filter_by(device_key = device_key).first()
 	if device:
