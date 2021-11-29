@@ -26,6 +26,7 @@ ESP8266WebServer server(80);
 void sendFromUART(String command, String action, String process_key){
   String payload = command + ":" + action + ":" + process_key + ":";
   Serial.println(payload);
+  Serial2.println(payload);
 }
 
 void handleDevice() {
@@ -47,6 +48,7 @@ void handlePong() {
 
 void setup(){
   Serial.begin(115200);
+  Serial2.begin(115200);
   WiFi.begin(ssid, password);
   Serial.println("");
   WiFi.disconnect();
@@ -73,12 +75,15 @@ void sendDataFromMaster(){
     stream = Serial.readStringUntil('\n');
     stream.trim();
     if (stream.length() > 0){
-      Serial.println(stream);
+      // Serial.println(stream);
       // String argument_data = "?device_key="+device_key+"&command="+command+"&value="+String(stream);
       // // we will provide command=somecommand&value=somevalue from stream
       if (stream.length() > 20){
         String argument_data = "?device_key="+device_key+"&"+String(stream)+"&isMaster=1";
-        sendRequest("http://"+serverUrl+"/esp/ArgToDB/",argument_data); 
+        if (stream.indexOf("water_sensor") != -1){
+          sendRequest("http://"+serverUrl+"/esp/detectWater/",argument_data);
+        }
+        sendRequest("http://"+serverUrl+"/esp/ArgToDB/",argument_data);
       }
     }
   }
