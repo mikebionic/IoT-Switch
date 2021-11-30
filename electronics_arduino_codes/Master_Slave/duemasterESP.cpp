@@ -26,7 +26,7 @@ ESP8266WebServer server(80);
 void sendFromUART(String command, String action, String process_key){
   String payload = command + ":" + action + ":" + process_key + ":";
   Serial.println(payload);
-  Serial2.println(payload);
+  Serial1.println(payload);
 }
 
 void handleDevice() {
@@ -48,7 +48,7 @@ void handlePong() {
 
 void setup(){
   Serial.begin(115200);
-  Serial2.begin(115200);
+  Serial1.begin(115200);
   WiFi.begin(ssid, password);
   Serial.println("");
   WiFi.disconnect();

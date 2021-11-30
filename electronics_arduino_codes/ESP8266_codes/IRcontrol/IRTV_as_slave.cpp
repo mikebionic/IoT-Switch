@@ -22,6 +22,9 @@ const char* password = "gorjaw@!85";
 String serverUrl = "192.168.1.252";
 String payload;
 String device_key = "alondatv1";
+String command;
+String action;
+String stream;
 
 ESP8266WebServer server(80);
 
