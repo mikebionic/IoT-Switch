@@ -17,6 +17,7 @@ from main import app
 from main import db
 
 from .models import (
+	Master_device,
 	Device,
 	Pin,
 	Sensor,
@@ -228,12 +229,16 @@ def detectWater():
 
 		else:
 			device = Device.query.filter_by(command = sensor_command).first()
+			print(device.json())
 			if device:
+				
 				device.state = state
+				print("updated the state")
 				db.session.commit()
 
 	else:
 		device = Device.query.filter_by(device_key = device_key).first()
+		print(device.json(), "device without master")
 		if device:
 			try:
 				device.state = state
@@ -245,6 +250,7 @@ def detectWater():
 	try:
 		pump_device = Device.query.filter_by(device_key = pump_device_command).first()
 		pump_state = 0
+		print(pump_device.json())
 		pump_device.state = pump_state
 		db.session.commit()
 		r = requests.get('http://{}/control/{}'.format(pump_device.ip, pump_state))
