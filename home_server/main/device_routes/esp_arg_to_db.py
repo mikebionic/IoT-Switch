@@ -35,8 +35,8 @@ def esp_arg_to_db():
 		action = None
 
 	if pin_sensor_command == "pir_sensor":
-                management = manage_pir_detector_leds(action)
-                print(management)
+		management = manage_pir_detector_leds(action)
+		print(management)
 
 	if isMaster == 1:
 		master_device = Master_device.query.filter_by(device_key = device_key).first()

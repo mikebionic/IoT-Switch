@@ -211,25 +211,40 @@ def setEspState():
 
 @app.route("/esp/detectWater/")
 def detectWater():
-	device_key = request.args.get('device_key')
-	state = 1 #request.args.get('state')
-	
 	pump_device_command = "waterpump"
 
-	device = Device.query.filter_by(device_key = device_key).first()
-	if device:
-		try:
-			device.state = 1
-			db.session.commit()
+	device_key = request.args.get('device_key')
+	sensor_command = request.args.get('command')
+	isMaster = request.args.get('isMaster', 0, int)
+	try:
+		state = request.args.get('action')
+	except:
+		state = 1
 
-		except Exception as ex:
-                	print(f"error, device not found {ex}",200)
+	if isMaster == 1:
+		master_device = Master_device.query.filter_by(device_key = device_key).first()
+		if not master_device:
+			return "device not found"
+
+		else:
+			device = Device.query.filter_by(command = sensor_command).first()
+			if device:
+				device.state = state
+				db.session.commit()
+
+	else:
+		device = Device.query.filter_by(device_key = device_key).first()
+		if device:
+			try:
+				device.state = state
+				db.session.commit()
+
+			except Exception as ex:
+				print(f"error, device not found {ex}",200)
 
 	try:
-		print("trying request pump")
 		pump_device = Device.query.filter_by(device_key = pump_device_command).first()
 		pump_state = 0
-		print(pump_device)
 		pump_device.state = pump_state
 		db.session.commit()
 		r = requests.get('http://{}/control/{}'.format(pump_device.ip, pump_state))
