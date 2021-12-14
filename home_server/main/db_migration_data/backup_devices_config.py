@@ -8,6 +8,24 @@ master_devices = [
 		"typeId": 4,
 		"description": "Communicates with master arduino via UART"
 	},
+	{
+		"id": 2,
+		"name": "ESP RX of master arduino",
+		"ip": "192.168.1.105",
+		"device_key": "ESP_ARDU_MASTER_RX",
+		"command": "esp_communicator_secret",
+		"typeId": 4,
+		"description": "Communicates with master arduino via UART"
+	},
+	{
+		"id": 3,
+		"name": "ESP of master arduino",
+		"ip": "192.168.1.100",
+		"device_key": "ESP_ARDU_MASTER_GREENHOUSE",
+		"command": "esp_parnik_communicator_secret",
+		"typeId": 4,
+		"description": "Communicates with master arduino via UART"
+	},
 ]
 
 devices = [
@@ -35,7 +53,7 @@ devices = [
 		"typeId": 2,
 		"command": "conditioner_main",
 		"description": "Controls conditioner",
-		"toMaster": 1
+		"toMaster": 0
 	},
 	{
 		"id": 10,
@@ -113,7 +131,7 @@ devices = [
 		"typeId": 2,
 		"command": "tv_remote",
 		"description": "Controls Remote of smart tv that sends IR datas",
-		"toMaster": 0
+		"toMaster": 1
 	},
 	{
 		"id": 23,
@@ -395,8 +413,227 @@ devices = [
 	  "typeId": 2,
 	  "command": "command",
 	  "description": "Controls Remote of smart tv that sends IR datas$",
-	  "toMaster": 0
-	}
+	  "toMaster": 1
+	},
+
+
+
+
+
+
+
+	{
+		"id": 5001,
+		"name": "temp",
+		"ip": "192.168.1.104",
+		"state": 0,
+		"device_key": "temp_command",
+		"master_device_id": 3,
+		"flatId": 1,
+		"typeId": 1,
+		"command": "temp_command",
+		"description": "temp dolandyrmak",
+		"toMaster": 1
+	},
+	{
+		"id": 5002,
+		"name": "temp2",
+		"ip": "192.168.1.104",
+		"state": 0,
+		"device_key": "temp2_command",
+		"master_device_id": 3,
+		"flatId": 1,
+		"typeId": 1,
+		"command": "temp2_command",
+		"description": "temp2 dolandyrmak",
+		"toMaster": 1
+	},
+	{
+		"id": 5003,
+		"name": "hum",
+		"ip": "192.168.1.104",
+		"state": 0,
+		"device_key": "hum_command",
+		"master_device_id": 3,
+		"flatId": 1,
+		"typeId": 1,
+		"command": "hum_command",
+		"description": "hum dolandyrmak",
+		"toMaster": 1
+	},
+	{
+		"id": 5004,
+		"name": "hum2",
+		"ip": "192.168.1.104",
+		"state": 0,
+		"device_key": "hum2_command",
+		"master_device_id": 3,
+		"flatId": 1,
+		"typeId": 1,
+		"command": "hum2_command",
+		"description": "hum2 dolandyrmak",
+		"toMaster": 1
+	},
+	{
+		"id": 5005,
+		"name": "soil_hum",
+		"ip": "192.168.1.104",
+		"state": 0,
+		"device_key": "soil_hum_command",
+		"master_device_id": 3,
+		"flatId": 1,
+		"typeId": 1,
+		"command": "soil_hum_command",
+		"description": "soil_hum dolandyrmak",
+		"toMaster": 1
+	},
+	{
+		"id": 5006,
+		"name": "soil_hum2",
+		"ip": "192.168.1.104",
+		"state": 0,
+		"device_key": "soil_hum2_command",
+		"master_device_id": 3,
+		"flatId": 1,
+		"typeId": 1,
+		"command": "soil_hum2_command",
+		"description": "soil_hum2 dolandyrmak",
+		"toMaster": 1
+	},
+	{
+		"id": 5007,
+		"name": "soil_hum_3",
+		"ip": "192.168.1.104",
+		"state": 0,
+		"device_key": "soil_hum_3_command",
+		"master_device_id": 3,
+		"flatId": 1,
+		"typeId": 1,
+		"command": "soil_hum_3_command",
+		"description": "soil_hum_3 dolandyrmak",
+		"toMaster": 1
+	},
+	{
+		"id": 5008,
+		"name": "gas",
+		"ip": "192.168.1.104",
+		"state": 0,
+		"device_key": "gas_command",
+		"master_device_id": 3,
+		"flatId": 1,
+		"typeId": 1,
+		"command": "gas_command",
+		"description": "gas dolandyrmak",
+		"toMaster": 1
+	},
+	
+
+	{
+		"id": 5009,
+		"name": "parnik_room_light",
+		"ip": "192.168.1.104",
+		"state": 0,
+		"device_key": "parnik_room_light",
+		"master_device_id": 3,
+		"flatId": 1,
+		"typeId": 1,
+		"command": "parnik_room_light",
+		"description": "parnik_light dolandyrmak",
+		"toMaster": 1
+	},
+	{
+		"id": 5010,
+		"name": "parnik_light",
+		"ip": "192.168.1.104",
+		"state": 0,
+		"device_key": "parnik_light",
+		"master_device_id": 3,
+		"flatId": 1,
+		"typeId": 1,
+		"command": "parnik_light",
+		"description": "parnik_light dolandyrmak",
+		"toMaster": 1
+	},
+	{
+		"id": 5011,
+		"name": "parnik_socket",
+		"ip": "192.168.1.104",
+		"state": 0,
+		"device_key": "parnik_socket",
+		"master_device_id": 3,
+		"flatId": 1,
+		"typeId": 1,
+		"command": "parnik_socket",
+		"description": "parnik_socket dolandyrmak",
+		"toMaster": 1
+	},
+	{
+		"id": 5012,
+		"name": "parnik_temp_set",
+		"ip": "192.168.1.104",
+		"state": 0,
+		"device_key": "parnik_temp_set",
+		"master_device_id": 3,
+		"flatId": 1,
+		"typeId": 1,
+		"command": "parnik_temp_set",
+		"description": "parnik_temp_set dolandyrmak",
+		"toMaster": 1
+	},
+	{
+		"id": 5013,
+		"name": "parnik_humidity_set",
+		"ip": "192.168.1.104",
+		"state": 0,
+		"device_key": "parnik_humidity_set",
+		"master_device_id": 3,
+		"flatId": 1,
+		"typeId": 1,
+		"command": "parnik_humidity_set",
+		"description": "parnik_humidity_set dolandyrmak",
+		"toMaster": 1
+	},
+	{
+		"id": 5014,
+		"name": "control_parnik_tok_command",
+		"ip": "192.168.1.154",
+		"state": 0,
+		"device_key": "control_parnik_tok_key",
+		"master_device_id": 3,
+		"flatId": 1,
+		"typeId":1,
+		"command": "control_parnik_tok_command",
+		"toMaster": 1
+	},
+	{
+		"id": 5015,
+		"name": "parnik_water_pump",
+		"ip": "192.168.1.104",
+		"state": 0,
+		"device_key": "parnik_water_pump",
+		"master_device_id": 3,
+		"flatId": 1,
+		"typeId": 1,
+		"command": "parnik_water_pump",
+		"description": "parnik_water_pump dolandyrmak",
+		"toMaster": 1
+	},
+	{
+		"id": 5016,
+		"name": "Smart parnik conditioner",
+		"ip": "192.168.1.246",
+		"state": 0,
+		"device_key": "parnik_conditioner_key",
+		"master_device_id": 3,
+		"flatId": 1,
+		"typeId": 2,
+		"command": "parnik_conditioner_command",
+		"description": "Controls parnik conditioner",
+		"toMaster": 0
+	},
+
+
+
 ]
 
 pins = [
@@ -595,7 +832,54 @@ pins = [
 		"description": "Activates AI function",
 		"action": "0",
 		"deviceId": 999,
-	}
+	},
+
+
+	{
+		"id": 5004,
+		"name": "Conditioner Mode HIGH",
+		"command": "mode_high",
+		"description": "Changes the conditioner operation power",
+		"action": "0",
+		"deviceId": 5016,
+		"process_key": "main_arduino_process_secret_key",
+	},
+	{
+		"id": 5005,
+		"name": "Conditioner Mode MED",
+		"command": "mode_med",
+		"description": "Changes the conditioner operation power",
+		"action": "0",
+		"deviceId": 5016,
+		"process_key": "main_arduino_process_secret_key",
+	},
+	{
+		"id": 5006,
+		"name": "Conditioner Mode LOW",
+		"command": "mode_low",
+		"description": "Changes the conditioner operation power",
+		"action": "0",
+		"deviceId": 5016,
+		"process_key": "main_arduino_process_secret_key",
+	},
+	{
+		"id": 5007,
+		"name": "Conditioner Auto/Manual switch",
+		"command": "auto_manual_switch",
+		"description": "Changes the use of manual or auto mode (Tel mode)",
+		"action": "auto",
+		"deviceId": 5016,
+		"process_key": "main_arduino_process_secret_key",
+	},
+	{
+		"id": 5008,
+		"name": "Temperature control",
+		"command": "temperature",
+		"description": "Controls room temperature according to command (ex.: 'heater:25:' or 'cooler:16:')",
+		"action": "cooler:20:",
+		"deviceId": 5016,
+		"process_key": "main_arduino_process_secret_key",
+	},
 ]
 
 device_types = [
