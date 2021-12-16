@@ -1,0 +1,10 @@
+Bu enjam hem akylly tehnologiýalara degişli bolup, internetiň üsti bilen gije-gündiziň dowamynda bolup geçýän wakalary, habarlary, howa maglumatyny we wagty görkezip bilýär. Şeýle hem bu enjama ýatladyjy meýilnamalary (zametka) girizip bolýar. Mundan başga-da onuň kömegi bilen “Akylly aýna” baglanan elektrik enjamlaryny ses arkaly dolandyryp bolýar.
+	“Akylly aýnanyň” esasy wezipesi adamlar üçin ýokary hilli we amatly ýaşaýyş şertlerini döretmekden ybaratdyr. 
+	Göniburç ýarym dury aýnany alyp, ony  ýörite ýasalan gurluşyň (karkasyň) içine ýerleşdirmeli. Ony adaty aýna görnüşine getirmek üçin, arkasyna gara reňkli ýuka gatlak bilen örtmeli. Aýnanyň ýüzünde maglumatlar peýda bolar ýaly ýörite ölçegde monitor goýmaly. 
+Raspberry Pi minikompýuteriň esasynda ähli maglumatlar monitoryň ýüzüne çykýar. Onuň üçin minikompýutere iki sany programma üpjünçiligi (Java we Python dilinde) ýazylýar we ol HDMI kabel arkaly monitora baglanylýar.
+Maglumatlar toplumynda meýilnama boşlugy hem bar. Öýjükli telefon arkaly onuň içine ýatladyjy meýilnamalary salyp bolýar. Monitorda öýüň içindäki  temperaturany we çyglylygy hem görüp bolýar. Ähli maglumatlardan habarly bolmak üçin internet baglanyşygy zerurdyr. 
+Bu enjamyň ýene bir aýratynlygy onuň ses arkaly elektrik enjamlary dolandyrmagydyr. Onuň üçin, USB mikrofony minikompýuteriň USB port-yna birikdirmek ýeterlikdir.
+ Tutuş ulgamy aşa gyzmakdan goramak we sowatmak üçin, sowadyjy ýelpewaçlar (kuler) berkidilýär.
+“Akylly aýna” özboluşly owadanlyk bermek üçin, onuň arka tarapyna LED çyrasy goýulýar. 12V tok çeşmesi bilen iýmitlenýändigi üçin, ony ýörite iýmitleniş ulgamyna birikdirilýär. LED çyrasynyň öňüne açar goýulýar, ulanyjy ony islegine görä ulanyp biler. Ähli maglumatlar internet sahypalaryndan alynýar we her üç sagatdan täzelenip durýar. 
+	Howa maglumatynyň täzelenmegini ýaşaýan ýeriňe görä sazlap bolýar. 
+	Adamlaryň islegine görä, ähli maglumatlary türkmen, rus we iňlis dilinde görmek mümkinçiligi hem bar.  
