@@ -31,3 +31,21 @@ def add_recording():
         print(e)
         return f"error {e}", 400
     return "OK"
+
+@app.route("/sensor_records/")
+def sensor_records():
+    offset = request.args.get("offset", default=0)
+    limit = request.args.get("limit", default=10)
+    records = Sensor_record.query\
+        .order_by(Sensor_record.dateAdded.desc())\
+        .paginate(int(offset), int(limit), False)
+
+    res = {
+        "data": [record.json() for record in records.items],
+        "page_total": len(records.items),
+        "total": records.total,
+        "current_page": records.page,
+        "pages": records.pages
+        
+    }
+    return res

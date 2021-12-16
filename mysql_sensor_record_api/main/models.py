@@ -1,8 +1,12 @@
 from datetime import datetime
 from main import db
+from main.config import Config
 
 class Sensor_record(db.Model):
-    __tablename__ = "yumuslar"
+    if Config.USE_SMART_RECORD_TYPE:
+        __tablename__ = "smart_sensor_record"
+    else:
+        __tablename__ = "yumuslar"
     no = db.Column(db.Integer,primary_key=True)
     temp = db.Column(db.String)
     hum = db.Column(db.String)
@@ -14,10 +18,11 @@ class Sensor_record(db.Model):
     gas = db.Column(db.String)
     date = db.Column(db.String, default = str(datetime.now().strftime("%d:%m:%Y")))
     time = db.Column(db.String, default = str(datetime.now().strftime("%H:%M:%S")))
-    # dateAdded = db.Column(db.DateTime,default=datetime.now())
+    if Config.USE_SMART_RECORD_TYPE:
+        dateAdded = db.Column(db.DateTime,default=datetime.now())
 
     def json(self):
-        sensor_records = {
+        sensor_record_data = {
             "no": self.no,
             "temp": self.temp,
             "hum": self.hum,
@@ -31,4 +36,8 @@ class Sensor_record(db.Model):
             "date": self.date,
             "time": self.time,
         }
-        return sensor_records
+        if Config.USE_SMART_RECORD_TYPE:
+            sensor_record_data["dateAdded"] = self.dateAdded
+
+        return sensor_record_data
+
