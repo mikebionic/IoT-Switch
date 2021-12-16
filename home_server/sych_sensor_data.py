@@ -12,7 +12,7 @@ hum_command = "hum_command"
 hum2_command = "hum2_command"
 soil_hum_command = "soil_hum_command"
 soil_hum2_command = "soil_hum2_command"
-soil_hum_3_command = "soil_hum_3_command"
+soil_hum3_command = "soil_hum3_command"
 gas_command = "gas_command"
 
 
@@ -107,13 +107,13 @@ def gather_db_data():
         print(e)
 
     try:
-        if not soil_hum_3_command:
-            print("not using soil_hum_3_command")
+        if not soil_hum3_command:
+            print("not using soil_hum3_command")
             raise Exception
 
-        soil_hum_3_device = Device.query.filter_by(command = soil_hum_3_command).first()
-        if soil_hum_3_device:
-            soil_hum_3 = soil_hum_3_device.state
+        soil_hum3_device = Device.query.filter_by(command = soil_hum3_command).first()
+        if soil_hum3_device:
+            soil_hum3 = soil_hum3_device.state
     except Exception as e:
         print(e)
 

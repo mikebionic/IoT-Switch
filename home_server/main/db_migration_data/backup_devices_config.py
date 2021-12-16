@@ -505,11 +505,11 @@ devices = [
 		"name": "soil_hum_3",
 		"ip": "192.168.1.104",
 		"state": 0,
-		"device_key": "soil_hum_3_command",
+		"device_key": "soil_hum3_command",
 		"master_device_id": 3,
 		"flatId": 1,
 		"typeId": 1,
-		"command": "soil_hum_3_command",
+		"command": "soil_hum3_command",
 		"description": "soil_hum_3 dolandyrmak",
 		"toMaster": 1
 	},

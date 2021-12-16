@@ -8,21 +8,23 @@ String process_key = "";
 
 // DHT sensor setup
 #include <DHT.h>
-#define DHTPIN CONTROLLINO_D4
+#define DHTPIN CONTROLLINO_A4
 #define DHTTYPE DHT22
 DHT dht(DHTPIN, DHTTYPE);
 float hum;
 float temp;
 float hum2;
 float temp2;
+int smokevalue;
 long temp_millis = millis();
 long temp_millis2 = millis();
-long temp_check_delay = 2000;
+long temp_check_delay = 4000;
+long temp_check_delay2 = 4000;
 int setted_temperature = 20;
 int setted_humidity = 50;
 
 //DHT - 2;
-#define DHT_PIN2 CONTROLLINO_D5
+#define DHT_PIN2 CONTROLLINO_A5
 #define DHTTYPE2 DHT22
 DHT dht2(DHT_PIN2, DHTTYPE2);
 
@@ -50,11 +52,11 @@ long humidity_message_millis2 = millis();
 int soil_message_sent = 0;
 String soil_device_command_ = "soil_hum_command";
 long soil_message_millis = millis();
-String soil_device_command_2 = "soil_hum_command2";
+String soil_device_command_2 = "soil_hum2_command";
 int soil_message_sent2 = 0;
 long soil_message_millis2 = millis();
 int soil_message_sent3 = 0;
-String soil_device_command_3 = "soil_hum_command3";
+String soil_device_command_3 = "soil_hum3_command";
 long soil_message_millis3 = millis();
 //////////
 // gas config
@@ -90,7 +92,7 @@ String conditioner_command = "parnik_conditioner_main";
 
 // 2 mode light control
 char room_light = CONTROLLINO_D15;
-int roomSwitch = CONTROLLINO_A3;
+int roomSwitch = CONTROLLINO_A6;
 int buttonState = 0;     // make it 1 if INPUT_PULLUP
 int lastButtonState = 0; // make it 1 if INPUT_PULLUP
 int buttonPushCounter = 0;
@@ -103,15 +105,22 @@ String light_device_command = "parnik_light_main";
 int socketpin = CONTROLLINO_R3;
 String socket_device_command = "parnik_socket_main";
 
+int socket1pin = CONTROLLINO_R1;
+String socket1_device_command = "parnik_socket_one_main";
+
+// Greenhouse ayna control
+int aynaacpin = CONTROLLINO_D7;
+int aynayappin = CONTROLLINO_D6;
+String ayna_device_command = "parnik_ayna_main";
+
 // esasy tok cesmesi
 int tokpin = CONTROLLINO_R0;
 
 // Gas sensor
-int smoke = CONTROLLINO_A4;
+int smoke = CONTROLLINO_A3;
 
 // LDR sensor
-int ldrpin = CONTROLLINO_A5;
-
+int ldrpin = CONTROLLINO_A7;
 
 
 void setup() {
@@ -138,13 +147,24 @@ void setup() {
   pinMode(room_light, OUTPUT); // PWM
   pinMode(roomSwitch, INPUT_PULLUP);
   pinMode(tokpin, OUTPUT);
+//  digitalWrite(tokpin, 1);
 
   // Greenhouse light control
   pinMode(lightpin, OUTPUT);
 
   // Greenhouse socket control
   pinMode(socketpin, OUTPUT);
+//  digitalWrite(socketpin, 1);
 
+   // Greenhouse socket1 control
+  pinMode(socket1pin, OUTPUT);
+
+
+  // Greenhouse socket control
+  pinMode(aynaacpin, OUTPUT);
+  pinMode(aynayappin, OUTPUT);
+  digitalWrite(aynaacpin, HIGH);
+  digitalWrite(aynayappin, HIGH);
 }
 
 
@@ -175,17 +195,31 @@ void loop() {
   moisture = analogRead(soilSensor);
   moisture1 = analogRead(soilSensor1);
   moisture2 = analogRead(soilSensor2);
-  moisture_check();
-  temp_check();
-  temp_check_2();
-  //control_temperature();
+
+  //gas smoke sensor;
+  smokevalue = analogRead(smoke);
 
   //fotrezistor;
   int fotores = analogRead(ldrpin);
   int delayT = (9. / 550.) * fotores - (9.*200 / 550.) + 1;
 
-  //gas smoke sensor;
-  int smokevalue = analogRead(smoke);
+
+  moisture_check();
+  temp_check();
+  temp_check_2();
+  soil_control();
+  //control_temperature();
+
+//   Serial.print(moisture);
+//   Serial.print(" ");
+//   Serial.print(temp);
+//   Serial.print(" ");
+//   Serial.print(hum);
+//   Serial.print(" ");
+//   Serial.print(temp2);
+//   Serial.print(" ");
+//   Serial.print(smokevalue);
+//   Serial.println(" ");
 
   // 2 mode ring lignt control button
   buttonState = digitalRead(roomSwitch);
@@ -229,8 +263,8 @@ void loop() {
   if (millis() - humidity_message_millis2 > 5000) {
     humidity_message_sent2 = 0;
   }
-  
-  
+
+
 }
 
 
@@ -272,6 +306,24 @@ void control_device(String command, String action) {
     }
   }
 
+  // Greenhouse light control
+  if (command == "parnik_ayna") {
+    if (action == "1") {
+      digitalWrite(aynaacpin, 1);
+      digitalWrite(aynayappin, 0);
+      delay(5000);
+      digitalWrite(aynaacpin, 1);
+      digitalWrite(aynayappin, 1);
+    }
+    else if (action == "0") {
+      digitalWrite(aynayappin, 1);
+      digitalWrite(aynaacpin, 0);
+      delay(5000);
+      digitalWrite(aynaacpin, 1);
+      digitalWrite(aynayappin, 1);
+    }
+  }
+
   // Greenhouse socket control
   if (command == "parnik_socket") {
     if (action == "1") {
@@ -281,6 +333,19 @@ void control_device(String command, String action) {
       digitalWrite(socketpin, 0);
     }
   }
+
+
+ // Greenhouse socket1 control
+  if (command == "parnik_socket1") {
+    if (action == "1") {
+      digitalWrite(socket1pin, 1);
+    }
+    else if (action == "0") {
+      digitalWrite(socket1pin, 0);
+    }
+  }
+
+
 
   // setting temperature
   if (command == "parnik_temp_set") {
@@ -372,7 +437,7 @@ void control_device(String command, String action) {
   }
 }
 
-
+//control_parnik_tok_command:1:main_arduino_process_secret_key:
 void temp_check() {
   if (millis() - temp_millis > temp_check_delay) {
     hum = dht.readHumidity();
@@ -395,7 +460,7 @@ void temp_check() {
 }
 
 void temp_check_2() {
-  if (millis() - temp_millis2 > temp_check_delay) {
+  if (millis() - temp_millis2 > temp_check_delay2) {
     hum2 = dht2.readHumidity();
     temp2 = dht2.readTemperature();
 
@@ -432,7 +497,11 @@ void soil_control() {
     soil_message_sent3 = 1;
     soil_message_millis3 = millis();
   }
-
+  if (gas_message_sent == 0) {
+    send_uart_message(gas_device_command_, String(smokevalue));
+    gas_message_sent = 1;
+    gas_message_millis = millis();
+  }
 }
 
 
