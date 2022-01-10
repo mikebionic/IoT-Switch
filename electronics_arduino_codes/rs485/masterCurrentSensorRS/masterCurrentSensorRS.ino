@@ -68,7 +68,7 @@ void check_count_and_send(){
   if (flat1_count >= maxPulseCount){
       digitalWrite(SLAVE_EN , 1);
       delay(5);
-      Serial.println("flat_command=" + flat1_info+"&sensor_value="+devicePowerkWh);
+      Serial.println("flat_key=" + flat1_info+"&sensor_value="+devicePowerkWh);
       flat1_count = 0;
       delay(100);
       digitalWrite(SLAVE_EN , 0);
@@ -78,7 +78,7 @@ void check_count_and_send(){
   if (flat2_count >= maxPulseCount){
       digitalWrite(SLAVE_EN , 1);
       delay(5);
-      Serial.println("flat_command=" + flat2_info+"&sensor_value="+devicePowerkWh);
+      Serial.println("flat_key=" + flat2_info+"&sensor_value="+devicePowerkWh);
       flat2_count = 0;
       delay(100);
       digitalWrite(SLAVE_EN , 0);

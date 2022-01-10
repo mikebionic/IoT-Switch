@@ -103,6 +103,7 @@ class Flat(db.Model):
 	master_devices = db.relationship('Master_device',backref='flat',lazy=True)
 	rooms = db.relationship('Room',backref='flat',lazy=True)
 	qr_codes = db.relationship('QR_code',backref='flat',lazy=True)
+	sensor_records = db.relationship('Sensor_record',backref='flat',lazy=True)
 
 	def json(self):
 		flats = {
@@ -419,6 +420,7 @@ class Sensor_record(db.Model):
 	master_device_id = db.Column(db.Integer,db.ForeignKey("master_device.id"))
 	deviceId = db.Column(db.Integer,db.ForeignKey("device.id"))
 	sensorId = db.Column(db.Integer,db.ForeignKey("sensor.id"))
+	flatId = db.Column(db.Integer,db.ForeignKey("flat.id"))
 	dateAdded = db.Column(db.DateTime,default=datetime.now())
 	dateUpdated = db.Column(db.DateTime,default=datetime.now(),onupdate=datetime.now())
 
@@ -432,6 +434,7 @@ class Sensor_record(db.Model):
 			"master_device_id": self.master_device_id,
 			"deviceId": self.deviceId,
 			"sensorId": self.sensorId,
+			"flatId": self.flatId,
 			"dateAdded": self.dateAdded if withDates else None,
 			"dateUpdated": self.dateUpdated.timestamp() if withDates else None,
 		}
