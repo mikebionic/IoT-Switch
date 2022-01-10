@@ -4,7 +4,7 @@ const int sensor1 = A0;
 const int sensor2 = A1;
 
 int maxPulseCount = 10;
-int devicePowerkWh = 3000;
+String devicePowerkWh = "0.003"; // maxPulseCount / kW/h!!!!!
 int serial_millis_delay = 100;
 
 int flat1_count = 0;
@@ -26,7 +26,7 @@ int flat1_message_sent = 0;
 int flat2_message_sent = 0;
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   pinMode(SLAVE_EN, OUTPUT);
   digitalWrite(SLAVE_EN, 0);
   pinMode(sensor1, INPUT);
@@ -57,7 +57,6 @@ void loop() {
 void check_count_and_send(){
   if (flat1_count >= maxPulseCount){
     if (flat1_message_sent == 0){
-      // serial_send_power_info(flat1_info, flat1_count * devicePowerkWh, flat1_millis, flat1_count, flat1_message_sent);
       flat1_message_sent = 1;
       flat1_count = 0;
     }
@@ -69,7 +68,7 @@ void check_count_and_send(){
   if (flat1_count >= maxPulseCount){
       digitalWrite(SLAVE_EN , 1);
       delay(5);
-      Serial.println("flat_command=" + flat1_info+"&sensor_value="+flat1_count * devicePowerkWh);
+      Serial.println("flat_command=" + flat1_info+"&sensor_value="+devicePowerkWh);
       flat1_count = 0;
       delay(100);
       digitalWrite(SLAVE_EN , 0);
@@ -79,7 +78,7 @@ void check_count_and_send(){
   if (flat2_count >= maxPulseCount){
       digitalWrite(SLAVE_EN , 1);
       delay(5);
-      Serial.println("flat_command=" + flat2_info+"&sensor_value="+flat2_count * devicePowerkWh);
+      Serial.println("flat_command=" + flat2_info+"&sensor_value="+devicePowerkWh);
       flat2_count = 0;
       delay(100);
       digitalWrite(SLAVE_EN , 0);
