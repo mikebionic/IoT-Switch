@@ -21,6 +21,7 @@ from main.scheduler.manage_schedules import manage_schedules
 def esp_json_to_arg():
 	isSchedule = request.args.get('isSchedule',0,type=int)
 	toMaster = request.args.get('toMaster',0,type=int)
+	controlState = request.args.get('controlState',0,type=int)
 
 	if request.method == 'POST':
 		req = request.get_json()
@@ -47,8 +48,14 @@ def esp_json_to_arg():
 			device.state = state
 			db.session.commit()
 
-			argumented_url = f"command={command}&action={state}&process_key=main_arduino_process_secret_key"
-			r = requests.get('http://{}/control/?{}'.format(remoteIp, argumented_url))
+			if controlState:
+				remoteIp = device.ip
+				argumented_url = device.state
+
+			else:
+				argumented_url = f"?command={command}&action={state}&process_key=main_arduino_process_secret_key"
+
+			r = requests.get('http://{}/control/{}'.format(remoteIp, argumented_url))
 			return "OK"
 
 		if device:
