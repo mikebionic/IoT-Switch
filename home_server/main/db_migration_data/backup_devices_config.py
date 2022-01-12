@@ -216,13 +216,13 @@ devices = [
 		"name": "Door Lock",
 		"ip": "192.168.1.178",
 		"state": 0,
-		"device_key": "door_hash",
+		"device_key": "tirkesh_gapy",
 		"master_device_id": 1,
 		"flatId": 1,
 		"typeId": 1,
 		"command": "unlock_door",
 		"description": "Unlock door",
-		"toMaster": 1
+		"toMaster": 0
 	},
 	{
 		"id": 30,
