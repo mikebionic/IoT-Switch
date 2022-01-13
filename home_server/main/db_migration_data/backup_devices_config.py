@@ -627,7 +627,7 @@ devices = [
 		"master_device_id": 3,
 		"flatId": 1,
 		"typeId": 2,
-		"command": "parnik_conditioner_command",
+		"command": "parnik_conditioner_main",
 		"description": "Controls parnik conditioner",
 		"toMaster": 0
 	},

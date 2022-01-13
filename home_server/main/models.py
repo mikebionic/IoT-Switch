@@ -91,6 +91,7 @@ class Flat(db.Model):
 	flat_key = db.Column(db.String)
 	house_key = db.Column(db.String)
 	name = db.Column(db.String(100),nullable=False)
+	ip = db.Column(db.String(100))
 	secret_key = db.Column(db.String(1000),nullable=False,default=random_gen())
 	description = db.Column(db.String(500))
 	houseId = db.Column(db.Integer,db.ForeignKey("house.id"))
@@ -110,6 +111,7 @@ class Flat(db.Model):
 			"id": self.id,
 			"flat_key": self.flat_key,
 			"name": self.name,
+			"ip": self.ip,
 			"secret_key": self.secret_key,
 			"description": self.description,
 			"houseId": self.houseId,

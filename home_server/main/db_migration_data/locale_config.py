@@ -32,9 +32,20 @@ flats = [
 	{
 		"flat_key": 1,
 		"name": "Default flat",
-		"secret_key": "secret_key_hash",
+		"secret_key": "flat1_secret_key_hash",
 		"description": "Default testing flat",
 		"house_key": 1,
+		"ip": "192.168.1.252"
+		# "houseId": 1,
+		# "typeId": 1,
+	},
+	{
+		"flat_key": 2,
+		"name": "Secondary flat",
+		"secret_key": "flat2_secret_key_hash",
+		"description": "Default testing flat",
+		"house_key": 1,
+		"ip": "192.168.1.254"
 		# "houseId": 1,
 		# "typeId": 1,
 	}

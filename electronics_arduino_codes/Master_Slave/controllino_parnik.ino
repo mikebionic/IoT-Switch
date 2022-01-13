@@ -123,6 +123,7 @@ int smoke = CONTROLLINO_A3;
 int ldrpin = CONTROLLINO_A7;
 
 
+
 void setup() {
   Serial.begin(115200);
   pinMode(led, OUTPUT);
@@ -208,7 +209,7 @@ void loop() {
   temp_check();
   temp_check_2();
   soil_control();
-  //control_temperature();
+  control_temperature();
 
 //   Serial.print(moisture);
 //   Serial.print(" ");
@@ -220,7 +221,7 @@ void loop() {
 //   Serial.print(" ");
 //   Serial.print(smokevalue);
 //   Serial.println(" ");
-
+  
   // 2 mode ring lignt control button
   buttonState = digitalRead(roomSwitch);
   if (buttonState != lastButtonState) {
@@ -263,8 +264,8 @@ void loop() {
   if (millis() - humidity_message_millis2 > 5000) {
     humidity_message_sent2 = 0;
   }
-
-
+  
+  
 }
 
 
@@ -495,13 +496,15 @@ void soil_control() {
   if (soil_message_sent3 == 0) {
     send_uart_message(soil_device_command_3, String(moisture2));
     soil_message_sent3 = 1;
-    soil_message_millis3 = millis();
+    soil_message_millis3 = millis(); 
   }
   if (gas_message_sent == 0) {
     send_uart_message(gas_device_command_, String(smokevalue));
     gas_message_sent = 1;
     gas_message_millis = millis();
   }
+  
+
 }
 
 
@@ -509,8 +512,8 @@ void control_temperature() {
   if (temp < setted_temperature) {
     analogWrite(fanpin, 255);
     digitalWrite(condmodehigh, 1);
-    digitalWrite(condmodemed, 0);
-    digitalWrite(condmodelow, 0);
+    digitalWrite(condmodemed, 1);
+    digitalWrite(condmodelow, 1);
   } else {
     analogWrite(fanpin, 0);
     digitalWrite(condmodehigh, 0);
