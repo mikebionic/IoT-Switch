@@ -11,5 +11,6 @@ class Config:
 
 	SYSTEM_IP = "192.168.1.252"
 	SYSTEM_MASTER_IP = "192.168.1.254"
+	FLAT_SECRET_KEY = "flat1_secret_key_hash"
 
 	SOUND_PLAYER = "playsound"

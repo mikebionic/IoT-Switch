@@ -381,7 +381,7 @@ class Sensor(db.Model):
 	value = db.Column(db.Float,default=0.0)
 	secret_key = db.Column(db.String(1000),nullable=False,default=random_gen(100))
 	flatId = db.Column(db.Integer,db.ForeignKey("flat.id"))
-	typeId = db.Column(db.Integer,db.ForeignKey("sensor_type.id"))
+	typeId = db.Column(db.Integer,db.ForeignKey("sensor_type.id")) # 1 = appending 2 = rewriting
 	master_device_id = db.Column(db.Integer,db.ForeignKey("master_device.id"))
 	deviceId = db.Column(db.Integer,db.ForeignKey("device.id"))
 	dateAdded = db.Column(db.DateTime,default=datetime.now())
@@ -415,9 +415,10 @@ class Sensor(db.Model):
 
 class Sensor_record(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
-	name = db.Column(db.String(100),nullable=False)
+	name = db.Column(db.String(100))
 	description = db.Column(db.String(500))
 	value = db.Column(db.Float,default=0.0)
+	secret_key = db.Column(db.String(1000),nullable=False,default=random_gen(100))
 	date = db.Column(db.DateTime,nullable=False,default=datetime.now())
 	master_device_id = db.Column(db.Integer,db.ForeignKey("master_device.id"))
 	deviceId = db.Column(db.Integer,db.ForeignKey("device.id"))
@@ -432,6 +433,7 @@ class Sensor_record(db.Model):
 			"name": self.name,
 			"description": self.description,
 			"value": self.value,
+			"secret_key": self.secret_key,
 			"date": self.date,
 			"master_device_id": self.master_device_id,
 			"deviceId": self.deviceId,

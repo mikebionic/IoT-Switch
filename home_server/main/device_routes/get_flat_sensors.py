@@ -14,13 +14,23 @@ from main.models import (
 	Sensor_record
 )
 
+@app.route("/flat_list/")
+def flat_list():
+	flats = Flat.query.all()
+	data = [flat.json() for flat in flats]
+	return {"data": data}, 200
+
+
+# http://127.0.0.1:5000/get_flat_sensors/?flat_key=flat1_secret_key_hash
 
 @app.route("/get_flat_sensors/")
 def get_flat_sensors():
 	flat_key = request.args.get('flat_key')
+	current_sensor_command = "current_measurer"
 	try:
 		this_flat = Flat.query.filter_by(secret_key = flat_key).first()
 		if not this_flat:
+			print("no such flat")
 			raise Exception
 
 		# sensor should contain flatID
@@ -36,4 +46,5 @@ def get_flat_sensors():
 		return data
 
 	except Exception as ex:
+		print(ex)
 		return make_response("err",200)

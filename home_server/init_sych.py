@@ -1,0 +1,2 @@
+from synch_utils.synch_current_sensor_records import make_synch_request
+make_synch_request()

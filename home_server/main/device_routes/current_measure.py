@@ -19,10 +19,12 @@ from main.models import (
 from main.routes_devices import manage_pir_detector_leds
 
 
+# http://127.0.0.1:5000/esp/current_measure/?flat_key=flat1_secret_key_hash&sensor_value=13
+
 @app.route("/esp/current_measure/")
 def current_measure():
-	device_key = request.args.get('device_key')
-	current_sensor_command = "current_sensor"#request.args.get('sensor_command')
+	device_key = request.args.get('device_key', "", str)
+	current_sensor_command = "current_measurer"#request.args.get('sensor_command')
 	flat_key = request.args.get('flat_key')
 	isMaster = request.args.get('isMaster', 0, int)
 
@@ -36,15 +38,16 @@ def current_measure():
 	print(current_sensor_command, flat_key, value)
 
 	try:
-		# Device key is current_current_measurer_master
-		device = None
-		if isMaster:
-			device = Master_device.query.filter_by(device_key = device_key).first()
-		else:
-			device = Device.query.filter_by(device_key = device_key).first()
-		if not device:
-			print("device not found or not registered")
-			raise Exception
+		# # Device key is current_current_measurer_master
+		# # This feature is not important, could be added for security
+		# device = None
+		# if isMaster:
+		# 	device = Master_device.query.filter_by(device_key = device_key).first()
+		# else:
+		# 	device = Device.query.filter_by(device_key = device_key).first()
+		# if not device:
+		# 	print("device not found or not registered")
+		# 	raise Exception
 
 		this_flat = Flat.query.filter_by(secret_key = flat_key).first()
 		if not this_flat:
@@ -65,7 +68,7 @@ def current_measure():
 			current_date = datetime.now().date()
 			found_s_record = Sensor_record.query\
 				.filter_by(
-					flatId = sensor.flatId
+					flatId = sensor.flatId,
 					sensorId = sensor.id
 				)\
 				.filter(
@@ -74,6 +77,7 @@ def current_measure():
 
 			if found_s_record:
 				found_s_record.value += value
+				found_s_record.dateUpdated = datetime.now()
 
 			else:
 				sensor_record_payload = {
@@ -95,4 +99,5 @@ def current_measure():
 		return make_response("ok",200)
 
 	except Exception as ex:
+		print("Current meaure exception", ex)
 		return make_response("err",200)
