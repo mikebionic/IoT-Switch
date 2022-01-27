@@ -24,7 +24,6 @@ from . import routes_netscan
 from .device_routes import *
 from .sensor_routes import *
 
-
 # from . import routes_serial
 
 from .admin import routes_admin
