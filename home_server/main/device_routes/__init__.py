@@ -13,3 +13,4 @@ from .make_device_request import make_device_request
 from .process_pins import process_pins
 from .ui_cameras import ui_cameras
 from .v2_esp_json_to_arg import v2_esp_json_to_arg
+from .get_device_by_user import get_device_by_user
