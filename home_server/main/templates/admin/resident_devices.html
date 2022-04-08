@@ -1,0 +1,58 @@
+{% extends "/admin/resident_layout.html" %}
+
+{% block css %}
+	<link href="/static/admin/plugins/datatable/dataTables.bootstrap4.min.css" rel="stylesheet" />
+	<link href="/static/admin/plugins/datatable/responsivebootstrap4.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+
+	<h4>Your devices!</h4>
+	<div class="row">
+		{% for device in data['data'] %}
+		<div class="col-md-6 col-xl-3">
+			<div class="card text-white bg-secondary">
+				<div class="card-header ">
+					<h3 class="card-title ">{{ device.name }}</h3>
+					<div class="card-options">
+						<a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up text-white"></i></a>
+						<a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x text-white "></i></a>
+					</div>
+				</div>
+				<div class="card-body">
+					{% if device.typeId == 1 %}
+					<div style="display: flex; 
+					justify-content: space-between;">
+						<p>State: {{ 'On' if device.state == 1 else 'Off' }}</p>
+						<img 
+						style="max-height: 3rem;"
+						src="{{ '/static/admin/images/light_on.png' if device.state == 1 else '/static/admin/images/light_off.png' }}" />
+					</div>
+					{% endif %}
+					
+					<p class="card-text">{{ device.description if device.description else 'no description..' }}</p>
+					{% if device['pins'] %}
+					{% for pin in device['pins'] %}
+						<div style="display: flex;
+						align-items: center;
+						justify-content: space-between;">
+							<p class="card-text">{{pin.name}}:</p>
+							<span style="font-size: 15px;"><b>{{pin.action}}</b></span>
+						</div>
+					{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+
+{% endblock %}
+
+{% block js %}
+	<script src="/static/admin/plugins/datatable/jquery.dataTables.min.js"></script>
+	<script src="/static/admin/plugins/datatable/dataTables.bootstrap4.min.js"></script>
+	<script src="/static/admin/plugins/datatable/datatable.js"></script>
+	<script src="/static/admin/plugins/datatable/datatable-2.js"></script>
+	<script src="/static/admin/plugins/datatable/dataTables.responsive.min.js"></script>
+{% endblock %}

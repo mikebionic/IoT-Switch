@@ -10,6 +10,16 @@ residents = [
 		"flatId": 1,
 		"typeId": 1,
 		"secret_key": "administator_resident S3cret"
+	},
+	{
+		"id": 2,
+		"name": "John",
+		"surname": "Doe",
+		"username": "default",
+		"password": "111",
+		"flatId": 1,
+		"typeId": 2,
+		"secret_key": "Resident_user_secret"
 	}
 ]
 

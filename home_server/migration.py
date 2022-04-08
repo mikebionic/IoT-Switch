@@ -17,10 +17,11 @@ from main.models import (
 	Room,
 	Schedule,
 	Sensor_record,
+	Resident_type,
 )
 
 from main.db_migration_data.devices_config import master_devices, devices, pins, sensors
-from main.db_migration_data.default_devices_config import device_types, sensor_types, triggers
+from main.db_migration_data.default_devices_config import device_types, sensor_types, triggers, resident_types
 from main.db_migration_data.locale_config import cities, regions, houses, flats, rooms
 from main.db_migration_data.residents_config import residents, qr_codes
 from main.db_migration_data.schedules_config import schedules
@@ -97,6 +98,9 @@ for trigger in triggers:
 	db_trigger = Trigger(**trigger)
 	db.session.add(db_trigger)
 
+for resident_type in resident_types:
+	db_resident_type = Resident_type(**resident_type)
+	db.session.add(db_resident_type)
 
 if cached_records:
 	for record in cached_records:

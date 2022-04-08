@@ -49,3 +49,16 @@ triggers = [
 		"state": 0
 	}
 ]
+
+resident_types = [
+	{
+		"id": 1,
+		"name": "Admin",
+		"description": "High privileges"
+	},
+	{
+		"id": 2,
+		"name": "Resident",
+		"description": "User privilages"
+	}
+]

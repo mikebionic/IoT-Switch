@@ -4,7 +4,7 @@ from flask import (
 	url_for,
 	flash,
 	redirect,
-	request
+	request,
 )
 
 from flask_login import (
@@ -19,10 +19,27 @@ from main.db_data_utils.get_sensors_data import get_sensors_data
 from main.db_data_utils.get_devices_data import get_devices_data
 
 
+
+@app.route("/resident")
+@app.route("/resident/devices")
+@login_required
+def show_resident_devices():
+	data = []
+	try:
+		data = get_devices_data(db_models=current_user.flat.devices)
+	except Exception as e:
+		print("Error: ", e)
+	return render_template("admin/resident_devices.html", data = data)
+
+
+
+
 @app.route("/admin")
 @app.route("/admin/dashboard")
 @login_required
 def dashboard():
+	if current_user.typeId != 1:
+		return redirect('/login')
 	data = get_locale_qty()
 	return render_template(
 		"admin/dashboard.html",

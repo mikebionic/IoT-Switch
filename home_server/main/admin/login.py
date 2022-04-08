@@ -19,11 +19,12 @@ from flask_login import (
 )
 
 
-@app.route('/admin/login', methods=["GET", "POST"])
-def admin_login():
+@app.route('/login', methods=["GET", "POST"])
+def login():
 	if request.method == 'GET':
 		if current_user.is_authenticated:
-			return redirect("/admin")
+			if current_user.typeId == 1:
+				return redirect("/admin")
 		return render_template ("admin/login.html")
 
 	if request.method == 'POST':
@@ -35,7 +36,10 @@ def admin_login():
 				if(user and user.password==password):
 					login_user(user)
 					next_page = request.args.get('next')
-					return redirect(next_page) if next_page else redirect("/admin")
+					if user.typeId == 1:
+						return redirect(next_page) if next_page else redirect("/admin")
+					else:
+						return redirect(next_page) if next_page else redirect("/resident")
 				else:
 					raise Exception
 			else:
@@ -46,7 +50,7 @@ def admin_login():
 	return render_template ("admin/login.html")
 
 
-@app.route("/admin/logout")
-def admin_logout():
+@app.route("/logout")
+def logout():
 	logout_user()
-	return redirect(url_for("admin_login"))
+	return redirect(url_for("login"))
