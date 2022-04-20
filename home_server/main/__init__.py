@@ -23,6 +23,7 @@ from . import routes_locale
 from . import routes_netscan
 from .device_routes import *
 from .sensor_routes import *
+from .blockchain import *
 
 # from . import routes_serial
 

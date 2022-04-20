@@ -203,6 +203,8 @@ def setEspState():
 		try:
 			device.state = state
 			db.session.commit()
+			device.onChainUpdate(state)
+
 			print(device.name)
 			return make_response("ok",200)
 		except Exception as ex:

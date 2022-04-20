@@ -1,4 +1,5 @@
 from datetime import date,datetime,time
+import requests
 from flask_login import UserMixin
 
 from main import login_manager
@@ -280,6 +281,8 @@ class Device(db.Model):
 	typeId = db.Column(db.Integer,db.ForeignKey("device_type.id"))
 	flatId = db.Column(db.Integer,db.ForeignKey("flat.id"))
 	roomId = db.Column(db.Integer,db.ForeignKey("room.id"))
+	chain_hash = db.Column(db.String)
+	chain_info = db.Column(db.String)
 	dateAdded = db.Column(db.DateTime,default=datetime.now())
 	dateUpdated = db.Column(db.DateTime,default=datetime.now(),onupdate=datetime.now())
 	pins = db.relationship('Pin',backref='device',lazy='joined')
@@ -292,6 +295,18 @@ class Device(db.Model):
 			if value is not None:
 				if hasattr(self, key):
 					setattr(self, key, value)
+	
+	def onChainUpdate(self, data):
+		print(f"updating blockchain for device {self.name} with data: {data}")
+		try:
+			r = requests.get('http://localhost:5000/mineblock')
+			response = r.json()
+			self.chain_hash = response['prevhash']
+			self.chain_info = str(response)
+			db.session.commit()
+
+		except Exception as ex:
+			print(f"error updating block {ex}")
 
 	def json(self):
 		device = {
@@ -310,6 +325,8 @@ class Device(db.Model):
 			"typeId": self.typeId,
 			"flatId": self.flatId,
 			"roomId": self.roomId,
+			"chain_hash": self.chain_hash,
+			"chain_info": self.chain_info,
 			"dateAdded": self.dateAdded,
 			"dateUpdated": self.dateUpdated.timestamp(),
 		}
