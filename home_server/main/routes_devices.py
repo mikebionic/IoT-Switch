@@ -26,6 +26,14 @@ from .models import (
 	Resident)
 from main.scheduler.utils_scheduler import run_scheduled_task
 from main.db_data_utils.get_devices_data import get_devices_data
+from main.config import Config
+
+
+@app.route("/app-version/")
+def app_version():
+	return {
+		"data": Config.APP_VERSION or '1.0'
+	}
 
 
 @app.route("/set-ip/")

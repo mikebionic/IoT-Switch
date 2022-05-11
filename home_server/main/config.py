@@ -15,3 +15,4 @@ class Config:
 	FLAT_SECRET_KEY = "flat1_secret_key_hash"
 
 	SOUND_PLAYER = "playsound"
+	APP_VERSION = "1.2.0"
